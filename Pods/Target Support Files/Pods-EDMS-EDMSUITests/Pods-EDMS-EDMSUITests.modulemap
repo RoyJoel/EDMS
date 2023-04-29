@@ -1,0 +1,6 @@
+framework module Pods_EDMS_EDMSUITests {
+  umbrella header "Pods-EDMS-EDMSUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
