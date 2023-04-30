@@ -150,7 +150,7 @@ class AccountViewController: EDViewController {
         let vc = EDUserAllHistoryGamesViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     @objc func viewAllOrders() {
         let vc = EDUserOrdersViewController()
         navigationController?.pushViewController(vc, animated: true)

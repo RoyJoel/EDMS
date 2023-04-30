@@ -109,6 +109,7 @@
 		A8FE97C329FA833900A1A2EF /* EDUserOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FE97C229FA833900A1A2EF /* EDUserOrderView.swift */; };
 		A8FE97C529FCC3E700A1A2EF /* EDUserOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FE97C429FCC3E700A1A2EF /* EDUserOrdersViewController.swift */; };
 		A8FE97C729FCC5F500A1A2EF /* EDUserOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FE97C629FCC5F500A1A2EF /* EDUserOrderCell.swift */; };
+		A8FE97C929FCD1AC00A1A2EF /* EDUserOrderTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FE97C829FCD1AC00A1A2EF /* EDUserOrderTableView.swift */; };
 		A8FF67C229F79B6C00F20BC1 /* EDAddressEditingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FF67C129F79B6C00F20BC1 /* EDAddressEditingViewController.swift */; };
 		A8FF67C429F79C3A00F20BC1 /* EDAddressManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FF67C329F79C3A00F20BC1 /* EDAddressManagementViewController.swift */; };
 		A8FF67C629F79CD500F20BC1 /* EDAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8FF67C529F79CD500F20BC1 /* EDAddressCell.swift */; };
@@ -250,6 +251,7 @@
 		A8FE97C229FA833900A1A2EF /* EDUserOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDUserOrderView.swift; sourceTree = "<group>"; };
 		A8FE97C429FCC3E700A1A2EF /* EDUserOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDUserOrdersViewController.swift; sourceTree = "<group>"; };
 		A8FE97C629FCC5F500A1A2EF /* EDUserOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDUserOrderCell.swift; sourceTree = "<group>"; };
+		A8FE97C829FCD1AC00A1A2EF /* EDUserOrderTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDUserOrderTableView.swift; sourceTree = "<group>"; };
 		A8FF67C129F79B6C00F20BC1 /* EDAddressEditingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDAddressEditingViewController.swift; sourceTree = "<group>"; };
 		A8FF67C329F79C3A00F20BC1 /* EDAddressManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDAddressManagementViewController.swift; sourceTree = "<group>"; };
 		A8FF67C529F79CD500F20BC1 /* EDAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDAddressCell.swift; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 			children = (
 				A8C19E0D299E8CE40011F37A /* AccountViewController.swift */,
 				A8FE97C429FCC3E700A1A2EF /* EDUserOrdersViewController.swift */,
+				A8FE97C829FCD1AC00A1A2EF /* EDUserOrderTableView.swift */,
 				A8FE97C629FCC5F500A1A2EF /* EDUserOrderCell.swift */,
 				A8FE97C229FA833900A1A2EF /* EDUserOrderView.swift */,
 				A890D7F429EA418500F50536 /* TMUserAllHistoryGamesViewController.swift */,
@@ -901,6 +904,7 @@
 				A82DF22829F3E7DD000C746C /* EDCagCollectionViewLayout.swift in Sources */,
 				A8FF67C229F79B6C00F20BC1 /* EDAddressEditingViewController.swift in Sources */,
 				A8C19E03299E854E0011F37A /* UIViewExtension.swift in Sources */,
+				A8FE97C929FCD1AC00A1A2EF /* EDUserOrderTableView.swift in Sources */,
 				A8C19E07299E854E0011F37A /* EDNavigationController.swift in Sources */,
 				A8FE6E0D29DD776B0007C7C2 /* EDProgressView.swift in Sources */,
 				A8C359FD29C6B56E009338A4 /* Event.swift in Sources */,

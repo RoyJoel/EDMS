@@ -22,7 +22,9 @@ let address2 = Address(id: 1, name: "张嘉诚", sex: .Man, phoneNumber: "188402
 let address3 = Address(id: 1, name: "张嘉诚", sex: .Man, phoneNumber: "18840250882", province: "陕西省", city: "西安市", area: "新城区", detailedAddress: "西安邮电大学雁塔校区")
 var addresss = [address1, address2, address3]
 
-let order: Order = Order(id: 1, bills: [bill1, bill2, bill2], shippingAddress: address1, deliveryAddress: address1, createdTime: 1_682_329_527, payedTime: 1_682_415_927, completedTime: 1_682_588_727)
+let order: Order = Order(id: 1, bills: [bill1, bill2, bill2], shippingAddress: address1, deliveryAddress: address1, payment: .WeChat, totalPrice: 984.00, createdTime: 1_682_329_527, payedTime: 1_682_415_927, completedTime: 1_682_588_727)
+
+let ordersa: [Order] = [order, order, order]
 
 // let club: Club = Club(id: 1, icon: "JasonZhang", name: "TennisMoment", intro: "Tennis Moment is world NO.2 Tennis Association", owner: Player(json: JSON()), address: "Germany", events: [event, event, event])
 // let event: Event = Event(id: 0, icon: "JasonZhang", name: "ED250", startDate: Date().timeIntervalSince1970, endDate: Date().timeIntervalSince1970 + 100_000_000, level: .ED250, draw: [Player(id: 0, loginName: "jasony", name: "Nick Kyrgios", icon: "NickKyrgios", sex: .Man, age: 21, yearsPlayed: 1, height: 10_000_000, width: 1, grip: .Western, backhand: .TwoHandedBackhand, points: 1000, isAdult: true, careerStats: Stats(json: JSON())), Player(id: 0, loginName: "jasony", name: "Nick Kyrgios", icon: "NickKyrgios", sex: .Man, age: 21, yearsPlayed: 1, height: 10_000_000, width: 1, grip: .Western, backhand: .TwoHandedBackhand, points: 1000, isAdult: true, careerStats: Stats(json: JSON()))], schedule: [[game, game, game]])

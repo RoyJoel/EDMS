@@ -8,25 +8,22 @@ import Foundation
 import JXSegmentedView
 import TMComponent
 
-class EDUserOrdersViewController: UIViewController {
+class EDUserOrdersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var orders: [[Order]] = [ordersa, ordersa]
     var segmentedDataSource: JXSegmentedBaseDataSource?
     let segmentTMView = JXSegmentedView()
     lazy var listContainerView: JXSegmentedListContainerView! = {
         JXSegmentedListContainerView(dataSource: self)
     }()
 
-    lazy var gameStatsView: EDUserActivityView = {
-        let view = EDUserActivityView()
-        return view
+    lazy var orderTableView: EDUserOrderTableView = {
+        let tableView = EDUserOrderTableView()
+        return tableView
     }()
 
-    lazy var careerStatsView: EDUserStatsView = {
-        let view = EDUserStatsView()
-        return view
-    }()
-
-    func setupUI() {
-        let titles = [NSLocalizedString("ACTIVITY", comment: ""), NSLocalizedString("STATS", comment: "")]
+    override func viewDidLoad() {
+        view.backgroundColor = UIColor(named: "BackgroundGray")
+        let titles = [NSLocalizedString("All Order", comment: ""), NSLocalizedString("STATS", comment: "")]
 
         let dataSource = JXSegmentedTitleDataSource()
         dataSource.isTitleColorGradientEnabled = true
@@ -43,11 +40,9 @@ class EDUserOrdersViewController: UIViewController {
         segmentTMView.dataSource = segmentedDataSource
         segmentTMView.delegate = self
         segmentTMView.listContainer = listContainerView
-        
+
         view.addSubview(segmentTMView)
         view.addSubview(listContainerView)
-        gameStatsView.setupUI()
-        careerStatsView.setupUI()
 
         segmentTMView.snp.makeConstraints { make in
             make.width.equalToSuperview()
@@ -61,14 +56,24 @@ class EDUserOrdersViewController: UIViewController {
             make.width.equalToSuperview()
             make.centerX.equalToSuperview()
         }
+
+        orderTableView.delegate = self
+        orderTableView.dataSource = self
+        orderTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "userOrder")
     }
 
-    func setupEventForGameStatsView(games: [Game]) {
-        gameStatsView.setupEvent(games: games)
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+        orders[segmentTMView.selectedIndex].count
     }
 
-    func setupEventForCareerStatsView() {
-        careerStatsView.setupEvent(stats: EDUser.user.careerStats)
+    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = orderTableView.dequeueReusableCell(withIdentifier: "userOrder", for: indexPath) as? EDUserOrderCell
+        cell?.setupEvent(order: orders[segmentTMView.selectedIndex][indexPath.row])
+        return cell ?? UITableViewCell()
+    }
+
+    func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
+        188
     }
 }
 
@@ -82,9 +87,13 @@ extension EDUserOrdersViewController: JXSegmentedListContainerViewDataSource {
 
     func listContainerView(_: JXSegmentedListContainerView, initListAt: Int) -> JXSegmentedListContainerViewListDelegate {
         if initListAt == 0 {
-            return gameStatsView
+            orderTableView.reloadData()
+            return orderTableView
+        } else {
+            orderTableView.reloadData()
+            return orderTableView
         }
-        return careerStatsView
+        
     }
 }
 
@@ -97,5 +106,9 @@ extension EDUserOrdersViewController: JXSegmentedViewDelegate {
             // 再调用reloadItem(at: index)
             segmentTMView.reloadItem(at: index)
         }
+    }
+
+    func segmentedView(_ segmentTMView: JXSegmentedView, didScrollSelectedItemAt initListAt: Int) {
+        
     }
 }

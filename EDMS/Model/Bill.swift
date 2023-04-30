@@ -60,7 +60,7 @@ struct Bill: Codable, Equatable {
     }
 }
 
-enum Payment: String, CaseIterable {
+enum Payment: String, Codable, CaseIterable {
     case WeChat
     case AliPay
 }
