@@ -18,8 +18,9 @@ struct Order: Codable, Equatable {
     var createdTime: TimeInterval
     var payedTime: TimeInterval?
     var completedTime: TimeInterval?
+    var state: OrderState
 
-    init(id: Int, bills: [Bill], shippingAddress: Address, deliveryAddress: Address, payment: Payment, totalPrice: Double, createdTime: TimeInterval, payedTime: TimeInterval? = nil, completedTime: TimeInterval? = nil) {
+    init(id: Int, bills: [Bill], shippingAddress: Address, deliveryAddress: Address, payment: Payment, totalPrice: Double, createdTime: TimeInterval, payedTime: TimeInterval? = nil, completedTime: TimeInterval? = nil, state: OrderState) {
         self.id = id
         self.bills = bills
         self.shippingAddress = shippingAddress
@@ -29,6 +30,7 @@ struct Order: Codable, Equatable {
         self.createdTime = createdTime
         self.payedTime = payedTime
         self.completedTime = completedTime
+        self.state = state
     }
 
     init(json: JSON) {
@@ -41,6 +43,7 @@ struct Order: Codable, Equatable {
         createdTime = json["createdTime"].doubleValue
         payedTime = json["payedTime"].doubleValue
         completedTime = json["completedTime"].doubleValue
+        state = OrderState(rawValue: json["state"].intValue) ?? .ToPay
     }
 
     init() {
@@ -51,7 +54,7 @@ struct Order: Codable, Equatable {
         guard let id = dictionary["id"] as? Int,
             let billsArray = dictionary["bills"] as? [[String: Any]],
             let shippingAddressDict = dictionary["shippingAddress"] as? [String: Any],
-            let deliveryAddressDict = dictionary["deliveryAddress"] as? [String: Any], let payment = dictionary["payment"] as? String, let totalPrice = dictionary["totalPrice"] as? Double,
+            let deliveryAddressDict = dictionary["deliveryAddress"] as? [String: Any], let payment = dictionary["payment"] as? String, let state = dictionary["state"] as? Int, let totalPrice = dictionary["totalPrice"] as? Double,
             let createdTime = dictionary["createdTime"] as? TimeInterval else {
             return nil
         }
@@ -60,6 +63,7 @@ struct Order: Codable, Equatable {
         bills = billsArray.compactMap { Bill(dictionary: $0) }
         shippingAddress = Address(dictionary: shippingAddressDict)!
         deliveryAddress = Address(dictionary: deliveryAddressDict)!
+        self.state = OrderState(rawValue: state) ?? .ToPay
         self.payment = Payment(rawValue: payment) ?? .WeChat
         self.totalPrice = totalPrice
         self.createdTime = createdTime
@@ -81,6 +85,7 @@ struct Order: Codable, Equatable {
             "deliveryAddress": deliveryAddress.toDictionary(),
             "totalPrice": totalPrice,
             "payment": payment.rawValue,
+            "state": state.rawValue,
             "createdTime": createdTime,
         ]
 
@@ -100,8 +105,30 @@ struct Order: Codable, Equatable {
             lhs.bills == rhs.bills &&
             lhs.shippingAddress == rhs.shippingAddress &&
             lhs.deliveryAddress == rhs.deliveryAddress && lhs.payment == rhs.payment && lhs.totalPrice == rhs.totalPrice &&
-            lhs.createdTime == rhs.createdTime &&
+            lhs.createdTime == rhs.createdTime && lhs.state == rhs.state &&
             lhs.payedTime == rhs.payedTime &&
             lhs.completedTime == rhs.completedTime
+    }
+}
+
+enum OrderState: Int, CaseIterable, Codable {
+    case ToPay = 0
+    case ToSend = 1
+    case ToDelivery = 2
+    case Done = 3
+    case ToRefund = 4
+    case ToReturn = 5
+    case Refunded = 6
+
+    var displayName: String {
+        switch self {
+        case .ToPay: return "待支付"
+        case .ToSend: return "待发货"
+        case .ToDelivery: return "待签收"
+        case .Done: return "已完成"
+        case .ToRefund: return "需退货"
+        case .ToReturn: return "需退款"
+        case .Refunded: return "已退款"
+        }
     }
 }

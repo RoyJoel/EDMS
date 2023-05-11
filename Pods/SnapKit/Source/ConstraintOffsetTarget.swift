@@ -40,7 +40,7 @@ extension Double: ConstraintOffsetTarget {}
 extension CGFloat: ConstraintOffsetTarget {}
 
 extension ConstraintOffsetTarget {
-    var constraintOffsetTargetValue: CGFloat {
+    internal var constraintOffsetTargetValue: CGFloat {
         let offset: CGFloat
         if let amount = self as? Float {
             offset = CGFloat(amount)

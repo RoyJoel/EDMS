@@ -51,8 +51,7 @@ internal func == (lhs: LayoutConstraint, rhs: LayoutConstraint) -> Bool {
         lhs.priority == rhs.priority,
         lhs.multiplier == rhs.multiplier,
         lhs.secondItem === rhs.secondItem,
-        lhs.firstItem === rhs.firstItem
-    else {
+        lhs.firstItem === rhs.firstItem else {
         return false
     }
     return true

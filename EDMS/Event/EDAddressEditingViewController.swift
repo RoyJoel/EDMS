@@ -72,37 +72,40 @@ class EDAddressEditingViewController: UIViewController {
 
         nameTextField.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(24)
-            make.top.equalToSuperview().offset(88)
+            make.top.equalToSuperview().offset(188)
             make.height.equalTo(44)
-            make.width.equalTo(188)
+            make.width.equalTo(UIScreen.main.bounds.width * 0.6)
         }
 
-        sexSelectedView.frame = CGRect(x: 48 + 188, y: 88, width: 88, height: 44)
+        sexSelectedView.frame = CGRect(x: 48 + UIScreen.main.bounds.width * 0.6, y: 188, width: 88, height: 44)
         phoneNumberTextField.snp.makeConstraints { make in
-            make.top.equalTo(nameTextField.snp.top)
+            make.top.equalTo(nameTextField.snp.bottom).offset(12)
             make.height.equalTo(44)
-            make.left.equalTo(sexSelectedView.snp.right).offset(24)
+            make.left.equalToSuperview().offset(24)
         }
 
-        provinceSelectionView.frame = CGRect(x: 24, y: 144, width: 108, height: 44)
-        citySelectionView.frame = CGRect(x: 150, y: 144, width: 108, height: 44)
-        districtSelectionView.frame = CGRect(x: 276, y: 144, width: 108, height: 44)
+        provinceSelectionView.frame = CGRect(x: 24, y: 300, width: 102, height: 44)
+        citySelectionView.frame = CGRect(x: 150, y: 300, width: 102, height: 44)
+        districtSelectionView.frame = CGRect(x: 276, y: 300, width: 102, height: 44)
 
         detailedAddressTextField.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(24)
             make.right.equalToSuperview().offset(-24)
-            make.top.equalTo(provinceSelectionView.snp.bottom).offset(18)
+            make.top.equalTo(phoneNumberTextField.snp.bottom).offset(68)
             make.height.equalTo(44)
         }
 
         doneBtn.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(detailedAddressTextField.snp.bottom).offset(68)
-            make.width.equalTo(108)
-            make.height.equalTo(68)
+            make.width.equalTo(88)
+            make.height.equalTo(44)
         }
         doneBtn.setTitle("保存", for: .normal)
         doneBtn.addTarget(self, action: #selector(saveAddress), for: .touchDown)
+        doneBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
+        doneBtn.setCorner(radii: 10)
+        doneBtn.backgroundColor = UIColor(named: "TennisBlur")
         nameTextField.textField.textAlignment = .center
         phoneNumberTextField.textField.textAlignment = .center
     }
@@ -196,7 +199,8 @@ class EDAddressEditingViewController: UIViewController {
     }
 
     func getAddressInfo() -> Address {
-        return Address(id: address.id, name: nameTextField.textField.text ?? "", sex: sexDs.sexConfig[0], phoneNumber: phoneNumberTextField.textField.text ?? "", province: provinceDs.provinces[0].name, city: cityDs.cities[0].name, area: districtDs.districts[0].name, detailedAddress: detailedAddressTextField.textField.text ?? "")
+        address = Address(id: address.id, name: nameTextField.textField.text ?? "", sex: sexDs.sexConfig[0], phoneNumber: phoneNumberTextField.textField.text ?? "", province: provinceDs.provinces[0].name, city: cityDs.cities[0].name, area: districtDs.districts[0].name, detailedAddress: detailedAddressTextField.textField.text ?? "")
+        return address
     }
 
     @objc func saveAddress() {

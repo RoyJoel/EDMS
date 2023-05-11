@@ -10,8 +10,6 @@ import TMComponent
 import UIKit
 
 class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    let gripConfig = gripConfigViewDataSource()
-    let backhandConfig = backhandConfigViewDataSource()
     let configItems = ["Please enter a name for yourself", "Please choose a profile picture.", "What is your gender?", "What is your age?", "How many years have you been playing?", "What is your height in centimeters?", "What is your width in kilograms?", "What is your grip type?", "What is your backhand type?", "Please enter a account for yourself.", "Please enter a password for yourself."]
     var currentIndex = 0
 
@@ -44,36 +42,6 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         return picker
     }()
 
-    lazy var ageTextField: EDTextField = {
-        let label = EDTextField()
-        return label
-    }()
-
-    lazy var yearsPlayedTextField: EDTextField = {
-        let label = EDTextField()
-        return label
-    }()
-
-    lazy var heightTextField: EDTextField = {
-        let label = EDTextField()
-        return label
-    }()
-
-    lazy var widthTextField: EDTextField = {
-        let label = EDTextField()
-        return label
-    }()
-
-    lazy var gripTextField: TMPopUpView = {
-        let label = TMPopUpView()
-        return label
-    }()
-
-    lazy var backgroundTextField: TMPopUpView = {
-        let label = TMPopUpView()
-        return label
-    }()
-
     lazy var accountTextField: EDTextField = {
         let label = EDTextField()
         return label
@@ -101,26 +69,14 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         view.addSubview(signInTitleView)
         view.addSubview(nameTextField)
         view.addSubview(iconImageView)
-        view.addSubview(ageTextField)
-        view.addSubview(yearsPlayedTextField)
-        view.addSubview(heightTextField)
-        view.addSubview(widthTextField)
         view.addSubview(accountTextField)
         view.addSubview(passwordTextField)
         view.addSubview(nextConfigBtn)
         view.addSubview(lastConfigBtn)
-        view.addSubview(gripTextField)
-        view.addSubview(backgroundTextField)
 
         signInTitleView.isHidden = false
         nameTextField.isHidden = false
         iconImageView.isHidden = true
-        ageTextField.isHidden = true
-        yearsPlayedTextField.isHidden = true
-        heightTextField.isHidden = true
-        widthTextField.isHidden = true
-        gripTextField.isHidden = true
-        backgroundTextField.isHidden = true
         accountTextField.isHidden = true
         passwordTextField.isHidden = true
 
@@ -148,32 +104,6 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
             make.width.equalTo(288)
             make.height.equalTo(288)
         }
-        ageTextField.snp.makeConstraints { make in
-            make.top.equalTo(signInTitleView.snp.bottom).offset(68)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(288)
-            make.height.equalTo(50)
-        }
-        yearsPlayedTextField.snp.makeConstraints { make in
-            make.top.equalTo(signInTitleView.snp.bottom).offset(68)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(288)
-            make.height.equalTo(50)
-        }
-        heightTextField.snp.makeConstraints { make in
-            make.top.equalTo(signInTitleView.snp.bottom).offset(68)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(288)
-            make.height.equalTo(50)
-        }
-        widthTextField.snp.makeConstraints { make in
-            make.top.equalTo(signInTitleView.snp.bottom).offset(68)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(288)
-            make.height.equalTo(50)
-        }
-        gripTextField.frame = CGRect(x: 208, y: 294, width: 288, height: 44)
-        backgroundTextField.frame = CGRect(x: 208, y: 294, width: 288, height: 44)
         accountTextField.snp.makeConstraints { make in
             make.top.equalTo(signInTitleView.snp.bottom).offset(68)
             make.centerX.equalToSuperview()
@@ -202,14 +132,8 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
 
         nameTextField.tag = 200
         iconImageView.tag = 201
-        ageTextField.tag = 202
-        yearsPlayedTextField.tag = 203
-        heightTextField.tag = 204
-        widthTextField.tag = 205
-        gripTextField.tag = 206
-        backgroundTextField.tag = 207
-        accountTextField.tag = 208
-        passwordTextField.tag = 209
+        accountTextField.tag = 202
+        passwordTextField.tag = 203
 
         progressView.setCorner(radii: 8)
         progressView.progress = 0
@@ -223,20 +147,6 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         iconImageView.isUserInteractionEnabled = true
         imagePicker.delegate = self
         iconImageView.addTapGesture(self, #selector(changeIcon))
-        let ageConfig = EDTextFieldConfig(placeholderText: configItems[3])
-        ageTextField.setup(with: ageConfig)
-        let yearsPlayedConfig = EDTextFieldConfig(placeholderText: configItems[4])
-        yearsPlayedTextField.setup(with: yearsPlayedConfig)
-        let heightConfig = EDTextFieldConfig(placeholderText: configItems[5])
-        heightTextField.setup(with: heightConfig)
-        let widthConfig = EDTextFieldConfig(placeholderText: configItems[6])
-        widthTextField.setup(with: widthConfig)
-        gripTextField.delegate = gripTextField
-        gripTextField.dataSource = gripConfig
-        gripTextField.setupUI()
-        backgroundTextField.delegate = backgroundTextField
-        backgroundTextField.dataSource = backhandConfig
-        backgroundTextField.setupUI()
         let accountConfig = EDTextFieldConfig(placeholderText: configItems[8])
         accountTextField.setup(with: accountConfig)
         let passwordConfig = EDTextFieldConfig(placeholderText: configItems[9])
@@ -246,16 +156,6 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         nextConfigBtn.setUp(with: nextBtnConfig)
         let lastBtnConfig = TMButtonConfig(title: "Back", action: #selector(stepBackward), actionTarget: self)
         lastConfigBtn.setUp(with: lastBtnConfig)
-        gripTextField.selectedCompletionHandler = { index in
-            let selectedGrip = self.gripConfig.gripConfig.remove(at: index)
-            self.gripConfig.gripConfig.insert(selectedGrip, at: 0)
-            self.gripTextField.reloadData()
-        }
-        backgroundTextField.selectedCompletionHandler = { index in
-            let selectedBackhand = self.backhandConfig.backhandConfig.remove(at: index)
-            self.backhandConfig.backhandConfig.insert(selectedBackhand, at: 0)
-            self.backgroundTextField.reloadData()
-        }
     }
 
     func showSubView(tag: Int) {
@@ -274,19 +174,11 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         }
     }
 
-    func setUserInfo(name: String, icon: Data, sex _: Sex, age: Int, yearsPlayed: Int, height: Float, width: Float, grip: Grip, backhand: Backhand) {
+    func setUserInfo(name: String, icon: Data, sex _: Sex) {
         accountTextField.textField.text = EDUser.user.loginName
         passwordTextField.textField.text = EDUser.user.password
         nameTextField.textField.text = name
         iconImageView.image = UIImage(data: icon)
-        ageTextField.textField.text = "\(age)"
-        yearsPlayedTextField.textField.text = "\(yearsPlayed)"
-        heightTextField.textField.text = "\(height)"
-        widthTextField.textField.text = "\(width)"
-        let selectedGrip = gripConfig.gripConfig.remove(at: Int(grip.index) ?? 0)
-        gripConfig.gripConfig.insert(selectedGrip, at: 0)
-        let selectedBackhand = backhandConfig.backhandConfig.remove(at: Int(backhand.index) ?? 0)
-        backhandConfig.backhandConfig.insert(selectedBackhand, at: 0)
     }
 
     func getUserInfo() {
@@ -294,14 +186,7 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         EDUser.user.password = passwordTextField.textField.text ?? ""
         EDUser.user.name = nameTextField.textField.text ?? ""
         EDUser.user.icon = (iconImageView.image?.pngData() ?? Data()).base64EncodedString()
-        EDUser.user.age = Int(ageTextField.textField.text ?? "0") ?? 0
-        EDUser.user.yearsPlayed = Int(yearsPlayedTextField.textField.text ?? "0") ?? 0
-        EDUser.user.height = Float(heightTextField.textField.text ?? "0") ?? 0
-        EDUser.user.width = Float(widthTextField.textField.text ?? "0") ?? 0
-        EDUser.user.grip = gripConfig.gripConfig[0]
-        EDUser.user.backhand = backhandConfig.backhandConfig[0]
         EDUser.user.points = 0
-        EDUser.user.isAdult = (Int(ageTextField.textField.text ?? "0") ?? 0) > 18 ? true : false
     }
 
     func imagePickerController(_: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
@@ -429,12 +314,6 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
             completionHandler(selectedString)
         } else if let selectedIcon = (view.viewWithTag(tag) as? UIImageView)?.image?.pngData() {
             iconCompletionHandler(selectedIcon)
-        } else {
-            if tag == 207 {
-                completionHandler(gripConfig.gripConfig[0].rawValue)
-            } else {
-                completionHandler(backhandConfig.backhandConfig[0].rawValue)
-            }
         }
         navigationController?.popViewController(animated: true)
     }
@@ -442,35 +321,5 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
     @objc func changeIcon() {
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true)
-    }
-}
-
-class gripConfigViewDataSource: NSObject, UITableViewDataSource {
-    var gripConfig: [Grip] = [.Continented, .Eastern, .SemiWestern, .Western]
-
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        gripConfig.count
-    }
-
-    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = TMPopUpCell()
-        cell.setupUI()
-        cell.setupEvent(title: NSLocalizedString(gripConfig[indexPath.row].rawValue, comment: ""))
-        return cell
-    }
-}
-
-class backhandConfigViewDataSource: NSObject, UITableViewDataSource {
-    var backhandConfig: [Backhand] = [.OneHanded, .TwoHandedBackhand]
-
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        backhandConfig.count
-    }
-
-    func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = TMPopUpCell()
-        cell.setupUI()
-        cell.setupEvent(title: NSLocalizedString(backhandConfig[indexPath.row].rawValue, comment: ""))
-        return cell
     }
 }

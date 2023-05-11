@@ -26,7 +26,7 @@ class EDsettingTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = UIColor(named: "BackgroundGray")
+        contentView.backgroundColor = UIColor(named: "ComponentBackground")
         contentView.addSubview(titleView)
         contentView.addSubview(infoView)
         contentView.addSubview(navigationBar)

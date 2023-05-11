@@ -65,6 +65,7 @@
 #import "UIScrollView+TABAnimated.h"
 #import "UIView+TABExtension.h"
 #import "TABAnimated.h"
+#import "NSArray+TABAnimated.h"
 #import "TABAnimatedInjectionIIIHelper.h"
 #import "TABAnimationMethod.h"
 #import "TABWeakDelegateManager.h"

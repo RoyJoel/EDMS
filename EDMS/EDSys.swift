@@ -131,7 +131,7 @@ class EDSys {
                         toastView.backgroundColor = UIColor(named: "ComponentBackground")
                         toastView.textAlignment = .center
                         toastView.setCorner(radii: 15)
-                        (window.rootViewController as? EDSignInViewController)?.contentOverlayView?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
+                        (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
                         }
                         window.rootViewController = EDSignInViewController()
                     }
@@ -155,7 +155,7 @@ class EDSys {
                             toastView.backgroundColor = UIColor(named: "ComponentBackground")
                             toastView.textAlignment = .center
                             toastView.setCorner(radii: 15)
-                            (window.rootViewController as? EDSignInViewController)?.contentOverlayView?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
+                            (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
                             }
                             window.rootViewController = EDSignInViewController()
                         }
@@ -170,7 +170,7 @@ class EDSys {
                             toastView.backgroundColor = UIColor(named: "ComponentBackground")
                             toastView.textAlignment = .center
                             toastView.setCorner(radii: 15)
-                            (window.rootViewController as? EDSignInViewController)?.contentOverlayView?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
+                            (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
                             }
                             window.rootViewController = EDSignInViewController()
                         }

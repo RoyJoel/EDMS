@@ -40,8 +40,7 @@ public class ConstraintDescription {
     internal lazy var constraint: Constraint? = {
         guard let relation = self.relation,
             let related = self.related,
-            let sourceLocation = self.sourceLocation
-        else {
+            let sourceLocation = self.sourceLocation else {
             return nil
         }
         let from = ConstraintItem(target: self.item, attributes: self.attributes)

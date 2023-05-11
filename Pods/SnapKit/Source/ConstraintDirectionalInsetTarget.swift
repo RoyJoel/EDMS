@@ -35,7 +35,7 @@
 
     extension ConstraintDirectionalInsetTarget {
         @available(iOS 11.0, tvOS 11.0, *)
-        var constraintDirectionalInsetTargetValue: ConstraintDirectionalInsets {
+        internal var constraintDirectionalInsetTargetValue: ConstraintDirectionalInsets {
             if let amount = self as? ConstraintDirectionalInsets {
                 return amount
             } else {

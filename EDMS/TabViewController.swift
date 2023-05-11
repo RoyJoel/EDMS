@@ -11,6 +11,8 @@ import UIKit
 class TabViewController: UITabBarController {
     let eventVC = EventViewController()
     let accountVC = AccountViewController()
+    let expressVC = ExpressViewController()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -39,7 +41,8 @@ class TabViewController: UITabBarController {
     }
 
     private func addViewController() {
-        setChildViewController(eventVC, NSLocalizedString("Event", comment: ""), "trophy.fill")
+        setChildViewController(expressVC, NSLocalizedString("Express", comment: ""), "shippingbox")
+        setChildViewController(eventVC, NSLocalizedString("Event", comment: ""), "trophy")
         setChildViewController(accountVC, NSLocalizedString("Me", comment: ""), "figure.tennis")
     }
 

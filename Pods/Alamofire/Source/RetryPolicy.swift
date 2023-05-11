@@ -339,40 +339,38 @@ open class RetryPolicy: RequestInterceptor {
     }
 }
 
-#if swift(>=5.5)
-    extension RequestInterceptor where Self == RetryPolicy {
-        /// Provides a default `RetryPolicy` instance.
-        public static var retryPolicy: RetryPolicy { RetryPolicy() }
+extension RequestInterceptor where Self == RetryPolicy {
+    /// Provides a default `RetryPolicy` instance.
+    public static var retryPolicy: RetryPolicy { RetryPolicy() }
 
-        /// Creates an `RetryPolicy` from the specified parameters.
-        ///
-        /// - Parameters:
-        ///   - retryLimit:               The total number of times the request is allowed to be retried. `2` by default.
-        ///   - exponentialBackoffBase:   The base of the exponential backoff policy. `2` by default.
-        ///   - exponentialBackoffScale:  The scale of the exponential backoff. `0.5` by default.
-        ///   - retryableHTTPMethods:     The HTTP methods that are allowed to be retried.
-        ///                               `RetryPolicy.defaultRetryableHTTPMethods` by default.
-        ///   - retryableHTTPStatusCodes: The HTTP status codes that are automatically retried by the policy.
-        ///                               `RetryPolicy.defaultRetryableHTTPStatusCodes` by default.
-        ///   - retryableURLErrorCodes:   The URL error codes that are automatically retried by the policy.
-        ///                               `RetryPolicy.defaultRetryableURLErrorCodes` by default.
-        ///
-        /// - Returns:                    The `RetryPolicy`
-        public static func retryPolicy(retryLimit: UInt = RetryPolicy.defaultRetryLimit,
-                                       exponentialBackoffBase: UInt = RetryPolicy.defaultExponentialBackoffBase,
-                                       exponentialBackoffScale: Double = RetryPolicy.defaultExponentialBackoffScale,
-                                       retryableHTTPMethods: Set<HTTPMethod> = RetryPolicy.defaultRetryableHTTPMethods,
-                                       retryableHTTPStatusCodes: Set<Int> = RetryPolicy.defaultRetryableHTTPStatusCodes,
-                                       retryableURLErrorCodes: Set<URLError.Code> = RetryPolicy.defaultRetryableURLErrorCodes) -> RetryPolicy {
-            RetryPolicy(retryLimit: retryLimit,
-                        exponentialBackoffBase: exponentialBackoffBase,
-                        exponentialBackoffScale: exponentialBackoffScale,
-                        retryableHTTPMethods: retryableHTTPMethods,
-                        retryableHTTPStatusCodes: retryableHTTPStatusCodes,
-                        retryableURLErrorCodes: retryableURLErrorCodes)
-        }
+    /// Creates an `RetryPolicy` from the specified parameters.
+    ///
+    /// - Parameters:
+    ///   - retryLimit:               The total number of times the request is allowed to be retried. `2` by default.
+    ///   - exponentialBackoffBase:   The base of the exponential backoff policy. `2` by default.
+    ///   - exponentialBackoffScale:  The scale of the exponential backoff. `0.5` by default.
+    ///   - retryableHTTPMethods:     The HTTP methods that are allowed to be retried.
+    ///                               `RetryPolicy.defaultRetryableHTTPMethods` by default.
+    ///   - retryableHTTPStatusCodes: The HTTP status codes that are automatically retried by the policy.
+    ///                               `RetryPolicy.defaultRetryableHTTPStatusCodes` by default.
+    ///   - retryableURLErrorCodes:   The URL error codes that are automatically retried by the policy.
+    ///                               `RetryPolicy.defaultRetryableURLErrorCodes` by default.
+    ///
+    /// - Returns:                    The `RetryPolicy`
+    public static func retryPolicy(retryLimit: UInt = RetryPolicy.defaultRetryLimit,
+                                   exponentialBackoffBase: UInt = RetryPolicy.defaultExponentialBackoffBase,
+                                   exponentialBackoffScale: Double = RetryPolicy.defaultExponentialBackoffScale,
+                                   retryableHTTPMethods: Set<HTTPMethod> = RetryPolicy.defaultRetryableHTTPMethods,
+                                   retryableHTTPStatusCodes: Set<Int> = RetryPolicy.defaultRetryableHTTPStatusCodes,
+                                   retryableURLErrorCodes: Set<URLError.Code> = RetryPolicy.defaultRetryableURLErrorCodes) -> RetryPolicy {
+        RetryPolicy(retryLimit: retryLimit,
+                    exponentialBackoffBase: exponentialBackoffBase,
+                    exponentialBackoffScale: exponentialBackoffScale,
+                    retryableHTTPMethods: retryableHTTPMethods,
+                    retryableHTTPStatusCodes: retryableHTTPStatusCodes,
+                    retryableURLErrorCodes: retryableURLErrorCodes)
     }
-#endif
+}
 
 // MARK: -
 
@@ -404,31 +402,29 @@ open class ConnectionLostRetryPolicy: RetryPolicy {
     }
 }
 
-#if swift(>=5.5)
-    extension RequestInterceptor where Self == ConnectionLostRetryPolicy {
-        /// Provides a default `ConnectionLostRetryPolicy` instance.
-        public static var connectionLostRetryPolicy: ConnectionLostRetryPolicy { ConnectionLostRetryPolicy() }
+extension RequestInterceptor where Self == ConnectionLostRetryPolicy {
+    /// Provides a default `ConnectionLostRetryPolicy` instance.
+    public static var connectionLostRetryPolicy: ConnectionLostRetryPolicy { ConnectionLostRetryPolicy() }
 
-        /// Creates a `ConnectionLostRetryPolicy` instance from the specified parameters.
-        ///
-        /// - Parameters:
-        ///   - retryLimit:              The total number of times the request is allowed to be retried.
-        ///                              `RetryPolicy.defaultRetryLimit` by default.
-        ///   - exponentialBackoffBase:  The base of the exponential backoff policy.
-        ///                              `RetryPolicy.defaultExponentialBackoffBase` by default.
-        ///   - exponentialBackoffScale: The scale of the exponential backoff.
-        ///                              `RetryPolicy.defaultExponentialBackoffScale` by default.
-        ///   - retryableHTTPMethods:    The idempotent http methods to retry.
-        ///
-        /// - Returns:                   The `ConnectionLostRetryPolicy`.
-        public static func connectionLostRetryPolicy(retryLimit: UInt = RetryPolicy.defaultRetryLimit,
-                                                     exponentialBackoffBase: UInt = RetryPolicy.defaultExponentialBackoffBase,
-                                                     exponentialBackoffScale: Double = RetryPolicy.defaultExponentialBackoffScale,
-                                                     retryableHTTPMethods: Set<HTTPMethod> = RetryPolicy.defaultRetryableHTTPMethods) -> ConnectionLostRetryPolicy {
-            ConnectionLostRetryPolicy(retryLimit: retryLimit,
-                                      exponentialBackoffBase: exponentialBackoffBase,
-                                      exponentialBackoffScale: exponentialBackoffScale,
-                                      retryableHTTPMethods: retryableHTTPMethods)
-        }
+    /// Creates a `ConnectionLostRetryPolicy` instance from the specified parameters.
+    ///
+    /// - Parameters:
+    ///   - retryLimit:              The total number of times the request is allowed to be retried.
+    ///                              `RetryPolicy.defaultRetryLimit` by default.
+    ///   - exponentialBackoffBase:  The base of the exponential backoff policy.
+    ///                              `RetryPolicy.defaultExponentialBackoffBase` by default.
+    ///   - exponentialBackoffScale: The scale of the exponential backoff.
+    ///                              `RetryPolicy.defaultExponentialBackoffScale` by default.
+    ///   - retryableHTTPMethods:    The idempotent http methods to retry.
+    ///
+    /// - Returns:                   The `ConnectionLostRetryPolicy`.
+    public static func connectionLostRetryPolicy(retryLimit: UInt = RetryPolicy.defaultRetryLimit,
+                                                 exponentialBackoffBase: UInt = RetryPolicy.defaultExponentialBackoffBase,
+                                                 exponentialBackoffScale: Double = RetryPolicy.defaultExponentialBackoffScale,
+                                                 retryableHTTPMethods: Set<HTTPMethod> = RetryPolicy.defaultRetryableHTTPMethods) -> ConnectionLostRetryPolicy {
+        ConnectionLostRetryPolicy(retryLimit: retryLimit,
+                                  exponentialBackoffBase: exponentialBackoffBase,
+                                  exponentialBackoffScale: exponentialBackoffScale,
+                                  retryableHTTPMethods: retryableHTTPMethods)
     }
-#endif
+}

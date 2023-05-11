@@ -29,6 +29,6 @@
     public typealias ConstraintInterfaceLayoutDirection = NSUserInterfaceLayoutDirection
 #endif
 
-public enum ConstraintConfig {
+public struct ConstraintConfig {
     public static var interfaceLayoutDirection: ConstraintInterfaceLayoutDirection = .leftToRight
 }

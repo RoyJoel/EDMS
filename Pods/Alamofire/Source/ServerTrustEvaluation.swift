@@ -191,34 +191,32 @@ public protocol ServerTrustEvaluating {
         }
     }
 
-    #if swift(>=5.5)
-        extension ServerTrustEvaluating where Self == RevocationTrustEvaluator {
-            /// Provides a default `RevocationTrustEvaluator` instance.
-            public static var revocationChecking: RevocationTrustEvaluator { RevocationTrustEvaluator() }
+    extension ServerTrustEvaluating where Self == RevocationTrustEvaluator {
+        /// Provides a default `RevocationTrustEvaluator` instance.
+        public static var revocationChecking: RevocationTrustEvaluator { RevocationTrustEvaluator() }
 
-            /// Creates a `RevocationTrustEvaluator` using the provided parameters.
-            ///
-            /// - Note: Default and host validation will fail when using this evaluator with self-signed certificates. Use
-            ///         `PinnedCertificatesTrustEvaluator` if you need to use self-signed certificates.
-            ///
-            /// - Parameters:
-            ///   - performDefaultValidation: Determines whether default validation should be performed in addition to
-            ///                               evaluating the pinned certificates. `true` by default.
-            ///   - validateHost:             Determines whether or not the evaluator should validate the host, in addition
-            ///                               to performing the default evaluation, even if `performDefaultValidation` is
-            ///                               `false`. `true` by default.
-            ///   - options:                  The `Options` to use to check the revocation status of the certificate. `.any`
-            ///                               by default.
-            /// - Returns:                    The `RevocationTrustEvaluator`.
-            public static func revocationChecking(performDefaultValidation: Bool = true,
-                                                  validateHost: Bool = true,
-                                                  options: RevocationTrustEvaluator.Options = .any) -> RevocationTrustEvaluator {
-                RevocationTrustEvaluator(performDefaultValidation: performDefaultValidation,
-                                         validateHost: validateHost,
-                                         options: options)
-            }
+        /// Creates a `RevocationTrustEvaluator` using the provided parameters.
+        ///
+        /// - Note: Default and host validation will fail when using this evaluator with self-signed certificates. Use
+        ///         `PinnedCertificatesTrustEvaluator` if you need to use self-signed certificates.
+        ///
+        /// - Parameters:
+        ///   - performDefaultValidation: Determines whether default validation should be performed in addition to
+        ///                               evaluating the pinned certificates. `true` by default.
+        ///   - validateHost:             Determines whether or not the evaluator should validate the host, in addition
+        ///                               to performing the default evaluation, even if `performDefaultValidation` is
+        ///                               `false`. `true` by default.
+        ///   - options:                  The `Options` to use to check the revocation status of the certificate. `.any`
+        ///                               by default.
+        /// - Returns:                    The `RevocationTrustEvaluator`.
+        public static func revocationChecking(performDefaultValidation: Bool = true,
+                                              validateHost: Bool = true,
+                                              options: RevocationTrustEvaluator.Options = .any) -> RevocationTrustEvaluator {
+            RevocationTrustEvaluator(performDefaultValidation: performDefaultValidation,
+                                     validateHost: validateHost,
+                                     options: options)
         }
-    #endif
+    }
 
     /// Uses the pinned certificates to validate the server trust. The server trust is considered valid if one of the pinned
     /// certificates match one of the server certificates. By validating both the certificate chain and host, certificate
@@ -283,35 +281,33 @@ public protocol ServerTrustEvaluating {
         }
     }
 
-    #if swift(>=5.5)
-        extension ServerTrustEvaluating where Self == PinnedCertificatesTrustEvaluator {
-            /// Provides a default `PinnedCertificatesTrustEvaluator` instance.
-            public static var pinnedCertificates: PinnedCertificatesTrustEvaluator { PinnedCertificatesTrustEvaluator() }
+    extension ServerTrustEvaluating where Self == PinnedCertificatesTrustEvaluator {
+        /// Provides a default `PinnedCertificatesTrustEvaluator` instance.
+        public static var pinnedCertificates: PinnedCertificatesTrustEvaluator { PinnedCertificatesTrustEvaluator() }
 
-            /// Creates a `PinnedCertificatesTrustEvaluator` using the provided parameters.
-            ///
-            /// - Parameters:
-            ///   - certificates:                 The certificates to use to evaluate the trust. All `cer`, `crt`, and `der`
-            ///                                   certificates in `Bundle.main` by default.
-            ///   - acceptSelfSignedCertificates: Adds the provided certificates as anchors for the trust evaluation, allowing
-            ///                                   self-signed certificates to pass. `false` by default. THIS SETTING SHOULD BE
-            ///                                   FALSE IN PRODUCTION!
-            ///   - performDefaultValidation:     Determines whether default validation should be performed in addition to
-            ///                                   evaluating the pinned certificates. `true` by default.
-            ///   - validateHost:                 Determines whether or not the evaluator should validate the host, in addition
-            ///                                   to performing the default evaluation, even if `performDefaultValidation` is
-            ///                                   `false`. `true` by default.
-            public static func pinnedCertificates(certificates: [SecCertificate] = Bundle.main.af.certificates,
-                                                  acceptSelfSignedCertificates: Bool = false,
-                                                  performDefaultValidation: Bool = true,
-                                                  validateHost: Bool = true) -> PinnedCertificatesTrustEvaluator {
-                PinnedCertificatesTrustEvaluator(certificates: certificates,
-                                                 acceptSelfSignedCertificates: acceptSelfSignedCertificates,
-                                                 performDefaultValidation: performDefaultValidation,
-                                                 validateHost: validateHost)
-            }
+        /// Creates a `PinnedCertificatesTrustEvaluator` using the provided parameters.
+        ///
+        /// - Parameters:
+        ///   - certificates:                 The certificates to use to evaluate the trust. All `cer`, `crt`, and `der`
+        ///                                   certificates in `Bundle.main` by default.
+        ///   - acceptSelfSignedCertificates: Adds the provided certificates as anchors for the trust evaluation, allowing
+        ///                                   self-signed certificates to pass. `false` by default. THIS SETTING SHOULD BE
+        ///                                   FALSE IN PRODUCTION!
+        ///   - performDefaultValidation:     Determines whether default validation should be performed in addition to
+        ///                                   evaluating the pinned certificates. `true` by default.
+        ///   - validateHost:                 Determines whether or not the evaluator should validate the host, in addition
+        ///                                   to performing the default evaluation, even if `performDefaultValidation` is
+        ///                                   `false`. `true` by default.
+        public static func pinnedCertificates(certificates: [SecCertificate] = Bundle.main.af.certificates,
+                                              acceptSelfSignedCertificates: Bool = false,
+                                              performDefaultValidation: Bool = true,
+                                              validateHost: Bool = true) -> PinnedCertificatesTrustEvaluator {
+            PinnedCertificatesTrustEvaluator(certificates: certificates,
+                                             acceptSelfSignedCertificates: acceptSelfSignedCertificates,
+                                             performDefaultValidation: performDefaultValidation,
+                                             validateHost: validateHost)
         }
-    #endif
+    }
 
     /// Uses the pinned public keys to validate the server trust. The server trust is considered valid if one of the pinned
     /// public keys match one of the server certificate public keys. By validating both the certificate chain and host,
@@ -377,31 +373,29 @@ public protocol ServerTrustEvaluating {
         }
     }
 
-    #if swift(>=5.5)
-        extension ServerTrustEvaluating where Self == PublicKeysTrustEvaluator {
-            /// Provides a default `PublicKeysTrustEvaluator` instance.
-            public static var publicKeys: PublicKeysTrustEvaluator { PublicKeysTrustEvaluator() }
+    extension ServerTrustEvaluating where Self == PublicKeysTrustEvaluator {
+        /// Provides a default `PublicKeysTrustEvaluator` instance.
+        public static var publicKeys: PublicKeysTrustEvaluator { PublicKeysTrustEvaluator() }
 
-            /// Creates a `PublicKeysTrustEvaluator` from the provided parameters.
-            ///
-            /// - Note: Default and host validation will fail when using this evaluator with self-signed certificates. Use
-            ///         `PinnedCertificatesTrustEvaluator` if you need to use self-signed certificates.
-            ///
-            /// - Parameters:
-            ///   - keys:                     The `SecKey`s to use to validate public keys. Defaults to the public keys of all
-            ///                               certificates included in the main bundle.
-            ///   - performDefaultValidation: Determines whether default validation should be performed in addition to
-            ///                               evaluating the pinned certificates. `true` by default.
-            ///   - validateHost:             Determines whether or not the evaluator should validate the host, in addition to
-            ///                               performing the default evaluation, even if `performDefaultValidation` is `false`.
-            ///                               `true` by default.
-            public static func publicKeys(keys: [SecKey] = Bundle.main.af.publicKeys,
-                                          performDefaultValidation: Bool = true,
-                                          validateHost: Bool = true) -> PublicKeysTrustEvaluator {
-                PublicKeysTrustEvaluator(keys: keys, performDefaultValidation: performDefaultValidation, validateHost: validateHost)
-            }
+        /// Creates a `PublicKeysTrustEvaluator` from the provided parameters.
+        ///
+        /// - Note: Default and host validation will fail when using this evaluator with self-signed certificates. Use
+        ///         `PinnedCertificatesTrustEvaluator` if you need to use self-signed certificates.
+        ///
+        /// - Parameters:
+        ///   - keys:                     The `SecKey`s to use to validate public keys. Defaults to the public keys of all
+        ///                               certificates included in the main bundle.
+        ///   - performDefaultValidation: Determines whether default validation should be performed in addition to
+        ///                               evaluating the pinned certificates. `true` by default.
+        ///   - validateHost:             Determines whether or not the evaluator should validate the host, in addition to
+        ///                               performing the default evaluation, even if `performDefaultValidation` is `false`.
+        ///                               `true` by default.
+        public static func publicKeys(keys: [SecKey] = Bundle.main.af.publicKeys,
+                                      performDefaultValidation: Bool = true,
+                                      validateHost: Bool = true) -> PublicKeysTrustEvaluator {
+            PublicKeysTrustEvaluator(keys: keys, performDefaultValidation: performDefaultValidation, validateHost: validateHost)
         }
-    #endif
+    }
 
     /// Uses the provided evaluators to validate the server trust. The trust is only considered valid if all of the
     /// evaluators consider it valid.
@@ -420,16 +414,14 @@ public protocol ServerTrustEvaluating {
         }
     }
 
-    #if swift(>=5.5)
-        extension ServerTrustEvaluating where Self == CompositeTrustEvaluator {
-            /// Creates a `CompositeTrustEvaluator` from the provided evaluators.
-            ///
-            /// - Parameter evaluators: The `ServerTrustEvaluating` values used to evaluate the server trust.
-            public static func composite(evaluators: [ServerTrustEvaluating]) -> CompositeTrustEvaluator {
-                CompositeTrustEvaluator(evaluators: evaluators)
-            }
+    extension ServerTrustEvaluating where Self == CompositeTrustEvaluator {
+        /// Creates a `CompositeTrustEvaluator` from the provided evaluators.
+        ///
+        /// - Parameter evaluators: The `ServerTrustEvaluating` values used to evaluate the server trust.
+        public static func composite(evaluators: [ServerTrustEvaluating]) -> CompositeTrustEvaluator {
+            CompositeTrustEvaluator(evaluators: evaluators)
         }
-    #endif
+    }
 
     /// Disables all evaluation which in turn will always consider any server trust as valid.
     ///
@@ -604,9 +596,9 @@ public protocol ServerTrustEvaluating {
             certificates.af.publicKeys
         }
 
-        #if swift(>=5.5.1) // Xcode 13.1 / 2021 SDKs.
-            /// The `SecCertificate`s contained in `self`.
-            public var certificates: [SecCertificate] {
+        /// The `SecCertificate`s contained in `self`.
+        public var certificates: [SecCertificate] {
+            #if swift(>=5.5.1) // Xcode 13.1 / 2021 SDKs.
                 if #available(iOS 15, macOS 12, tvOS 15, watchOS 8, *) {
                     return (SecTrustCopyCertificateChain(type) as? [SecCertificate]) ?? []
                 } else {
@@ -614,16 +606,12 @@ public protocol ServerTrustEvaluating {
                         SecTrustGetCertificateAtIndex(type, index)
                     }
                 }
-            }
-
-        #else
-            /// The `SecCertificate`s contained in `self`.
-            public var certificates: [SecCertificate] {
+            #else
                 (0 ..< SecTrustGetCertificateCount(type)).compactMap { index in
                     SecTrustGetCertificateAtIndex(type, index)
                 }
-            }
-        #endif
+            #endif
+        }
 
         /// The `Data` values for all certificates contained in `self`.
         public var certificateData: [Data] {
@@ -716,15 +704,11 @@ public protocol ServerTrustEvaluating {
 
             guard let createdTrust = trust, trustCreationStatus == errSecSuccess else { return nil }
 
-            #if swift(>=5.3.1) // SecTrustCopyKey not visible in Xcode <= 12.1, despite being a 2020 API.
-                if #available(iOS 14, macOS 11, tvOS 14, watchOS 7, *) {
-                    return SecTrustCopyKey(createdTrust)
-                } else {
-                    return SecTrustCopyPublicKey(createdTrust)
-                }
-            #else
+            if #available(iOS 14, macOS 11, tvOS 14, watchOS 7, *) {
+                return SecTrustCopyKey(createdTrust)
+            } else {
                 return SecTrustCopyPublicKey(createdTrust)
-            #endif
+            }
         }
     }
 

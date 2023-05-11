@@ -75,6 +75,9 @@ class EDSettingSelectionViewController: UIViewController, UITableViewDelegate, U
 
             select(at: indexPath)
             completionHandler(selectedAppearance.userDisplayName)
+        } else if title == "payType" {
+            select(at: indexPath)
+            completionHandler(dataSource[indexPath.row])
         }
     }
 

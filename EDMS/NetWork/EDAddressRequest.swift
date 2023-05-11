@@ -10,20 +10,6 @@ import Foundation
 import SwiftyJSON
 
 class EDAddressRequest {
-//    static func requestGDAddress(completionHandler _: @escaping ([District]?) -> Void) {
-//        AF.request(URL(string: "https://restapi.amap.com/v3/config/district?keywords=中国&subdistrict=3&key=114a6d4a6b7f393fb5faf5d5021d9264")!).response {
-//            res in
-//            guard res.error == nil else {
-//                return
-//            }
-//            guard let res = res.data else {
-//                return
-//            }
-//
-//            print(res)
-//        }
-//    }
-
     static func requestGDAddress(completionHandler: @escaping ([District]?) -> Void) {
         let para = ["keywords": "中国", "subdistrict": "3", "key": "114a6d4a6b7f393fb5faf5d5021d9264"] as [String: Any]
         AF.request("https://restapi.amap.com/v3/config/district", parameters: para).response { response in

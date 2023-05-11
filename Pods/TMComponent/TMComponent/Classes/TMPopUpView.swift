@@ -52,13 +52,9 @@ open class TMPopUpView: TMTableView, UITableViewDelegate {
     }
 
     open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        let view = super.hitTest(point, with: event)
-
-        if view != self {
-            if !self.point(inside: point, with: nil), toggle == true {
-                fold()
-            }
+        if !self.point(inside: point, with: nil), toggle == true {
+            fold()
         }
-        return view
+        return super.hitTest(point, with: event)
     }
 }

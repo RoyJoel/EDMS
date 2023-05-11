@@ -45,6 +45,11 @@ class EDAddressCell: UITableViewCell {
         return imageView
     }()
 
+    lazy var iconView: UIImageView = {
+        let btn = UIImageView()
+        return btn
+    }()
+
     lazy var editView: UIButton = {
         let btn = UIButton()
         return btn
@@ -52,7 +57,7 @@ class EDAddressCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = UIColor(named: "BackgroundGray")
+        backgroundColor = UIColor(named: "ComponentBackground")
         contentView.addSubview(nameAmdSexLabel)
         contentView.addSubview(phoneNumberLabel)
         contentView.addSubview(provinceLabel)
@@ -60,6 +65,7 @@ class EDAddressCell: UITableViewCell {
         contentView.addSubview(areaLabel)
         contentView.addSubview(detailedAddressLabel)
         contentView.addSubview(addressEdittingNavigationBar)
+        contentView.addSubview(iconView)
         contentView.addSubview(editView)
 
         layoutSubviews()
@@ -72,7 +78,7 @@ class EDAddressCell: UITableViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         nameAmdSexLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(24)
+            make.left.equalTo(iconView.snp.right).offset(24)
             make.top.equalToSuperview().offset(12)
             make.height.equalTo(38)
         }
@@ -98,26 +104,41 @@ class EDAddressCell: UITableViewCell {
             make.height.equalTo(38)
         }
         detailedAddressLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(24)
+            make.left.equalTo(iconView.snp.right).offset(24)
             make.right.equalToSuperview().offset(-12)
             make.top.equalTo(provinceLabel.snp.bottom).offset(6)
             make.height.equalTo(38)
         }
-        editView.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-24)
+        iconView.snp.makeConstraints { make in
+            make.left.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.width.equalTo(108)
-            make.height.equalTo(58)
+            make.width.equalTo(44)
+            make.height.equalTo(44)
         }
+
+        editView.snp.makeConstraints { make in
+            make.right.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalTo(40)
+        }
+
+        iconView.image = UIImage(systemName: "location.circle")
+        iconView.tintColor = UIColor(named: "ContentBackground")
 
         editView.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
         editView.tintColor = UIColor(named: "ContentBackground")
         editView.setTitle("编辑", for: .normal)
+        editView.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
         editView.addTarget(self, action: #selector(enterEditingView), for: .touchDown)
     }
 
-    func setupEvent(address: Address) {
+    func setupEvent(address: Address, canEdit: Bool = false) {
         self.address = address
+        if canEdit {
+            editView.isHidden = false
+        } else {
+            editView.isHidden = true
+        }
         nameAmdSexLabel.text = "\(address.name) \(address.sex == .Man ? "先生" : "女士")"
         phoneNumberLabel.text = "\(address.phoneNumber)"
         provinceLabel.text = "\(address.province)"
@@ -129,9 +150,9 @@ class EDAddressCell: UITableViewCell {
     @objc func enterEditingView() {
         if let parentVC = getParentViewController() {
             let vc = EDAddressEditingViewController()
-            vc.setupEvent(address: address1)
+            vc.setupEvent(address: address)
             vc.saveCompletionHandler = { address in
-                self.setupEvent(address: address)
+                self.setupEvent(address: address, canEdit: true)
             }
             parentVC.navigationController?.pushViewController(vc, animated: true)
         }

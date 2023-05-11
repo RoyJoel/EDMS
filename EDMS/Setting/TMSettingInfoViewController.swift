@@ -10,8 +10,8 @@ import TMComponent
 import UIKit
 
 class EDSettingInfoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    var titleSettingConfig = ["Name", "Icon", "Sex", "Age", "YearsPlayed", "Height", "Width", "Grip", "Backhand"]
-    var infoSettingConfig = [EDUser.user.name, "", EDUser.user.sex.rawValue, "\(EDUser.user.age)", "\(EDUser.user.yearsPlayed)", "\(EDUser.user.height)", "\(EDUser.user.width)", EDUser.user.grip.rawValue, EDUser.user.backhand.rawValue]
+    var titleSettingConfig = ["Name", "Icon", "Sex"]
+    var infoSettingConfig = [EDUser.user.name, "", EDUser.user.sex.rawValue]
     let infoVC = EDSignUpViewController()
 
     let tableView: UITableView = {
@@ -36,7 +36,7 @@ class EDSettingInfoViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.dataSource = self
         tableView.register(EDsettingTableViewCell.self, forCellReuseIdentifier: "EDsettingTableViewCell")
         let pngData = Data(base64Encoded: EDUser.user.icon)
-        infoVC.setUserInfo(name: EDUser.user.name, icon: pngData ?? Data(), sex: EDUser.user.sex, age: EDUser.user.age, yearsPlayed: EDUser.user.yearsPlayed, height: EDUser.user.height, width: EDUser.user.width, grip: EDUser.user.grip, backhand: EDUser.user.backhand)
+        infoVC.setUserInfo(name: EDUser.user.name, icon: pngData ?? Data(), sex: EDUser.user.sex)
     }
 
     func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

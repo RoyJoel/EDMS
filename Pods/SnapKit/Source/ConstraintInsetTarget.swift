@@ -42,7 +42,7 @@ extension CGFloat: ConstraintInsetTarget {}
 extension ConstraintInsets: ConstraintInsetTarget {}
 
 extension ConstraintInsetTarget {
-    var constraintInsetTargetValue: ConstraintInsets {
+    internal var constraintInsetTargetValue: ConstraintInsets {
         if let amount = self as? ConstraintInsets {
             return amount
         } else if let amount = self as? Float {

@@ -66,7 +66,10 @@ const int TABAnimatedIndexTag = -100000;
                       completion:(void (^)(void))completion {
     
     TABViewAnimated *tabAnimated = self.tabAnimated;
-    if (tabAnimated == nil || (tabAnimated.state == TABViewAnimationEnd && !tabAnimated.canLoadAgain)) {
+    
+    if (tabAnimated == nil || tabAnimated.isAnimating) return;
+    
+    if (tabAnimated.state == TABViewAnimationEnd && !tabAnimated.canLoadAgain) {
         if (completion) completion();
         return;
     }
@@ -95,7 +98,6 @@ const int TABAnimatedIndexTag = -100000;
         }
         [tabAnimated startAnimationWithIndex:index isFirstLoad:isFirstLoad controlView:self];
     }else {
-        tabAnimated.isAnimating = YES;
         tabAnimated.state = TABViewAnimationStart;
         [self _startViewAnimationWithIsFirstLoad:isFirstLoad];
     }
@@ -129,9 +131,12 @@ const int TABAnimatedIndexTag = -100000;
 
 - (void)tab_endAnimationWithIndex:(NSInteger)index isEaseOut:(BOOL)isEaseOut {
     
-    if (self.tabAnimated.state == TABViewAnimationEnd) return;
+    TABViewAnimated *viewAnimated = self.tabAnimated;
+    if (viewAnimated.state == TABViewAnimationDefault ||
+        viewAnimated.state == TABViewAnimationEnd) return;
+
     
-    if (index == TABAnimatedIndexTag && ![self.tabAnimated isKindOfClass:[TABFormAnimated class]]) {
+    if (index == TABAnimatedIndexTag && ![viewAnimated isKindOfClass:[TABFormAnimated class]]) {
         [self _endViewAnimation];
         if (isEaseOut) [TABAnimationMethod addEaseOutAnimation:self];
         return;
@@ -140,9 +145,9 @@ const int TABAnimatedIndexTag = -100000;
     BOOL isNeedReset = NO;
     if (index == TABAnimatedIndexTag) isNeedReset = YES;
     
-    if ([self.tabAnimated isKindOfClass:[TABFormAnimated class]]) {
+    if ([viewAnimated isKindOfClass:[TABFormAnimated class]]) {
         
-        TABFormAnimated *tabAnimated = (TABFormAnimated *)self.tabAnimated;
+        TABFormAnimated *tabAnimated = (TABFormAnimated *)viewAnimated;
         
         UIScrollView *scrollView = (UIScrollView *)self;
         if (!tabAnimated.scrollEnabled) {
@@ -158,10 +163,10 @@ const int TABAnimatedIndexTag = -100000;
                     tableView.rowHeight = UITableViewAutomaticDimension;
                 }
                 [tableView reloadData];
-                if (tableView.tableHeaderView.tabAnimated != nil) {
+                if (tableView.tableHeaderView.tabAnimated != nil && ((TABTableAnimated *)tabAnimated).showTableHeaderView) {
                     [tableView.tableHeaderView tab_endAnimation];
                 }
-                if (tableView.tableFooterView.tabAnimated != nil) {
+                if (tableView.tableHeaderView.tabAnimated != nil && ((TABTableAnimated *)tabAnimated).showTableFooterView) {
                     [tableView.tableFooterView tab_endAnimation];
                 }
             }else {

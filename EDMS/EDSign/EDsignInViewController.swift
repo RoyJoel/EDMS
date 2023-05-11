@@ -10,7 +10,7 @@ import Foundation
 import TMComponent
 import UIKit
 
-class EDSignInViewController: AVPlayerViewController {
+class EDSignInViewController: UIViewController {
     lazy var loginNameTextField: EDTextField = {
         let textField = EDTextField()
         return textField
@@ -39,34 +39,12 @@ class EDSignInViewController: AVPlayerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // 创建 AVPlayer 对象
-        guard let videoURL = Bundle.main.url(forResource: "loginViewVideo", withExtension: "mov") else {
-            return
-        }
-        let player = AVPlayer(url: videoURL)
-        // 创建 AVPlayerViewController 对象
-        self.player = player
-        allowsPictureInPicturePlayback = false
-        // 设置播放器样式
-        videoGravity = .resizeAspectFill
-        showsPlaybackControls = false
-        player.play() // 开始播放视频
-        player.volume = 0
-        player.allowsExternalPlayback = true
-        player.actionAtItemEnd = .none
-        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: .main) { [weak player] _ in
-            player?.seek(to: .zero)
-            player?.play()
-        }
-        // 设置音频会话并激活它
-        let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
-        try? session.setActive(true)
 
-        contentOverlayView?.addSubview(loginNameTextField)
-        contentOverlayView?.addSubview(passwordTextField)
-        contentOverlayView?.addSubview(signInBtn)
-        contentOverlayView?.addSubview(forgetPasswordBtn)
-        contentOverlayView?.addSubview(signUpBtn)
+        view?.addSubview(loginNameTextField)
+        view?.addSubview(passwordTextField)
+        view?.addSubview(signInBtn)
+        view?.addSubview(forgetPasswordBtn)
+        view?.addSubview(signUpBtn)
         loginNameTextField.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(348)
             make.centerX.equalToSuperview()
@@ -81,23 +59,23 @@ class EDSignInViewController: AVPlayerViewController {
         }
         signUpBtn.snp.makeConstraints { make in
             make.top.equalTo(passwordTextField.snp.bottom).offset(12)
-            make.centerX.equalTo(passwordTextField.snp.right)
-            make.width.equalTo(178)
+            make.left.equalTo(passwordTextField.snp.centerX).offset(12)
+            make.width.equalTo(138)
             make.height.equalTo(48)
         }
         forgetPasswordBtn.snp.makeConstraints { make in
             make.top.equalTo(passwordTextField.snp.bottom).offset(12)
-            make.centerX.equalTo(passwordTextField.snp.left)
-            make.width.equalTo(178)
+            make.right.equalTo(passwordTextField.snp.centerX).offset(-12)
+            make.width.equalTo(138)
             make.height.equalTo(48)
         }
         signInBtn.frame = CGRect(x: UIScreen.main.bounds.width / 2 - 75, y: 530, width: 150, height: 150)
         signInBtn.setupView()
-        loginNameTextField.setup(with: EDTextFieldConfig(placeholderText: "Login Name"))
-        passwordTextField.setup(with: EDTextFieldConfig(placeholderText: "Password"))
-        let signUpBtnConfig = TMButtonConfig(title: "Newer? signup", action: #selector(signUpVCUp), actionTarget: self)
+        loginNameTextField.setup(with: EDTextFieldConfig(placeholderText: "用户名"))
+        passwordTextField.setup(with: EDTextFieldConfig(placeholderText: "密码"))
+        let signUpBtnConfig = TMButtonConfig(title: "新人？注册", action: #selector(signUpVCUp), actionTarget: self)
         signUpBtn.setUp(with: signUpBtnConfig)
-        let forgetPasswordBtnConfig = TMButtonConfig(title: "Forget passWord?", action: #selector(resetPasswordVCUp), actionTarget: self)
+        let forgetPasswordBtnConfig = TMButtonConfig(title: "忘记密码？", action: #selector(resetPasswordVCUp), actionTarget: self)
         forgetPasswordBtn.setUp(with: forgetPasswordBtnConfig)
         // 设置 completion 回调
         signInBtn.completion = { [weak self] in
@@ -119,7 +97,7 @@ class EDSignInViewController: AVPlayerViewController {
                                 toastView.backgroundColor = UIColor(named: "ComponentBackground")
                                 toastView.textAlignment = .center
                                 toastView.setCorner(radii: 15)
-                                (window.rootViewController as? EDSignInViewController)?.contentOverlayView?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
+                                (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
                                 }
                             }
                             self.signInBtn.stopBouncing()
@@ -134,7 +112,7 @@ class EDSignInViewController: AVPlayerViewController {
                                 toastView.backgroundColor = UIColor(named: "ComponentBackground")
                                 toastView.textAlignment = .center
                                 toastView.setCorner(radii: 15)
-                                (window.rootViewController as? EDSignInViewController)?.contentOverlayView?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
+                                (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
                                 }
                             }
                             self.signInBtn.stopBouncing()
@@ -163,7 +141,7 @@ class EDSignInViewController: AVPlayerViewController {
                         toastView.backgroundColor = UIColor(named: "ComponentBackground")
                         toastView.textAlignment = .center
                         toastView.setCorner(radii: 15)
-                        (window.rootViewController as? EDSignInViewController)?.contentOverlayView?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
+                        (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
                         }
                     }
                     self.signInBtn.stopBouncing()
@@ -177,7 +155,7 @@ class EDSignInViewController: AVPlayerViewController {
                     toastView.backgroundColor = UIColor(named: "ComponentBackground")
                     toastView.textAlignment = .center
                     toastView.setCorner(radii: 15)
-                    (window.rootViewController as? EDSignInViewController)?.contentOverlayView?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
+                    (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
                     }
                 }
                 self.signInBtn.stopBouncing()

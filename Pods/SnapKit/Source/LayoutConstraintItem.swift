@@ -35,13 +35,13 @@ extension ConstraintLayoutGuide: LayoutConstraintItem {}
 extension ConstraintView: LayoutConstraintItem {}
 
 extension LayoutConstraintItem {
-    func prepare() {
+    internal func prepare() {
         if let view = self as? ConstraintView {
             view.translatesAutoresizingMaskIntoConstraints = false
         }
     }
 
-    var superview: ConstraintView? {
+    internal var superview: ConstraintView? {
         if let view = self as? ConstraintView {
             return view.superview
         }
@@ -53,18 +53,18 @@ extension LayoutConstraintItem {
         return nil
     }
 
-    var constraints: [Constraint] {
+    internal var constraints: [Constraint] {
         return constraintsSet.allObjects as! [Constraint]
     }
 
-    func add(constraints: [Constraint]) {
+    internal func add(constraints: [Constraint]) {
         let constraintsSet = self.constraintsSet
         for constraint in constraints {
             constraintsSet.add(constraint)
         }
     }
 
-    func remove(constraints: [Constraint]) {
+    internal func remove(constraints: [Constraint]) {
         let constraintsSet = self.constraintsSet
         for constraint in constraints {
             constraintsSet.remove(constraint)

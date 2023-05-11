@@ -439,8 +439,8 @@ private enum DebugDescription {
         return """
         [Body]:
             \(String(decoding: data, as: UTF8.self)
-                        .trimmingCharacters(in: .whitespacesAndNewlines)
-                           .indentingNewlines())
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                 .indentingNewlines())
         """
     }
 }
