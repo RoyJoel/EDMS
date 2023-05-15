@@ -62,6 +62,8 @@
 		A879B09B29E2C94F006F48FE /* TMH2HViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A879B09A29E2C94F006F48FE /* TMH2HViewController.swift */; };
 		A879B09D29E2E5A7006F48FE /* TMH2HRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A879B09C29E2E5A7006F48FE /* TMH2HRecordCell.swift */; };
 		A87D6B4E29A5AC4D0001C59F /* EDScalableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D6B4D29A5AC4D0001C59F /* EDScalableView.swift */; };
+		A8944EA82A124A82008601EA /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8944EA72A124A82008601EA /* Option.swift */; };
+		A8944EAA2A1269E3008601EA /* EDCommodityRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8944EA92A1269E3008601EA /* EDCommodityRequest.swift */; };
 		A89DCDC52A08B45400D99360 /* EDOrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89DCDC42A08B45400D99360 /* EDOrderDetailViewController.swift */; };
 		A89DCDC72A08B4B300D99360 /* EDDeliveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89DCDC62A08B4B300D99360 /* EDDeliveryViewController.swift */; };
 		A8ABA11729B059AB002F1632 /* EDGameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8ABA11629B059AB002F1632 /* EDGameRequest.swift */; };
@@ -76,7 +78,6 @@
 		A8B9CD1529D539DD00D6EE0A /* TMsettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B9CD1429D539DD00D6EE0A /* TMsettingTableViewCell.swift */; };
 		A8B9CD1729D5492D00D6EE0A /* TMSettingUserIconCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8B9CD1629D5492D00D6EE0A /* TMSettingUserIconCell.swift */; };
 		A8C081912A10EC93009D7130 /* EDAddressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C081902A10EC93009D7130 /* EDAddressRequest.swift */; };
-		A8C081932A10FD97009D7130 /* EDAddressTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C081922A10FD97009D7130 /* EDAddressTableView.swift */; };
 		A8C1052129D2BAB5003E225E /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C1052029D2BAB5003E225E /* Schedule.swift */; };
 		A8C19D91299E77CB0011F37A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C19D90299E77CB0011F37A /* AppDelegate.swift */; };
 		A8C19D93299E77CB0011F37A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8C19D92299E77CB0011F37A /* SceneDelegate.swift */; };
@@ -202,6 +203,8 @@
 		A879B09A29E2C94F006F48FE /* TMH2HViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMH2HViewController.swift; sourceTree = "<group>"; };
 		A879B09C29E2E5A7006F48FE /* TMH2HRecordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMH2HRecordCell.swift; sourceTree = "<group>"; };
 		A87D6B4D29A5AC4D0001C59F /* EDScalableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EDScalableView.swift; sourceTree = "<group>"; };
+		A8944EA72A124A82008601EA /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
+		A8944EA92A1269E3008601EA /* EDCommodityRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDCommodityRequest.swift; sourceTree = "<group>"; };
 		A89DCDC42A08B45400D99360 /* EDOrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDOrderDetailViewController.swift; sourceTree = "<group>"; };
 		A89DCDC62A08B4B300D99360 /* EDDeliveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDDeliveryViewController.swift; sourceTree = "<group>"; };
 		A8ABA11629B059AB002F1632 /* EDGameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDGameRequest.swift; sourceTree = "<group>"; };
@@ -216,7 +219,6 @@
 		A8B9CD1429D539DD00D6EE0A /* TMsettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMsettingTableViewCell.swift; sourceTree = "<group>"; };
 		A8B9CD1629D5492D00D6EE0A /* TMSettingUserIconCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMSettingUserIconCell.swift; sourceTree = "<group>"; };
 		A8C081902A10EC93009D7130 /* EDAddressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDAddressRequest.swift; sourceTree = "<group>"; };
-		A8C081922A10FD97009D7130 /* EDAddressTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDAddressTableView.swift; sourceTree = "<group>"; };
 		A8C1052029D2BAB5003E225E /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		A8C19D8D299E77CB0011F37A /* EDMS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EDMS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8C19D90299E77CB0011F37A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -332,6 +334,7 @@
 				A8ABA11629B059AB002F1632 /* EDGameRequest.swift */,
 				A83FAA6C29B341E900C17AE7 /* EDStatsRequest.swift */,
 				A850A94929E79D2E000AC80C /* EDClubRequest.swift */,
+				A8944EA92A1269E3008601EA /* EDCommodityRequest.swift */,
 				A810F79029ADEEB20044C424 /* EDNetWork.swift */,
 				A8C081902A10EC93009D7130 /* EDAddressRequest.swift */,
 				A8FF67C729F7ABDE00F20BC1 /* EDGDAddressRequest.swift */,
@@ -389,7 +392,6 @@
 				A8FE97BC29FA16C400A1A2EF /* EDPaymentView.swift */,
 				A82DF23929F69460000C746C /* EDAddressView.swift */,
 				A8FF67C129F79B6C00F20BC1 /* EDAddressEditingViewController.swift */,
-				A8C081922A10FD97009D7130 /* EDAddressTableView.swift */,
 				A8FF67C329F79C3A00F20BC1 /* EDAddressManagementViewController.swift */,
 				A8FF67C529F79CD500F20BC1 /* EDAddressCell.swift */,
 				A82DF23529F66E9E000C746C /* EDBillingView.swift */,
@@ -534,6 +536,7 @@
 			children = (
 				A8D1BB4729AA0E5C0096EE41 /* Player.swift */,
 				A832279829F2842100F883A0 /* Commodity.swift */,
+				A8944EA72A124A82008601EA /* Option.swift */,
 				A8D1BB4929AA2C860096EE41 /* Game.swift */,
 				A8D1BB4C29AA2FAA0096EE41 /* Stats.swift */,
 				A8B1A09529C09F830084F9CE /* Club.swift */,
@@ -881,7 +884,6 @@
 				A8C19E17299E8CE50011F37A /* TabViewController.swift in Sources */,
 				A82DF23C29F6A1BF000C746C /* EDViewController.swift in Sources */,
 				A810F79429ADFF740044C424 /* EDUser.swift in Sources */,
-				A8C081932A10FD97009D7130 /* EDAddressTableView.swift in Sources */,
 				A81512062A0B1F7400B23F87 /* TMUserAllHistoryGamesViewController.swift in Sources */,
 				A8B1A09629C09F830084F9CE /* Club.swift in Sources */,
 				A810F79129ADEEB20044C424 /* EDNetWork.swift in Sources */,
@@ -935,9 +937,11 @@
 				A8FE97C129FA72A400A1A2EF /* EDBillVCView.swift in Sources */,
 				A8C19DFD299E854E0011F37A /* EDNavigationItem.swift in Sources */,
 				A82DF22829F3E7DD000C746C /* EDCagCollectionViewLayout.swift in Sources */,
+				A8944EA82A124A82008601EA /* Option.swift in Sources */,
 				A8FF67C229F79B6C00F20BC1 /* EDAddressEditingViewController.swift in Sources */,
 				A8C19E03299E854E0011F37A /* UIViewExtension.swift in Sources */,
 				A815120C2A0B1F7A00B23F87 /* TMUserStatsView.swift in Sources */,
+				A8944EAA2A1269E3008601EA /* EDCommodityRequest.swift in Sources */,
 				A8C19E07299E854E0011F37A /* EDNavigationController.swift in Sources */,
 				A8FE6E0D29DD776B0007C7C2 /* EDProgressView.swift in Sources */,
 				A8C359FD29C6B56E009338A4 /* Event.swift in Sources */,

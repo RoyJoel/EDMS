@@ -138,10 +138,7 @@ class EDBillingViewController: UIViewController {
         totalLabel.text = "Total"
         totalLabel.font = UIFont.systemFont(ofSize: 26)
 
-        var totalNum: Double = 0
-        for bill in order.bills {
-            totalNum += bill.com.price * Double(bill.quantity)
-        }
+        let totalNum = EDDataConvert.getTotalPrice(order.bills)
         totalNumLabel.text = "¥" + String(format: "%.2f", totalNum)
         totalNumLabel.font = UIFont.systemFont(ofSize: 22)
 

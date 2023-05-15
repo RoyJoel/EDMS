@@ -30,11 +30,12 @@ struct User: Codable, Equatable {
     var allUnfinishedGames: [Game]
     var allEvents: [Int]
     var allSchedules: [Schedule]
-    var addresss: [Address]
-    var allOrders: [Order]
+    var addresss: [Int]
+    var allOrders: [Int]
+    var cart: Int
     var token: String
 
-    init(id: Int, loginName: String, password: String, name: String, icon: String, sex: Sex, age: Int, yearsPlayed: Int, height: Float, width: Float, grip: Grip, backhand: Backhand, points: Int, isAdult: Bool, careerStats: Stats, friends: [Player], allClubs: [Int], allHistoryGames: [Game], allUnfinishedGames: [Game], allEvents: [Int], allSchedules: [Schedule], addresss: [Address], allOrders: [Order], token: String) {
+    init(id: Int, loginName: String, password: String, name: String, icon: String, sex: Sex, age: Int, yearsPlayed: Int, height: Float, width: Float, grip: Grip, backhand: Backhand, points: Int, isAdult: Bool, careerStats: Stats, friends: [Player], allClubs: [Int], allHistoryGames: [Game], allUnfinishedGames: [Game], allEvents: [Int], allSchedules: [Schedule], addresss: [Int], allOrders: [Int], cart: Int, token: String) {
         self.id = id
         self.loginName = loginName
         self.password = password
@@ -58,6 +59,7 @@ struct User: Codable, Equatable {
         self.allSchedules = allSchedules
         self.addresss = addresss
         self.allOrders = allOrders
+        self.cart = cart
         self.token = token
     }
 
@@ -83,8 +85,9 @@ struct User: Codable, Equatable {
         allUnfinishedGames = json["allUnfinishedGames"].arrayValue.map { Game(json: $0) }
         allEvents = json["allEvents"].arrayValue.map { $0.intValue }
         allSchedules = json["allSchedules"].arrayValue.map { Schedule(json: $0) }
-        addresss = json["addresss"].arrayValue.map { Address(json: $0) }
-        allOrders = json["allOrders"].arrayValue.map { Order(json: $0) }
+        addresss = json["addresss"].arrayValue.map { $0.intValue }
+        allOrders = json["allOrders"].arrayValue.map { $0.intValue }
+        cart = json["cart"].intValue
         token = json["token"].stringValue
     }
 
@@ -115,8 +118,9 @@ struct User: Codable, Equatable {
             "allUnfinishedGames": allUnfinishedGames.map { $0.toDictionary() },
             "allEvents": allEvents,
             "allSchedules": allSchedules.map { $0.toDictionary() },
-            "addresss": addresss.map { $0.toDictionary() },
-            "allOrders": allOrders.map { $0.toDictionary() },
+            "addresss": addresss,
+            "allOrders": allOrders,
+            "cart": cart,
             "token": token,
         ]
 
@@ -149,8 +153,9 @@ struct User: Codable, Equatable {
             let allUnfinishedGamesDictionaries = dictionary["allUnfinishedGames"] as? [[String: Any]],
             let allEventsDictionaries = dictionary["allEvents"] as? [Int],
             let allSchedulesDictionaries = dictionary["allSchedules"] as? [[String: Any]],
-            let addresssDictionaries = dictionary["addresss"] as? [[String: Any]],
-            let ordersDictionaries = dictionary["allOrders"] as? [[String: Any]],
+            let addresssDictionaries = dictionary["addresss"] as? [Int],
+            let ordersDictionaries = dictionary["allOrders"] as? [Int],
+            let cartDictionaries = dictionary["cart"] as? Int,
             let token = dictionary["token"] as? String
         else {
             return nil
@@ -161,10 +166,8 @@ struct User: Codable, Equatable {
         let allClubs = allClubsDictionaries
         let allEvents = allEventsDictionaries
         let allSchedules = allSchedulesDictionaries.compactMap { Schedule(dictionary: $0) }
-        let addresss = addresssDictionaries.compactMap { Address(dictionary: $0) }
-        let allOrders = ordersDictionaries.compactMap { Order(dictionary: $0) }
 
-        self = User(id: id, loginName: loginName, password: password, name: name, icon: icon, sex: sex, age: age, yearsPlayed: yearsPlayed, height: height, width: width, grip: grip, backhand: backhand, points: points, isAdult: isAdult, careerStats: careerStats, friends: friends, allClubs: allClubs, allHistoryGames: allHistoryGames, allUnfinishedGames: allUnfinishedGames, allEvents: allEvents, allSchedules: allSchedules, addresss: addresss, allOrders: allOrders, token: token)
+        self = User(id: id, loginName: loginName, password: password, name: name, icon: icon, sex: sex, age: age, yearsPlayed: yearsPlayed, height: height, width: width, grip: grip, backhand: backhand, points: points, isAdult: isAdult, careerStats: careerStats, friends: friends, allClubs: allClubs, allHistoryGames: allHistoryGames, allUnfinishedGames: allUnfinishedGames, allEvents: allEvents, allSchedules: allSchedules, addresss: addresssDictionaries, allOrders: ordersDictionaries, cart: cartDictionaries, token: token)
     }
 
     static func == (lhs: User, rhs: User) -> Bool {
@@ -189,7 +192,7 @@ struct User: Codable, Equatable {
             lhs.allUnfinishedGames == rhs.allUnfinishedGames &&
             lhs.allEvents == rhs.allEvents &&
             lhs.allSchedules == rhs.allSchedules && lhs.allOrders == rhs.allOrders &&
-            lhs.addresss == rhs.addresss
+            lhs.addresss == rhs.addresss && lhs.allOrders == rhs.allOrders && lhs.cart == rhs.cart
     }
 }
 

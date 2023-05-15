@@ -26,8 +26,13 @@ class EventViewController: EDViewController {
     }()
 
     lazy var shoppingCollectionView: EDShoppingCollectionView = {
-        let view = EDShoppingCollectionView(frame: .zero, collectionViewLayout: layout, coms: com)
+        let view = EDShoppingCollectionView(frame: .zero, collectionViewLayout: layout)
         return view
+    }()
+
+    lazy var cartBtn: UIButton = {
+        let btn = UIButton()
+        return btn
     }()
 
     override func viewDidLoad() {
@@ -37,6 +42,7 @@ class EventViewController: EDViewController {
         view.addSubview(titleView)
         view.addSubview(filter)
         view.addSubview(shoppingCollectionView)
+        view.addSubview(cartBtn)
         view.bringSubviewToFront(filter)
 
         titleView.snp.makeConstraints { make in
@@ -46,11 +52,23 @@ class EventViewController: EDViewController {
             make.height.equalTo(44)
         }
 
+        cartBtn.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-24)
+            make.top.equalToSuperview().offset(48)
+            make.width.equalTo(44)
+            make.height.equalTo(44)
+        }
+
+        cartBtn.setImage(UIImage(systemName: "cart"), for: .normal)
+        cartBtn.setCorner(radii: 22)
+        cartBtn.tintColor = UIColor(named: "ContentBackground")
+        cartBtn.backgroundColor = UIColor(named: "ComponentBackground")
+        cartBtn.addTarget(self, action: #selector(enterBillView), for: .touchDown)
         titleView.font = UIFont.systemFont(ofSize: 24)
 
-        filter.frame = CGRect(x: UIStandard.shared.screenWidth - 114, y: 48, width: 90, height: 44)
+        filter.frame = CGRect(x: UIStandard.shared.screenWidth - 158, y: 48, width: 90, height: 44)
 
-        filter.setup(filter.bounds, filter.layer.position, CGRect(x: 0, y: 0, width: 270, height: filter.bounds.height), CGPoint(x: filter.layer.position.x - 90, y: filter.layer.position.y), 0.3)
+        filter.setup(filter.bounds, filter.layer.position, CGRect(x: 0, y: 0, width: 270, height: filter.bounds.height), CGPoint(x: filter.layer.position.x - 40, y: filter.layer.position.y), 0.3)
 
         shoppingCollectionView.snp.makeConstraints { make in
             make.top.equalTo(titleView.snp.bottom).offset(12)
@@ -66,5 +84,11 @@ class EventViewController: EDViewController {
         filter.completionHandler = { coms in
             self.shoppingCollectionView.applyFilter(coms: coms)
         }
+    }
+
+    @objc func enterBillView() {
+        let vc = EDBillTableViewController()
+        navigationController?.pushViewController(vc, animated: true)
+        vc.openCartMode()
     }
 }

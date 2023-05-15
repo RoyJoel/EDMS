@@ -43,7 +43,7 @@ class EDBillingView: UIView {
                 make.bottom.equalToSuperview().offset(-12)
                 make.width.equalTo(imageView.snp.height)
             }
-            imageView.image = UIImage(named: bills[0].opinion)
+            imageView.image = UIImage(named: bills[0].option.image)
             imageView.setCorner(radii: 15)
             var lastView = imageView
             for bill in 1 ..< min(5, bills.count) {
@@ -55,7 +55,7 @@ class EDBillingView: UIView {
                     make.bottom.equalToSuperview().offset(-12)
                     make.width.equalTo(imageView.snp.height)
                 }
-                imageView.image = UIImage(named: bills[bill].opinion)
+                imageView.image = UIImage(named: bills[bill].option.image)
                 imageView.setCorner(radii: 15)
                 lastView = imageView
             }

@@ -41,7 +41,7 @@ class EDFlowLayout: UICollectionViewFlowLayout {
             // 创建布局属性类
             let attris = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             // 随机一个高度在80到190之间的值
-            let height = WIDTH * calculateAR(image: UIImage(named: com[index].images[0]) ?? UIImage()) + 100
+            let height = WIDTH * calculateAR(image: UIImage(named: com[index].options[0].image) ?? UIImage()) + 100
             // 哪列高度小就把它放那列下面
             // 标记那一列
             var queue = 0

@@ -53,7 +53,7 @@ class EDComContentViewController: UIViewController {
             make.width.equalTo(UIStandard.shared.screenWidth * 0.5)
             make.height.equalTo(UIStandard.shared.screenWidth * 0.5)
         }
-        imagesView.intros = com.images
+        imagesView.intros = com.options.compactMap { $0.image }
         imagesView.setupUI()
 
         nameView.snp.makeConstraints { make in

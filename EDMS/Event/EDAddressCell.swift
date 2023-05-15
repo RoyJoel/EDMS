@@ -110,14 +110,14 @@ class EDAddressCell: UITableViewCell {
             make.height.equalTo(38)
         }
         iconView.snp.makeConstraints { make in
-            make.left.equalToSuperview()
+            make.left.equalToSuperview().offset(12)
             make.centerY.equalToSuperview()
             make.width.equalTo(44)
             make.height.equalTo(44)
         }
 
         editView.snp.makeConstraints { make in
-            make.right.equalToSuperview()
+            make.right.equalToSuperview().offset(-12)
             make.centerY.equalToSuperview()
             make.height.equalTo(40)
         }

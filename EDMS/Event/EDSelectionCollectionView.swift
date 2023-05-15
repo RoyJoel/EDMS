@@ -30,13 +30,13 @@ class EDSelectionCollectionView: UICollectionView, UICollectionViewDelegate, UIC
     }
 
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        com.images.count
+        com.options.count
     }
 
     func collectionView(_: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dequeueReusableCell(withReuseIdentifier: "cagSelections", for: indexPath) as! EDCagSelectionCell
         cell.setupUI()
-        cell.setupEvent(icon: com.images[indexPath.row])
+        cell.setupEvent(icon: com.options[indexPath.row].image)
         cell.addObserver(cell, forKeyPath: "isBeenSelected", options: [.new, .old], context: nil)
         if indexPath.row == selectedRow {
             cell.isBeenSelected = true

@@ -175,4 +175,13 @@ class EDUser {
         }
         return nil
     }
+
+    static func getCartInfo(completionHandler: @escaping (Order) -> Void) {
+        EDNetWork.post("/cart/getInfo", dataParameters: ["id": EDUser.user.cart]) { json in
+            guard let json = json else {
+                return
+            }
+            completionHandler(Order(json: json))
+        }
+    }
 }

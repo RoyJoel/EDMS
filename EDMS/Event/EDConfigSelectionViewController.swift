@@ -13,7 +13,7 @@ class EDConfigSelectionViewController: UIViewController {
     var com: Commodity = Commodity()
 
     lazy var shoppingCollectionView: EDSelectionCollectionView = {
-        let view = EDSelectionCollectionView(frame: .zero, collectionViewLayout: EDCagCollectionViewLayout(itemCount: com.images.count), com: com)
+        let view = EDSelectionCollectionView(frame: .zero, collectionViewLayout: EDCagCollectionViewLayout(itemCount: com.options.count), com: com)
         return view
     }()
 
@@ -98,7 +98,7 @@ class EDConfigSelectionViewController: UIViewController {
 
     @objc func selectConfig() {
         let vc = EDBillingViewController()
-        let bill = Bill(id: 0, com: com, quantity: quantityView.currentQuantity, opinion: com.images[shoppingCollectionView.selectedRow])
+        let bill = Bill(id: 0, com: com, quantity: quantityView.currentQuantity, option: com.options[shoppingCollectionView.selectedRow])
         let order = Order(id: 0, bills: [bill], shippingAddress: address2, deliveryAddress: address1, payment: .WeChat, totalPrice: EDDataConvert.getTotalPrice([bill]), createdTime: Date().timeIntervalSince1970, state: .ToPay)
         vc.order = order
         navigationController?.pushViewController(vc, animated: true)

@@ -13,7 +13,9 @@ class EDAddressRequest {
             guard let json = json else {
                 return
             }
-            completionHandler(Address(json: json))
+            let address = Address(json: json)
+            EDUser.user.addresss.append(address.id)
+            completionHandler(address)
         }
     }
 
@@ -35,12 +37,12 @@ class EDAddressRequest {
         }
     }
 
-    static func getAddressInfo(id: Int, completionHandler: @escaping (Address) -> Void) {
-        EDNetWork.post("/address/getInfo", dataParameters: ["id": id]) { json in
+    static func getAddressInfos(ids: [Int], completionHandler: @escaping ([Address]) -> Void) {
+        EDNetWork.post("/address/getInfos", dataParameters: ["ids": ids]) { json in
             guard let json = json else {
                 return
             }
-            completionHandler(Address(json: json))
+            completionHandler(json.arrayValue.map { Address(json: $0) })
         }
     }
 }

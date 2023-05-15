@@ -16,6 +16,7 @@ class EDAddressEditingViewController: UIViewController {
     let districtDs = districtDataSource()
     let sexDs = sexDataSource()
     var saveCompletionHandler: ((Address) -> Void)?
+    var addCompletionHandler: ((Address) -> Void)?
 
     lazy var sexSelectedView: TMPopUpView = {
         let view = TMPopUpView()
@@ -218,9 +219,23 @@ class EDAddressEditingViewController: UIViewController {
         detailedAddressTextField.updateText(address.detailedAddress)
     }
 
+    func openAddingMode() {
+        doneBtn.removeTapGesture(self, #selector(saveAddress))
+        doneBtn.addTarget(self, action: #selector(addAddress), for: .touchDown)
+    }
+
     func getAddressInfo() -> Address {
         address = Address(id: address.id, name: nameTextField.textField.text ?? "", sex: sexDs.sexConfig[0], phoneNumber: phoneNumberTextField.textField.text ?? "", province: provinceDs.provinces[0].name, city: cityDs.cities[0].name, area: districtDs.districts[0].name, detailedAddress: detailedAddressTextField.textField.text ?? "")
         return address
+    }
+
+    @objc func addAddress() {
+        let newAddress = getAddressInfo()
+        EDAddressRequest.addAddress(address: AddressRequest(address: newAddress, userId: EDUser.user.id)) { address in
+            self.address = address
+            (self.addCompletionHandler ?? { _ in })(address)
+        }
+        navigationController?.popViewController(animated: true)
     }
 
     @objc func saveAddress() {

@@ -77,7 +77,7 @@ class EDComBillingCell: UITableViewCell {
     }
 
     func setupEvent(bill: Bill) {
-        comIconView.image = UIImage(named: bill.opinion)
+        comIconView.image = UIImage(named: bill.option.image)
         nameView.text = bill.com.name
         quantityLabel.text = "x\(bill.quantity)"
         priceLabel.text = "¥\(bill.com.price)"

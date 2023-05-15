@@ -11,13 +11,16 @@ import UIKit
 
 class EDShoppingCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource {
     var coms: [Commodity] = []
-    init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout, coms: [Commodity]) {
+    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
-        self.coms = coms
         backgroundColor = UIColor(named: "BackgroundGray")
         delegate = self
         dataSource = self
         register(EDCommodityCell.self, forCellWithReuseIdentifier: "commodityies")
+        EDCommodityRequest.getAll { commodities in
+            self.coms = commodities
+            self.reloadData()
+        }
     }
 
     required init?(coder _: NSCoder) {
@@ -36,7 +39,7 @@ class EDShoppingCollectionView: UICollectionView, UICollectionViewDelegate, UICo
     func collectionView(_: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dequeueReusableCell(withReuseIdentifier: "commodityies", for: indexPath) as! EDCommodityCell
         cell.setupUI()
-        cell.setupEvent(icon: coms[indexPath.row].images[0], intro: coms[indexPath.row].name, price: coms[indexPath.row].price, turnOver: coms[indexPath.row].orders)
+        cell.setupEvent(icon: coms[indexPath.row].options[0].image, intro: coms[indexPath.row].name, price: coms[indexPath.row].price, turnOver: coms[indexPath.row].orders)
         return cell
     }
 
