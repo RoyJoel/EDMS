@@ -37,9 +37,9 @@ class EDFilterView: TMView {
         addSubview(pointsFilter)
         bringSubviewToFront(filterBtn)
 
-        filterBtn.frame = CGRect(x: bounds.width - 100, y: 0, width: 88, height: bounds.height)
-        cagFilter.frame = CGRect(x: 12, y: 0, width: 88, height: bounds.height)
-        pointsFilter.frame = CGRect(x: 12, y: 0, width: 88, height: bounds.height)
+        filterBtn.frame = CGRect(x: bounds.width - 74, y: 0, width: 78, height: bounds.height)
+        cagFilter.frame = CGRect(x: 6, y: 0, width: 78, height: bounds.height)
+        pointsFilter.frame = CGRect(x: 6, y: 0, width: 78, height: bounds.height)
         filterBtn.setCorner(radii: 8)
         filterBtn.backgroundColor = UIColor(named: "ComponentBackground")
         filterBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
@@ -81,16 +81,16 @@ class EDFilterView: TMView {
         if !isEnlarge {
             cagFilter.isHidden = false
             pointsFilter.isHidden = false
-            pointsFilter.addAnimation(pointsFilter.layer.position, CGPoint(x: 150, y: bounds.height / 2), 0.15, "position")
-            pointsFilter.layer.position = CGPoint(x: 150, y: bounds.height / 2)
+            pointsFilter.addAnimation(pointsFilter.layer.position, CGPoint(x: 135, y: bounds.height / 2), 0.15, "position")
+            pointsFilter.layer.position = CGPoint(x: 135, y: bounds.height / 2)
             pointsFilter.setupSize()
-            filterBtn.addAnimation(filterBtn.layer.position, CGPoint(x: 244, y: bounds.height / 2), 0.3, "position")
-            filterBtn.layer.position = CGPoint(x: 244, y: bounds.height / 2)
+            filterBtn.addAnimation(filterBtn.layer.position, CGPoint(x: 225, y: bounds.height / 2), 0.3, "position")
+            filterBtn.layer.position = CGPoint(x: 225, y: bounds.height / 2)
         } else {
-            filterBtn.addAnimation(filterBtn.layer.position, CGPoint(x: 56, y: bounds.height / 2), 0.3, "position")
-            filterBtn.layer.position = CGPoint(x: 56, y: bounds.height / 2)
-            pointsFilter.addAnimation(pointsFilter.layer.position, CGPoint(x: 56, y: bounds.height / 2), 0.15, "position")
-            pointsFilter.layer.position = CGPoint(x: 56, y: bounds.height / 2)
+            filterBtn.addAnimation(filterBtn.layer.position, CGPoint(x: 45, y: bounds.height / 2), 0.3, "position")
+            filterBtn.layer.position = CGPoint(x: 45, y: bounds.height / 2)
+            pointsFilter.addAnimation(pointsFilter.layer.position, CGPoint(x: 45, y: bounds.height / 2), 0.15, "position")
+            pointsFilter.layer.position = CGPoint(x: 45, y: bounds.height / 2)
             pointsFilter.setupSize()
         }
     }
@@ -99,43 +99,25 @@ class EDFilterView: TMView {
         let view = super.hitTest(point, with: event)
 
         if CGRectContainsPoint(cagFilter.frame, point) {
-            pointsDS.filterItems.removeAll(where: { $0 == pointsCurIndex })
-            pointsDS.filterItems.insert(pointsCurIndex, at: 0)
-            pointsFilter.reloadData()
             if pointsFilter.toggle == true {
                 pointsFilter.fold()
             }
         } else if CGRectContainsPoint(pointsFilter.frame, point) {
-            cagDS.filterItems.removeAll { $0 == cagCurIndex }
-            cagDS.filterItems.insert(cagCurIndex, at: 0)
-            cagFilter.reloadData()
             if cagFilter.toggle == true {
                 cagFilter.fold()
             }
         } else if CGRectContainsPoint(filterBtn.frame, point) {
-            cagDS.filterItems.removeAll { $0 == cagCurIndex }
-            cagDS.filterItems.insert(cagCurIndex, at: 0)
-            cagFilter.reloadData()
             if cagFilter.toggle == true {
                 cagFilter.fold()
             }
-            pointsDS.filterItems.removeAll(where: { $0 == pointsCurIndex })
-            pointsDS.filterItems.insert(pointsCurIndex, at: 0)
-            pointsFilter.reloadData()
             if pointsFilter.toggle == true {
                 pointsFilter.fold()
             }
         } else {
             if toggle {
-                cagDS.filterItems.removeAll { $0 == cagCurIndex }
-                cagDS.filterItems.insert(cagCurIndex, at: 0)
-                cagFilter.reloadData()
                 if cagFilter.toggle == true {
                     cagFilter.fold()
                 }
-                pointsDS.filterItems.removeAll(where: { $0 == pointsCurIndex })
-                pointsDS.filterItems.insert(pointsCurIndex, at: 0)
-                pointsFilter.reloadData()
                 if pointsFilter.toggle == true {
                     pointsFilter.fold()
                 }
@@ -162,7 +144,7 @@ class EDFilterView: TMView {
         if comCag(displayName: selectedCag).rawValue == 0 {
             filteredComs = com
         } else {
-            filteredComs = com.filter { $0.cag == comCag(displayName: selectedCag).rawValue }
+            filteredComs = com.filter { $0.cag.displayName == selectedCag }
         }
         (completionHandler ?? { _ in })(filteredComs)
 
@@ -176,7 +158,7 @@ class EDFilterView: TMView {
 }
 
 class pointsFilterDataSource: NSObject, UITableViewDataSource {
-    var filterItems = ["<100", "100-500", "500-1000", "1000-2000", ">2000"]
+    var filterItems = ["<100", "100-500", "500-1000", ">1000"]
 
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         filterItems.count
@@ -207,7 +189,7 @@ class cagFilterDataSource: NSObject, UITableViewDataSource {
     }
 }
 
-enum comCag: Int, CaseIterable {
+enum comCag: Int, Codable, CaseIterable {
     case none = 0
     case Decoration = 1
     case ClothingMatching = 2

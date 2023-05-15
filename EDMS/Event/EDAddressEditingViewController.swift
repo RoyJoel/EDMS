@@ -108,19 +108,29 @@ class EDAddressEditingViewController: UIViewController {
         doneBtn.backgroundColor = UIColor(named: "TennisBlur")
         nameTextField.textField.textAlignment = .center
         phoneNumberTextField.textField.textAlignment = .center
-    }
 
-    func setupEvent(address: Address) {
-        self.address = address
-        EDAddressRequest.requestGDAddress { res in
+        let nameConfig = EDTextFieldConfig(placeholderText: "Enter your name")
+        nameTextField.setup(with: nameConfig)
+        let phoneNumberConfig = EDTextFieldConfig(placeholderText: "enter your phone number")
+        phoneNumberTextField.setup(with: phoneNumberConfig)
+        let detailAddressConfig = EDTextFieldConfig(placeholderText: "detail address")
+        detailedAddressTextField.setup(with: detailAddressConfig)
+
+        sexSelectedView.dataSource = sexDs
+        view.bringSubviewToFront(sexSelectedView)
+        sexSelectedView.delegate = sexSelectedView
+        sexSelectedView.setupUI()
+        sexSelectedView.selectedCompletionHandler = { index in
+            let selectedSex = self.sexDs.sexConfig.remove(at: index)
+            self.sexDs.sexConfig.insert(selectedSex, at: 0)
+            self.sexSelectedView.reloadData()
+        }
+
+        EDGDAddressRequest.requestGDAddress { res in
             guard let res = res else {
                 return
             }
             self.provinceDs.provinces = res
-            if let province = self.provinceDs.provinces.first(where: { $0.name == address.province }) {
-                self.provinceDs.provinces.removeAll(where: { $0.name == address.province })
-                self.provinceDs.provinces.insert(province, at: 0)
-            }
             self.provinceSelectionView.dataSource = self.provinceDs
             self.view.bringSubviewToFront(self.provinceSelectionView)
             self.provinceSelectionView.delegate = self.provinceSelectionView
@@ -128,10 +138,6 @@ class EDAddressEditingViewController: UIViewController {
             self.provinceSelectionView.setupUI()
 
             self.cityDs.cities = self.provinceDs.provinces[0].districts ?? []
-            if let city = self.cityDs.cities.first(where: { $0.name == address.city }) {
-                self.cityDs.cities.removeAll(where: { $0.name == address.city })
-                self.cityDs.cities.insert(city, at: 0)
-            }
             self.citySelectionView.dataSource = self.cityDs
             self.view.bringSubviewToFront(self.citySelectionView)
             self.citySelectionView.delegate = self.citySelectionView
@@ -139,10 +145,6 @@ class EDAddressEditingViewController: UIViewController {
             self.citySelectionView.setupUI()
 
             self.districtDs.districts = self.cityDs.cities[0].districts ?? []
-            if let area = self.districtDs.districts.first(where: { $0.name == address.area }) {
-                self.districtDs.districts.removeAll { $0.name == address.area }
-                self.districtDs.districts.insert(area, at: 0)
-            }
             self.districtSelectionView.dataSource = self.districtDs
             self.view.bringSubviewToFront(self.districtSelectionView)
             self.districtSelectionView.delegate = self.districtSelectionView
@@ -174,28 +176,46 @@ class EDAddressEditingViewController: UIViewController {
                 self.districtDs.districts.insert(selecteddistrict, at: 0)
                 self.districtSelectionView.reloadData()
             }
+            self.setupEvent(address: self.address)
         }
+    }
+
+    func setupEvent(address: Address) {
+        self.address = address
 
         if let sex = self.sexDs.sexConfig.first(where: { $0.rawValue == address.sex.rawValue }) {
             sexDs.sexConfig.removeAll { $0.rawValue == address.sex.rawValue }
             sexDs.sexConfig.insert(sex, at: 0)
         }
-        sexSelectedView.dataSource = sexDs
-        view.bringSubviewToFront(sexSelectedView)
-        sexSelectedView.delegate = sexSelectedView
-        sexSelectedView.setupUI()
-        sexSelectedView.selectedCompletionHandler = { index in
-            let selectedSex = self.sexDs.sexConfig.remove(at: index)
-            self.sexDs.sexConfig.insert(selectedSex, at: 0)
-            self.sexSelectedView.reloadData()
+
+        if let province = self.provinceDs.provinces.first(where: { $0.name == address.province }) {
+            provinceDs.provinces.removeAll(where: { $0.name == address.province })
+            provinceDs.provinces.insert(province, at: 0)
+
+            provinceSelectionView.reloadData()
+            cityDs.cities = province.districts ?? []
+            districtDs.districts = province.districts?[0].districts ?? []
+            citySelectionView.reloadData()
+            districtSelectionView.reloadData()
         }
 
-        let nameConfig = EDTextFieldConfig(placeholderText: "Enter your name", text: "\(address.name)")
-        nameTextField.setup(with: nameConfig)
-        let phoneNumberConfig = EDTextFieldConfig(placeholderText: "enter your phone number", text: "\(address.phoneNumber)")
-        phoneNumberTextField.setup(with: phoneNumberConfig)
-        let detailAddressConfig = EDTextFieldConfig(placeholderText: "detail address", text: "\(address.detailedAddress)")
-        detailedAddressTextField.setup(with: detailAddressConfig)
+        if let city = self.cityDs.cities.first(where: { $0.name == address.city }) {
+            cityDs.cities.removeAll(where: { $0.name == address.city })
+            cityDs.cities.insert(city, at: 0)
+            citySelectionView.reloadData()
+            districtDs.districts = city.districts ?? []
+            districtSelectionView.reloadData()
+        }
+
+        if let area = self.districtDs.districts.first(where: { $0.name == address.area }) {
+            districtDs.districts.removeAll { $0.name == address.area }
+            districtDs.districts.insert(area, at: 0)
+            districtSelectionView.reloadData()
+        }
+
+        nameTextField.updateText(address.name)
+        phoneNumberTextField.updateText(address.phoneNumber)
+        detailedAddressTextField.updateText(address.detailedAddress)
     }
 
     func getAddressInfo() -> Address {
@@ -204,7 +224,11 @@ class EDAddressEditingViewController: UIViewController {
     }
 
     @objc func saveAddress() {
-        (saveCompletionHandler ?? { _ in })(getAddressInfo())
+        let newAddress = getAddressInfo()
+        EDAddressRequest.UpdateAddress(address: AddressRequest(address: newAddress, userId: EDUser.user.id)) { address in
+            self.address = address
+            (self.saveCompletionHandler ?? { _ in })(address)
+        }
         navigationController?.popViewController(animated: true)
     }
 }

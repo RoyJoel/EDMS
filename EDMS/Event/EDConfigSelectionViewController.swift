@@ -51,7 +51,7 @@ class EDConfigSelectionViewController: UIViewController {
             make.left.equalToSuperview().offset(24)
             make.bottom.equalTo(quantityLabel.snp.top).offset(-68)
             make.right.equalToSuperview().offset(-24)
-            make.height.equalTo(132)
+            make.height.equalTo(220)
         }
 
         quantityLabel.snp.makeConstraints { make in
@@ -70,14 +70,14 @@ class EDConfigSelectionViewController: UIViewController {
 
         buyBtn.snp.makeConstraints { make in
             make.top.equalTo(quantityLabel.snp.bottom).offset(68)
-            make.centerX.equalToSuperview().offset(178)
+            make.centerX.equalToSuperview().offset(84)
             make.width.equalTo(144)
             make.height.equalTo(50)
         }
 
         addToCartBtn.snp.makeConstraints { make in
             make.top.equalTo(quantityLabel.snp.bottom).offset(68)
-            make.centerX.equalToSuperview().offset(-178)
+            make.centerX.equalToSuperview().offset(-84)
             make.width.equalTo(144)
             make.height.equalTo(50)
         }
@@ -98,6 +98,8 @@ class EDConfigSelectionViewController: UIViewController {
 
     @objc func selectConfig() {
         let vc = EDBillingViewController()
+        let bill = Bill(id: 0, com: com, quantity: quantityView.currentQuantity, opinion: com.images[shoppingCollectionView.selectedRow])
+        let order = Order(id: 0, bills: [bill], shippingAddress: address2, deliveryAddress: address1, payment: .WeChat, totalPrice: EDDataConvert.getTotalPrice([bill]), createdTime: Date().timeIntervalSince1970, state: .ToPay)
         vc.order = order
         navigationController?.pushViewController(vc, animated: true)
     }

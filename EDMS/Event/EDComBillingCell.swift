@@ -56,19 +56,17 @@ class EDComBillingCell: UITableViewCell {
         nameView.snp.makeConstraints { make in
             make.top.equalTo(comIconView.snp.top)
             make.left.equalTo(comIconView.snp.right).offset(6)
-            make.right.equalToSuperview().offset(-6)
+            make.right.equalToSuperview().offset(-12)
         }
 
         quantityLabel.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-12)
-            make.width.equalTo(58)
-            make.top.equalTo(nameView.snp.bottom).offset(6)
+            make.top.equalTo(priceLabel.snp.bottom).offset(6)
         }
 
         priceLabel.snp.makeConstraints { make in
-            make.right.equalTo(quantityLabel.snp.right).offset(-12)
-            make.bottom.equalTo(comIconView.snp.bottom)
-            make.width.equalTo(108)
+            make.right.equalToSuperview().offset(-12)
+            make.top.equalTo(nameView.snp.bottom).offset(6)
         }
         comIconView.setCorner(radii: 10)
         quantityLabel.textAlignment = .right
@@ -79,7 +77,7 @@ class EDComBillingCell: UITableViewCell {
     }
 
     func setupEvent(bill: Bill) {
-        comIconView.image = UIImage(named: bill.com.images[0])
+        comIconView.image = UIImage(named: bill.opinion)
         nameView.text = bill.com.name
         quantityLabel.text = "x\(bill.quantity)"
         priceLabel.text = "¥\(bill.com.price)"

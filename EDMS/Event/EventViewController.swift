@@ -41,16 +41,16 @@ class EventViewController: EDViewController {
 
         titleView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(24)
-            make.top.equalToSuperview().offset(32)
+            make.top.equalToSuperview().offset(48)
             make.width.equalTo(208)
-            make.height.equalTo(50)
+            make.height.equalTo(44)
         }
 
-        titleView.font = UIFont.systemFont(ofSize: 36)
+        titleView.font = UIFont.systemFont(ofSize: 24)
 
-        filter.frame = CGRect(x: UIStandard.shared.screenWidth - 136, y: 32, width: 112, height: 44)
+        filter.frame = CGRect(x: UIStandard.shared.screenWidth - 114, y: 48, width: 90, height: 44)
 
-        filter.setup(filter.bounds, filter.layer.position, CGRect(x: 0, y: 0, width: 300, height: filter.bounds.height), CGPoint(x: filter.layer.position.x - 94, y: filter.layer.position.y), 0.3)
+        filter.setup(filter.bounds, filter.layer.position, CGRect(x: 0, y: 0, width: 270, height: filter.bounds.height), CGPoint(x: filter.layer.position.x - 90, y: filter.layer.position.y), 0.3)
 
         shoppingCollectionView.snp.makeConstraints { make in
             make.top.equalTo(titleView.snp.bottom).offset(12)
@@ -63,11 +63,8 @@ class EventViewController: EDViewController {
         filter.clipsToBounds = false
 
         titleView.text = "积分商城"
-        NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: Notification.Name(ToastNotification.DataFreshToast.rawValue), object: nil)
         filter.completionHandler = { coms in
             self.shoppingCollectionView.applyFilter(coms: coms)
         }
     }
-
-    @objc func refreshData() {}
 }

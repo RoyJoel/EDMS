@@ -47,24 +47,24 @@ class EDCommodityCell: UICollectionViewCell {
             make.left.equalToSuperview().offset(6)
             make.right.equalToSuperview().offset(-6)
             make.top.equalTo(comIconView.snp.bottom).offset(6)
-            make.height.equalTo(38)
+            make.height.equalTo(42)
         }
         priceLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(6)
             make.top.equalTo(comIntroView.snp.bottom).offset(6)
-            make.width.equalTo(138)
-            make.height.equalTo(38)
+            make.height.equalTo(25)
         }
         turnoverLabel.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-6)
             make.top.equalTo(comIntroView.snp.bottom).offset(6)
-            make.width.equalTo(88)
-            make.height.equalTo(38)
+            make.height.equalTo(25)
         }
 
+        comIntroView.numberOfLines = 2
         priceLabel.textColor = UIColor(named: "Tennis")
-        priceLabel.font = UIFont.systemFont(ofSize: 24)
+        priceLabel.font = UIFont.systemFont(ofSize: 16)
         turnoverLabel.textColor = UIColor(named: "blurGray")
+        turnoverLabel.font = UIFont.systemFont(ofSize: 12)
         comIconView.contentMode = .scaleAspectFit
     }
 

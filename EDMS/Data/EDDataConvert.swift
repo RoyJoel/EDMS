@@ -212,4 +212,12 @@ class EDDataConvert {
         }
         return res
     }
+
+    static func getTotalPrice(_ bills: [Bill]) -> Double {
+        var price: Double = 0
+        for bill in bills {
+            price += bill.com.price * Double(bill.quantity)
+        }
+        return price
+    }
 }

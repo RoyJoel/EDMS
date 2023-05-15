@@ -39,7 +39,7 @@ class EDSelectionCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         cell.setupEvent(icon: com.images[indexPath.row])
         cell.addObserver(cell, forKeyPath: "isBeenSelected", options: [.new, .old], context: nil)
         if indexPath.row == selectedRow {
-            cell.isSelected = true
+            cell.isBeenSelected = true
         }
         return cell
     }
@@ -49,11 +49,11 @@ class EDSelectionCollectionView: UICollectionView, UICollectionViewDelegate, UIC
     }
 
     func select(at indexPath: IndexPath) {
-        let cell = cellForItem(at: IndexPath(row: selectedRow, section: 0))
-        cell?.isSelected = false
+        let cell = cellForItem(at: IndexPath(row: selectedRow, section: 0)) as? EDCagSelectionCell
+        cell?.isBeenSelected = false
         selectedRow = indexPath.row
 
         let newSelectedCell = cellForItem(at: indexPath) as? EDCagSelectionCell
-        newSelectedCell?.isSelected = true
+        newSelectedCell?.isBeenSelected = true
     }
 }

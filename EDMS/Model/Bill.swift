@@ -12,31 +12,31 @@ struct Bill: Codable, Equatable {
     var id: Int
     var com: Commodity
     var quantity: Int
-    var cag: Int
+    var opinion: String
 
-    init(id: Int, com: Commodity, quantity: Int, cag: Int) {
+    init(id: Int, com: Commodity, quantity: Int, opinion: String) {
         self.id = id
         self.com = com
         self.quantity = quantity
-        self.cag = cag
+        self.opinion = opinion
     }
 
     init(json: JSON) {
         id = json["id"].intValue
         com = Commodity(json: json["com"])
         quantity = json["quantity"].intValue
-        cag = json["cag"].intValue
+        opinion = json["opinion"].stringValue
     }
 
     init?(dictionary: [String: Any]) {
         guard let id = dictionary["id"] as? Int,
             let comDict = dictionary["comId"] as? [String: Any], let com = Commodity(dict: comDict),
             let quantity = dictionary["quantity"] as? Int,
-            let cag = dictionary["cag"] as? Int else {
+            let opinion = dictionary["opinion"] as? String else {
             return nil
         }
 
-        self.init(id: id, com: com, quantity: quantity, cag: cag)
+        self.init(id: id, com: com, quantity: quantity, opinion: opinion)
     }
 
     func toDictionary() -> [String: Any] {
@@ -44,7 +44,7 @@ struct Bill: Codable, Equatable {
             "id": id,
             "com": com.toDictionary(),
             "quantity": quantity,
-            "cag": cag,
+            "opinion": opinion,
         ]
     }
 
@@ -56,7 +56,7 @@ struct Bill: Codable, Equatable {
         return lhs.id == rhs.id &&
             lhs.com == rhs.com &&
             lhs.quantity == rhs.quantity &&
-            lhs.cag == rhs.cag
+            lhs.opinion == rhs.opinion
     }
 }
 

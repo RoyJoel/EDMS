@@ -150,11 +150,11 @@ class EDAddressCell: UITableViewCell {
     @objc func enterEditingView() {
         if let parentVC = getParentViewController() {
             let vc = EDAddressEditingViewController()
-            vc.setupEvent(address: address)
             vc.saveCompletionHandler = { address in
                 self.setupEvent(address: address, canEdit: true)
             }
             parentVC.navigationController?.pushViewController(vc, animated: true)
+            vc.setupEvent(address: address)
         }
     }
 }

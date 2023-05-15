@@ -9,14 +9,14 @@ import Foundation
 import SwiftyJSON
 import UIKit
 
-let com1 = Commodity(id: 0, images: ["Aus", "JasonZhang", "Aus", "JasonZhang", "Aus"], name: "DUNLOP邓禄普澳网AO官方比赛网球", intro: "澳大利亚网球公开赛官方指定用球 \n Wilson 公司全力打造的比赛用球！为大满贯比赛严格要求而设计的独特的网球,有OPTI-VIS增强视觉效果处理,更加清晰可见,更添专业品质。\n 具有Nano Play纳米科技，耐打性佳、弹性好，外表增添了加亮材料，大大增加了比赛或训练中捕球的机会性、可视性。", price: 123, limit: 9, orders: 2, cag: 1)
+let com1 = Commodity(id: 0, images: ["Aus", "JasonZhang", "Aus", "JasonZhang", "Aus"], name: "DUNLOP邓禄普澳网AO官方比赛网球", intro: "澳大利亚网球公开赛官方指定用球 \n Wilson 公司全力打造的比赛用球！为大满贯比赛严格要求而设计的独特的网球,有OPTI-VIS增强视觉效果处理,更加清晰可见,更添专业品质。\n 具有Nano Play纳米科技，耐打性佳、弹性好，外表增添了加亮材料，大大增加了比赛或训练中捕球的机会性、可视性。", price: 123, limit: 9, orders: 2, cag: .Accessories)
 
-let com2 = Commodity(id: 0, images: ["Wim"], name: "Slazenger史莱辛格网球 温网比赛官方用球", intro: "澳大利亚网球公开赛官方指定用球；Wilson 公司全力打造的比赛用球！为大满贯比赛严格要求而设计的独特的网球,有OPTI-VIS增强视觉效果处理,更加清晰可见,更添专业品质。具有Nano Play纳米科技，耐打性佳、弹性好，外表增添了加亮材料，大大增加了比赛或训练中捕球的机会性、可视性。", price: 123, limit: 1, orders: 2, cag: 2)
+let com2 = Commodity(id: 0, images: ["Wim"], name: "Slazenger史莱辛格网球 温网比赛官方用球", intro: "澳大利亚网球公开赛官方指定用球；Wilson 公司全力打造的比赛用球！为大满贯比赛严格要求而设计的独特的网球,有OPTI-VIS增强视觉效果处理,更加清晰可见,更添专业品质。具有Nano Play纳米科技，耐打性佳、弹性好，外表增添了加亮材料，大大增加了比赛或训练中捕球的机会性、可视性。", price: 123, limit: 1, orders: 2, cag: .ClothingMatching)
 
 let com: [Commodity] = [com1, com2]
 
-let bill1 = Bill(id: 1, com: com1, quantity: 2, cag: 0)
-let bill2 = Bill(id: 2, com: com2, quantity: 3, cag: 0)
+let bill1 = Bill(id: 1, com: com1, quantity: 2, opinion: "Aus")
+let bill2 = Bill(id: 2, com: com2, quantity: 3, opinion: "Wim")
 let address1 = Address(id: 1, name: "张嘉诚", sex: .Man, phoneNumber: "18840250882", province: "陕西省", city: "西安市", area: "灞桥区", detailedAddress: "西安邮电大学雁塔校区")
 let address2 = Address(id: 1, name: "李思齐", sex: .Man, phoneNumber: "18700350775", province: "北京市", city: "北京市", area: "顺义区", detailedAddress: "港鑫家园")
 let address3 = Address(id: 1, name: "张嘉诚", sex: .Man, phoneNumber: "18840250882", province: "陕西省", city: "西安市", area: "新城区", detailedAddress: "西安邮电大学雁塔校区")

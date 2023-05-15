@@ -20,6 +20,10 @@ open class EDTextField: UIView {
         setupEvent(config: config)
     }
 
+    public func updateText(_ text: String) {
+        textField.text = text
+    }
+
     private func setupUI() {
         backgroundColor = UIColor(named: "TennisBlurTextField")
         setCorner(radii: 15)

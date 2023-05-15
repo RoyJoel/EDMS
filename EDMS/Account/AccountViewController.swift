@@ -17,8 +17,8 @@ class AccountViewController: EDViewController {
         return imageView
     }()
 
-    lazy var allHistoryGamesNavBtn: TMButton = {
-        let btn = TMButton()
+    lazy var clockInBtn: UIButton = {
+        let btn = UIButton()
         return btn
     }()
 
@@ -32,24 +32,18 @@ class AccountViewController: EDViewController {
         return infoView
     }()
 
-    lazy var userOrderView: TMButton = {
-        let btn = TMButton()
-        return btn
-    }()
-
-    lazy var userDataView: EDUserDataView = {
-        let dataView = EDUserDataView()
-        return dataView
+    lazy var userOrderView: EDUserOrdersView = {
+        let view = EDUserOrdersView()
+        return view
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.addSubview(settingView)
-        view.addSubview(allHistoryGamesNavBtn)
+        view.addSubview(clockInBtn)
         view.addSubview(iconView)
         view.addSubview(basicInfoView)
-        view.addSubview(userDataView)
         view.addSubview(userOrderView)
 
         iconView.setupUI()
@@ -58,78 +52,48 @@ class AccountViewController: EDViewController {
         let iconConfig = TMIconViewConfig(icon: EDUser.user.icon.toPng(), name: EDUser.user.name)
         iconView.setupEvent(config: iconConfig)
         basicInfoView.setupEvent()
-        userDataView.setupUI()
-        userDataView.setupEventForCareerStatsView()
-        if EDUser.user.allHistoryGames.count != 0 {
-            userDataView.setupEventForGameStatsView(games: EDUser.user.allHistoryGames)
-        } else {
-            userDataView.gameStatsView.setupAlart()
-        }
         settingView.tintColor = UIColor(named: "ContentBackground")
         settingView.snp.makeConstraints { make in
-            make.top.equalTo(32)
-            make.left.equalTo(44)
+            make.top.equalToSuperview().offset(58)
+            make.left.equalToSuperview().offset(44)
             make.width.equalTo(40)
             make.height.equalTo(40)
         }
-        allHistoryGamesNavBtn.snp.makeConstraints { make in
-            make.left.equalTo(settingView.snp.right).offset(12)
-            make.top.equalTo(settingView.snp.top)
+        clockInBtn.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-24)
+            make.top.equalToSuperview().offset(58)
             make.width.equalTo(108)
-            make.height.equalTo(settingView.snp.height)
+            make.height.equalTo(40)
         }
         userOrderView.snp.makeConstraints { make in
-            make.left.equalTo(allHistoryGamesNavBtn.snp.right).offset(6)
-            make.top.equalTo(settingView.snp.top)
-            make.height.equalTo(settingView.snp.height)
-            make.width.equalTo(88)
+            make.top.equalTo(iconView.snp.bottom).offset(12)
+            make.bottom.equalToSuperview().offset(-108)
+            make.left.equalToSuperview().offset(24)
+            make.right.equalToSuperview().offset(-24)
         }
         iconView.snp.makeConstraints { make in
             make.top.equalTo(settingView.snp.bottom).offset(24)
-            make.left.equalTo(settingView.snp.left).offset(40)
+            make.centerX.equalToSuperview()
             make.width.equalTo(164)
             make.height.equalTo(240)
         }
         basicInfoView.snp.makeConstraints { make in
-            make.left.equalTo(iconView.snp.right).offset(40)
-            make.top.equalTo(settingView.snp.top)
-            make.right.equalToSuperview().offset(-44)
-            make.bottom.equalTo(iconView.snp.bottom)
+            make.left.equalToSuperview().offset(24)
+            make.top.equalTo(iconView.snp.bottom).offset(12)
+            make.right.equalToSuperview().offset(-24)
+            make.bottom.equalToSuperview().offset(-120)
         }
-        userDataView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(44)
-            make.right.equalToSuperview().offset(-44)
-            make.top.equalTo(iconView.snp.bottom)
-            make.bottom.equalToSuperview().offset(-78)
-        }
-        userDataView.gameStatsView.leftActivityView.addTapGesture(self, #selector(enterLeftDetailStatsView))
-        userDataView.gameStatsView.midActivityView.addTapGesture(self, #selector(enterMidDetailStatsView))
-        userDataView.gameStatsView.rightActivityView.addTapGesture(self, #selector(enterRightDetailStatsView))
         settingView.isUserInteractionEnabled = true
         settingView.addTapGesture(self, #selector(settingViewUp))
         NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: Notification.Name(ToastNotification.DataFreshToast.rawValue), object: nil)
-        let allGamesNavBtnConfig = TMButtonConfig(title: "All Games", action: #selector(viewAllGames), actionTarget: self)
-        allHistoryGamesNavBtn.setUp(with: allGamesNavBtnConfig)
-        let allOrdersNavBtnConfig = TMButtonConfig(title: "All Orders", action: #selector(viewAllOrders), actionTarget: self)
-        userOrderView.setUp(with: allOrdersNavBtnConfig)
-    }
+        userOrderView.setupUI()
 
-    @objc func enterLeftDetailStatsView() {
-        let vc = EDGameStatsDetailViewController()
-        vc.game = userDataView.gameStatsView.leftActivityView.game ?? Game(json: JSON())
-        navigationController?.pushViewController(vc, animated: true)
-    }
-
-    @objc func enterMidDetailStatsView() {
-        let vc = EDGameStatsDetailViewController()
-        vc.game = userDataView.gameStatsView.midActivityView.game ?? Game(json: JSON())
-        navigationController?.pushViewController(vc, animated: true)
-    }
-
-    @objc func enterRightDetailStatsView() {
-        let vc = EDGameStatsDetailViewController()
-        vc.game = userDataView.gameStatsView.rightActivityView.game ?? Game(json: JSON())
-        navigationController?.pushViewController(vc, animated: true)
+        clockInBtn.setTitle("打卡", for: .normal)
+        clockInBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
+        clockInBtn.setImage(UIImage(systemName: "calendar.badge.clock"), for: .normal)
+        clockInBtn.tintColor = UIColor(named: "ContentBackground")
+        clockInBtn.setCorner(radii: 10)
+        clockInBtn.backgroundColor = UIColor(named: "ComponentBackground")
     }
 
     @objc func settingViewUp() {
@@ -142,17 +106,10 @@ class AccountViewController: EDViewController {
         let iconConfig = TMIconViewConfig(icon: EDUser.user.icon.toPng(), name: EDUser.user.name)
         iconView.setupEvent(config: iconConfig)
         basicInfoView.setupEvent()
-        userDataView.setupEventForCareerStatsView()
-        userDataView.setupEventForGameStatsView(games: EDUser.user.allHistoryGames)
     }
 
     @objc func viewAllGames() {
         let vc = EDUserAllHistoryGamesViewController()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-
-    @objc func viewAllOrders() {
-        let vc = EDUserOrdersViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
 }

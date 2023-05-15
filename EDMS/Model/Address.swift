@@ -108,3 +108,27 @@ enum AddressLevel: String, Codable {
     case city
     case district
 }
+
+struct AddressRequest: Codable {
+    var id: Int
+    var playerId: Int
+    var name: String
+    var sex: Sex
+    var phoneNumber: String
+    var province: String
+    var city: String
+    var area: String
+    var detailedAddress: String
+
+    init(address: Address, userId: Int) {
+        id = address.id
+        playerId = userId
+        name = address.name
+        sex = address.sex
+        phoneNumber = address.phoneNumber
+        province = address.province
+        city = address.city
+        area = address.area
+        detailedAddress = address.detailedAddress
+    }
+}

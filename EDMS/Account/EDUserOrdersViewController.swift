@@ -8,7 +8,7 @@ import Foundation
 import JXSegmentedView
 import TMComponent
 
-class EDUserOrdersViewController: UIViewController {
+class EDUserOrdersView: UIView {
     let allOrdersDS = ordersDataSource()
     let ordersToPayDS = ordersDataSource()
     let ordersToDeliveryDS = ordersDataSource()
@@ -65,9 +65,8 @@ class EDUserOrdersViewController: UIViewController {
         return tableView
     }()
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "BackgroundGray")
+    func setupUI() {
+        backgroundColor = UIColor(named: "BackgroundGray")
         let titles = ["全部订单"] + OrderState.allCases.compactMap { $0.displayName }
 
         let dataSource = JXSegmentedTitleDataSource()
@@ -86,14 +85,14 @@ class EDUserOrdersViewController: UIViewController {
         segmentTMView.delegate = self
         segmentTMView.listContainer = listContainerView
 
-        view.addSubview(segmentTMView)
-        view.addSubview(listContainerView)
+        addSubview(segmentTMView)
+        addSubview(listContainerView)
 
         segmentTMView.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalTo(50)
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(74)
+            make.top.equalToSuperview()
         }
         listContainerView.snp.makeConstraints { make in
             make.top.equalTo(segmentTMView.snp.bottom)
@@ -165,7 +164,7 @@ class ordersDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension EDUserOrdersViewController: JXSegmentedListContainerViewDataSource {
+extension EDUserOrdersView: JXSegmentedListContainerViewDataSource {
     func numberOfLists(in _: JXSegmentedListContainerView) -> Int {
         if let titleDataSource = segmentTMView.dataSource as? JXSegmentedBaseDataSource {
             return titleDataSource.dataSource.count
@@ -203,7 +202,7 @@ extension EDUserOrdersViewController: JXSegmentedListContainerViewDataSource {
     }
 }
 
-extension EDUserOrdersViewController: JXSegmentedViewDelegate {
+extension EDUserOrdersView: JXSegmentedViewDelegate {
     func segmentedView(_ segmentTMView: JXSegmentedView, didSelectedItemAt index: Int) {
         if let dotDataSource = segmentedDataSource as? JXSegmentedDotDataSource {
             // 先更新数据源的数据

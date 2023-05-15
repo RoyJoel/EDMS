@@ -104,7 +104,7 @@ class EDBillingViewController: UIViewController {
         billView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(24)
             make.top.equalTo(checkoutTitleView.snp.bottom).offset(12)
-            make.height.equalTo(168)
+            make.height.equalTo(88)
             make.right.equalToSuperview().offset(-24)
         }
         addressView.snp.makeConstraints { make in
@@ -113,7 +113,7 @@ class EDBillingViewController: UIViewController {
             make.width.equalToSuperview().dividedBy(2).offset(-24)
             make.bottom.equalToSuperview().offset(-24)
         }
-        wayOfPayView.frame = CGRect(x: 376, y: 286, width: 304, height: 68)
+        wayOfPayView.frame = CGRect(x: 208, y: 206, width: UIScreen.main.bounds.width - 232, height: 68)
 
         totalLabel.snp.makeConstraints { make in
             make.left.equalTo(wayOfPayView.snp.left)

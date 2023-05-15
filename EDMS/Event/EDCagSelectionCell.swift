@@ -9,12 +9,6 @@ import Foundation
 import UIKit
 
 class EDCagSelectionCell: UICollectionViewCell {
-    override var isSelected: Bool {
-        didSet {
-            isBeenSelected = isSelected
-        }
-    }
-
     @objc dynamic var isBeenSelected: Bool = false
 
     lazy var comIconView: UIImageView = {

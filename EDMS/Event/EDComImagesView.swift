@@ -29,7 +29,7 @@ class EDComImagesView: TMView {
 
     func setupUI() {
         setCorner(radii: 20)
-        backgroundColor = UIColor(named: "ComponentBackground")
+        backgroundColor = UIColor(named: "BackgroundGray")
 
         segmentedView.listContainer = listContainerView
         addSubview(listContainerView)

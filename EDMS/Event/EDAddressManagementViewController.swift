@@ -12,6 +12,7 @@ class EDAddressManagementViewController: UITableViewController {
     var selectedCompletionHandler: ((Address) -> Void)?
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.setRightBarButton(UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addAddress)), animated: true)
         tableView.backgroundColor = UIColor(named: "BackgroundGray")
         tableView.register(EDAddressCell.self, forCellReuseIdentifier: "AddressCell")
         tableView.delegate = self
@@ -21,13 +22,13 @@ class EDAddressManagementViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         super.tableView(tableView, cellForRowAt: indexPath)
         let cell = EDAddressCell()
-        cell.setupEvent(address: addresss[indexPath.row])
+        cell.setupEvent(address: EDUser.user.addresss[indexPath.row])
         return cell
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         super.tableView(tableView, numberOfRowsInSection: section)
-        return addresss.count
+        return EDUser.user.addresss.count
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -42,5 +43,10 @@ class EDAddressManagementViewController: UITableViewController {
             (selectedCompletionHandler ?? { _ in })(address)
         }
         navigationController?.popViewController(animated: true)
+    }
+
+    @objc func addAddress() {
+        let vc = EDAddressEditingViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

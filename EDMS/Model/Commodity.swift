@@ -16,9 +16,9 @@ struct Commodity: Codable, Equatable {
     var price: Double
     var limit: Int
     var orders: Int
-    var cag: Int
+    var cag: comCag
 
-    init(id: Int, images: [String], name: String, intro: String, price: Double, limit: Int, orders: Int, cag: Int) {
+    init(id: Int, images: [String], name: String, intro: String, price: Double, limit: Int, orders: Int, cag: comCag) {
         self.id = id
         self.images = images
         self.name = name
@@ -37,7 +37,7 @@ struct Commodity: Codable, Equatable {
         price = json["price"].doubleValue
         limit = json["limit"].intValue
         orders = json["orders"].intValue
-        cag = json["cag"].intValue
+        cag = comCag(rawValue: json["opinion"].intValue) ?? .Accessories
     }
 
     init() {
@@ -53,16 +53,18 @@ struct Commodity: Codable, Equatable {
             "price": price,
             "limit": limit,
             "orders": orders,
-            "cag": cag,
+            "opinion": cag,
         ]
         return dict
     }
 
     init?(dict: [String: Any]) {
-        guard let id = dict["id"] as? Int, let images = dict["images"] as? [String], let name = dict["name"] as? String, let intro = dict["intro"] as? String, let price = dict["price"] as? Double, let limit = dict["limit"] as? Int, let orders = dict["orders"] as? Int, let cag = dict["cag"] as? Int else {
+        guard let id = dict["id"] as? Int, let images = dict["images"] as? [String], let name = dict["name"] as? String, let intro = dict["intro"] as? String, let price = dict["price"] as? Double, let limit = dict["limit"] as? Int, let orders = dict["orders"] as? Int, let cag = dict["opinion"] as? Int else {
             return nil
         }
-        self = Commodity(id: id, images: images, name: name, intro: intro, price: price, limit: limit, orders: orders, cag: cag)
+
+        let comcag = comCag(rawValue: cag) ?? .Accessories
+        self = Commodity(id: id, images: images, name: name, intro: intro, price: price, limit: limit, orders: orders, cag: comcag)
     }
 
     static func == (lhs: Commodity, rhs: Commodity) -> Bool {
