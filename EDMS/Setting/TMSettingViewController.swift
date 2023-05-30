@@ -10,7 +10,7 @@ import TMComponent
 import UIKit
 
 class EDSettingViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    var settingConfig = ["Appearance": [AppearanceSetting.Light.userDisplayName, AppearanceSetting.Dark.userDisplayName, AppearanceSetting.UnSpecified.userDisplayName], "Language": [LanguageSetting.Ch.userDisplayName, LanguageSetting.En.userDisplayName, LanguageSetting.Es.userDisplayName, LanguageSetting.De.userDisplayName, LanguageSetting.Fr.userDisplayName], "Info": [""]]
+    var settingConfig = ["Appearance": [AppearanceSetting.Light.userDisplayName, AppearanceSetting.Dark.userDisplayName, AppearanceSetting.UnSpecified.userDisplayName], "Info": [""]]
     let tableView: UITableView = {
         let tableView = UITableView()
         return tableView
@@ -60,21 +60,6 @@ class EDSettingViewController: UIViewController, UITableViewDelegate, UITableVie
             cell.setupEvent(title: "Appearance", info: UserDefaults.standard.string(forKey: "AppleAppearance") ?? "UnSpecified")
             cell.selectionStyle = .none
             return cell
-        } else if indexPath.row == 2 {
-            let cell = EDsettingTableViewCell()
-            if (UserDefaults.standard.stringArray(forKey: "AppleLanguages")?[0] ?? "Chinese").contains("en") {
-                cell.setupEvent(title: "Language", info: "English")
-            } else if (UserDefaults.standard.stringArray(forKey: "AppleLanguages")?[0] ?? "Chinese").contains("es") {
-                cell.setupEvent(title: "Language", info: "Spanish")
-            } else if (UserDefaults.standard.stringArray(forKey: "AppleLanguages")?[0] ?? "Chinese").contains("fr") {
-                cell.setupEvent(title: "Language", info: "French")
-            } else if (UserDefaults.standard.stringArray(forKey: "AppleLanguages")?[0] ?? "Chinese").contains("de") {
-                cell.setupEvent(title: "Language", info: "German")
-            } else {
-                cell.setupEvent(title: "Language", info: "Chinese")
-            }
-            cell.selectionStyle = .none
-            return cell
         } else {
             let cell = EDsettingTableViewCell()
             cell.setupEvent(title: "Info", info: "")
@@ -85,16 +70,14 @@ class EDSettingViewController: UIViewController, UITableViewDelegate, UITableVie
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! EDsettingTableViewCell
-        if indexPath.row < 3 {
+        if indexPath.row < 2 {
             let vc = EDSettingSelectionViewController()
             vc.title = cell.titleView.text
-            let configs = ["Appearance", "Language"]
+            let configs = ["显示模式"]
             vc.dataSource = settingConfig[configs[indexPath.row - 1]] ?? []
             vc.completionHandler = { result in
                 if indexPath.row == 1 {
-                    cell.setupEvent(title: "Appearance", info: result)
-                } else if indexPath.row == 2 {
-                    cell.setupEvent(title: "Language", info: result)
+                    cell.setupEvent(title: "显示模式", info: result)
                 }
             }
             navigationController?.pushViewController(vc, animated: true)
@@ -114,13 +97,13 @@ class EDSettingViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        4
+        3
     }
 
     @objc func signOut() {
-        let sheetCtrl = UIAlertController(title: "Sign out?", message: nil, preferredStyle: .alert)
+        let sheetCtrl = UIAlertController(title: "退出登录", message: nil, preferredStyle: .alert)
 
-        let action = UIAlertAction(title: "Ok", style: .default) { _ in
+        let action = UIAlertAction(title: "确定", style: .default) { _ in
             if let window = self.signOutBtn.window {
                 UserDefaults.standard.set(nil, forKey: EDUDKeys.JSONWebToken.rawValue)
                 UserDefaults.standard.set(nil, forKey: EDUDKeys.UserInfo.rawValue)
@@ -130,7 +113,7 @@ class EDSettingViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         sheetCtrl.addAction(action)
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { _ in
+        let cancelAction = UIAlertAction(title: "取消", style: .default) { _ in
             sheetCtrl.dismiss(animated: true)
         }
         sheetCtrl.addAction(cancelAction)

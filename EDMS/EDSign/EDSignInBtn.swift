@@ -20,7 +20,7 @@ class EDSignInBtn: UILabel {
         font = UIFont.boldSystemFont(ofSize: 20)
         textColor = UIColor(named: "ContentBackground")
         textAlignment = .center
-        text = NSLocalizedString("SignIn", comment: "")
+        text = NSLocalizedString("登录", comment: "")
         isUserInteractionEnabled = true
         // 添加点击手势
         addTapGesture(self, #selector(handleTapGesture))

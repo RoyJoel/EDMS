@@ -16,6 +16,8 @@ class EDUser {
     // 未登录时为默认信息
     static var user = User()
 
+    static var commodities: [Commodity] = []
+
     static func signIn(completionHandler: @escaping (User?, Error?) -> Void) {
         // 将要加密的字符串连接在一起
         let password = user.password
@@ -182,6 +184,34 @@ class EDUser {
                 return
             }
             completionHandler(Order(json: json))
+        }
+    }
+
+    static func addToCart(bill: BillRequest, completionHandler: @escaping (Order) -> Void) {
+        EDNetWork.post("/cart/addBill", dataParameters: bill) { json in
+            guard let json = json else {
+                return
+            }
+            completionHandler(Order(json: json))
+        }
+    }
+
+    static func deleteBillInCart(bill: BillRequest, completionHandler: @escaping (Order) -> Void) {
+        EDNetWork.post("/cart/deleteBill", dataParameters: bill) { json in
+            guard let json = json else {
+                return
+            }
+            completionHandler(Order(json: json))
+        }
+    }
+
+    static func assignCart(completionHandler: @escaping (Int) -> Void) {
+        EDNetWork.post("/cart/assign", dataParameters: ["id": EDUser.user.id]) { json in
+            guard let json = json else {
+                return
+            }
+            EDUser.user.cart = json.intValue
+            completionHandler(json.intValue)
         }
     }
 }

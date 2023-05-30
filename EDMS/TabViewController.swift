@@ -41,9 +41,9 @@ class TabViewController: UITabBarController {
     }
 
     private func addViewController() {
-        setChildViewController(expressVC, NSLocalizedString("Express", comment: ""), "shippingbox")
-        setChildViewController(eventVC, NSLocalizedString("Event", comment: ""), "trophy")
-        setChildViewController(accountVC, NSLocalizedString("Me", comment: ""), "figure.tennis")
+        setChildViewController(expressVC, NSLocalizedString("快递", comment: ""), "shippingbox")
+        setChildViewController(eventVC, NSLocalizedString("积分商城", comment: ""), "trophy")
+        setChildViewController(accountVC, NSLocalizedString("我的", comment: ""), "figure.tennis")
     }
 
     private func setChildViewController(_ childViewController: UIViewController, _ itemName: String, _ itemImage: String) {

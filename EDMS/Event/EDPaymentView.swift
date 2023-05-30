@@ -9,7 +9,7 @@ import TMComponent
 import UIKit
 
 class EDPaymentView: UIView, UITableViewDataSource {
-    var paymentConfig = Payment.allCases.compactMap { $0.rawValue }
+    var paymentConfig = payType.allCases.compactMap { $0.displayName }
 
     lazy var titleView: UILabel = {
         let label = UILabel()

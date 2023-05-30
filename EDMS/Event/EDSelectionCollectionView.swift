@@ -11,6 +11,7 @@ import UIKit
 class EDSelectionCollectionView: UICollectionView, UICollectionViewDelegate, UICollectionViewDataSource {
     var com: Commodity = Commodity()
     var selectedRow: Int = 0
+    var selectedCompletionHandler: ((Option) -> Void)?
     init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout, com: Commodity) {
         super.init(frame: frame, collectionViewLayout: layout)
         self.com = com
@@ -52,6 +53,7 @@ class EDSelectionCollectionView: UICollectionView, UICollectionViewDelegate, UIC
         let cell = cellForItem(at: IndexPath(row: selectedRow, section: 0)) as? EDCagSelectionCell
         cell?.isBeenSelected = false
         selectedRow = indexPath.row
+        (selectedCompletionHandler ?? { _ in })(com.options[indexPath.row])
 
         let newSelectedCell = cellForItem(at: indexPath) as? EDCagSelectionCell
         newSelectedCell?.isBeenSelected = true

@@ -112,16 +112,16 @@ class EDResetPasswordViewController: UIViewController {
         }
         let reauthBtnConfig = TMButtonConfig(title: "Verification failed, tap to try again", action: #selector(authenticateUserTapped), actionTarget: self)
         reauthBtn.setUp(with: reauthBtnConfig)
-        accountLabel.text = NSLocalizedString("Account", comment: "")
+        accountLabel.text = NSLocalizedString("账号", comment: "")
         let accountTFConfig = EDTextFieldConfig(placeholderText: "Enter account")
         accountTextField.setup(with: accountTFConfig)
-        resetLabel.text = NSLocalizedString("Reset Password", comment: "")
+        resetLabel.text = NSLocalizedString("新密码", comment: "")
         let resetTFConfig = EDTextFieldConfig(placeholderText: "Reset Password")
         resetTextField.setup(with: resetTFConfig)
-        confirmLabel.text = NSLocalizedString("Confirm Password", comment: "")
+        confirmLabel.text = NSLocalizedString("确认密码", comment: "")
         let confirmTFConfig = EDTextFieldConfig(placeholderText: "Confirm Password")
         confirmTextField.setup(with: confirmTFConfig)
-        let submitBtnConfig = TMButtonConfig(title: "Submit", action: #selector(submitPassword), actionTarget: self)
+        let submitBtnConfig = TMButtonConfig(title: "提交", action: #selector(submitPassword), actionTarget: self)
         submitBtn.setUp(with: submitBtnConfig)
 
         accountLabel.isHidden = true
@@ -149,7 +149,7 @@ class EDResetPasswordViewController: UIViewController {
                     }
                 } else {
                     let toastView = UILabel()
-                    toastView.text = NSLocalizedString("Confirm password should match the password entered", comment: "")
+                    toastView.text = NSLocalizedString("两次输入的密码不正确", comment: "")
                     toastView.numberOfLines = 2
                     toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
                     toastView.backgroundColor = UIColor(named: "ComponentBackground")
@@ -159,7 +159,7 @@ class EDResetPasswordViewController: UIViewController {
                 }
             } else {
                 let toastView = UILabel()
-                toastView.text = NSLocalizedString("You Have Not Signed In This Account Successfully", comment: "")
+                toastView.text = NSLocalizedString("您未曾在此设备上成功登陆过该账号", comment: "")
                 toastView.numberOfLines = 2
                 toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
                 toastView.backgroundColor = UIColor(named: "ComponentBackground")

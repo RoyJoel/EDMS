@@ -64,8 +64,14 @@
 		A87D6B4E29A5AC4D0001C59F /* EDScalableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A87D6B4D29A5AC4D0001C59F /* EDScalableView.swift */; };
 		A8944EA82A124A82008601EA /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8944EA72A124A82008601EA /* Option.swift */; };
 		A8944EAA2A1269E3008601EA /* EDCommodityRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8944EA92A1269E3008601EA /* EDCommodityRequest.swift */; };
+		A8944EAC2A133DFB008601EA /* EDOrderRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8944EAB2A133DFB008601EA /* EDOrderRequest.swift */; };
+		A894E6152A230400001EC075 /* EDExpressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A894E6142A230400001EC075 /* EDExpressRequest.swift */; };
+		A894E6172A23068F001EC075 /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A894E6162A23068F001EC075 /* Trace.swift */; };
+		A894E6192A2306B9001EC075 /* Shipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A894E6182A2306B9001EC075 /* Shipment.swift */; };
 		A89DCDC52A08B45400D99360 /* EDOrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89DCDC42A08B45400D99360 /* EDOrderDetailViewController.swift */; };
 		A89DCDC72A08B4B300D99360 /* EDDeliveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89DCDC62A08B4B300D99360 /* EDDeliveryViewController.swift */; };
+		A8A1242F2A13711F005A16D1 /* EDSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A1242E2A13711F005A16D1 /* EDSelectionView.swift */; };
+		A8A124312A137147005A16D1 /* EDSeverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A124302A137147005A16D1 /* EDSeverView.swift */; };
 		A8ABA11729B059AB002F1632 /* EDGameRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8ABA11629B059AB002F1632 /* EDGameRequest.swift */; };
 		A8ABA11B29B06C43002F1632 /* EDTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8ABA11A29B06C43002F1632 /* EDTextField.swift */; };
 		A8ABA11D29B06C4E002F1632 /* EDTextFieldConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8ABA11C29B06C4E002F1632 /* EDTextFieldConfig.swift */; };
@@ -205,8 +211,14 @@
 		A87D6B4D29A5AC4D0001C59F /* EDScalableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EDScalableView.swift; sourceTree = "<group>"; };
 		A8944EA72A124A82008601EA /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		A8944EA92A1269E3008601EA /* EDCommodityRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDCommodityRequest.swift; sourceTree = "<group>"; };
+		A8944EAB2A133DFB008601EA /* EDOrderRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDOrderRequest.swift; sourceTree = "<group>"; };
+		A894E6142A230400001EC075 /* EDExpressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDExpressRequest.swift; sourceTree = "<group>"; };
+		A894E6162A23068F001EC075 /* Trace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trace.swift; sourceTree = "<group>"; };
+		A894E6182A2306B9001EC075 /* Shipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shipment.swift; sourceTree = "<group>"; };
 		A89DCDC42A08B45400D99360 /* EDOrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDOrderDetailViewController.swift; sourceTree = "<group>"; };
 		A89DCDC62A08B4B300D99360 /* EDDeliveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDDeliveryViewController.swift; sourceTree = "<group>"; };
+		A8A1242E2A13711F005A16D1 /* EDSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDSelectionView.swift; sourceTree = "<group>"; };
+		A8A124302A137147005A16D1 /* EDSeverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDSeverView.swift; sourceTree = "<group>"; };
 		A8ABA11629B059AB002F1632 /* EDGameRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDGameRequest.swift; sourceTree = "<group>"; };
 		A8ABA11A29B06C43002F1632 /* EDTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDTextField.swift; sourceTree = "<group>"; };
 		A8ABA11C29B06C4E002F1632 /* EDTextFieldConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDTextFieldConfig.swift; sourceTree = "<group>"; };
@@ -335,7 +347,9 @@
 				A83FAA6C29B341E900C17AE7 /* EDStatsRequest.swift */,
 				A850A94929E79D2E000AC80C /* EDClubRequest.swift */,
 				A8944EA92A1269E3008601EA /* EDCommodityRequest.swift */,
+				A8944EAB2A133DFB008601EA /* EDOrderRequest.swift */,
 				A810F79029ADEEB20044C424 /* EDNetWork.swift */,
+				A894E6142A230400001EC075 /* EDExpressRequest.swift */,
 				A8C081902A10EC93009D7130 /* EDAddressRequest.swift */,
 				A8FF67C729F7ABDE00F20BC1 /* EDGDAddressRequest.swift */,
 			);
@@ -431,6 +445,8 @@
 				A81512092A0B1F7800B23F87 /* TMUserInfoView.swift */,
 				A815120B2A0B1F7900B23F87 /* TMUserStatsView.swift */,
 				A815120D2A0B1F7C00B23F87 /* TMUserActivityView.swift */,
+				A8A1242E2A13711F005A16D1 /* EDSelectionView.swift */,
+				A8A124302A137147005A16D1 /* EDSeverView.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -546,6 +562,8 @@
 				A82DF22F29F65D5F000C746C /* Bill.swift */,
 				A82DF23329F65FB0000C746C /* Address.swift */,
 				A82DF23129F65F0C000C746C /* Order.swift */,
+				A894E6162A23068F001EC075 /* Trace.swift */,
+				A894E6182A2306B9001EC075 /* Shipment.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -858,6 +876,7 @@
 				A81511F62A0B1F6400B23F87 /* AccountViewController.swift in Sources */,
 				A8C35A0329C6CA60009338A4 /* TMEventGameCell.swift in Sources */,
 				A81511F82A0B1F6600B23F87 /* EDUserOrderCell.swift in Sources */,
+				A8A124312A137147005A16D1 /* EDSeverView.swift in Sources */,
 				A8D1BB4829AA0E5C0096EE41 /* Player.swift in Sources */,
 				A8ABA11729B059AB002F1632 /* EDGameRequest.swift in Sources */,
 				A81511FC2A0B1F6A00B23F87 /* EDUserOrderTableView.swift in Sources */,
@@ -870,14 +889,18 @@
 				A810F78E29ADEDB70044C424 /* EDPlayerRequest.swift in Sources */,
 				A8C359FF29C6B757009338A4 /* DateFormatter.swift in Sources */,
 				A8EC716D29E5024A009A5D51 /* DoubleExtension.swift in Sources */,
+				A8A1242F2A13711F005A16D1 /* EDSelectionView.swift in Sources */,
 				A8C081912A10EC93009D7130 /* EDAddressRequest.swift in Sources */,
 				A8D373AA29DE9D99003ED78D /* EDSettingKeys.swift in Sources */,
 				A82DF22E29F6125D000C746C /* EDComBillingCell.swift in Sources */,
 				A81512042A0B1F7200B23F87 /* TMHistoryGameCell.swift in Sources */,
+				A894E6172A23068F001EC075 /* Trace.swift in Sources */,
+				A8944EAC2A133DFB008601EA /* EDOrderRequest.swift in Sources */,
 				A8C35A0129C6BBAE009338A4 /* User.swift in Sources */,
 				A82DF22629F3E64F000C746C /* EDCagSelectionCell.swift in Sources */,
 				A8C1052129D2BAB5003E225E /* Schedule.swift in Sources */,
 				A850A94629E6B045000AC80C /* EDUserDataSelectViewController.swift in Sources */,
+				A894E6152A230400001EC075 /* EDExpressRequest.swift in Sources */,
 				A879B09B29E2C94F006F48FE /* TMH2HViewController.swift in Sources */,
 				A8ED766429D686BD005A6F23 /* TMSettingSelectionCell.swift in Sources */,
 				A850A94A29E79D2E000AC80C /* EDClubRequest.swift in Sources */,
@@ -887,6 +910,7 @@
 				A81512062A0B1F7400B23F87 /* TMUserAllHistoryGamesViewController.swift in Sources */,
 				A8B1A09629C09F830084F9CE /* Club.swift in Sources */,
 				A810F79129ADEEB20044C424 /* EDNetWork.swift in Sources */,
+				A894E6192A2306B9001EC075 /* Shipment.swift in Sources */,
 				A8FF67C429F79C3A00F20BC1 /* EDAddressManagementViewController.swift in Sources */,
 				A82DF23429F65FB0000C746C /* Address.swift in Sources */,
 				A82DF22A29F516F4000C746C /* EDQuantitySelectorView.swift in Sources */,

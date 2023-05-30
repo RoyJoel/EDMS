@@ -62,7 +62,26 @@ struct Bill: Codable, Equatable {
     }
 }
 
-enum Payment: String, Codable, CaseIterable {
-    case WeChat
-    case AliPay
+struct BillRequest: Codable, Equatable {
+    var id: Int
+    var comId: Int
+    var quantity: Int
+    var optionId: Int
+    var orderId: Int
+
+    init(id: Int, comId: Int, quantity: Int, optionId: Int, orderId: Int) {
+        self.id = id
+        self.comId = comId
+        self.quantity = quantity
+        self.optionId = optionId
+        self.orderId = orderId
+    }
+
+    init(json: JSON) {
+        id = json["id"].intValue
+        comId = json["comId"].intValue
+        quantity = json["quantity"].intValue
+        optionId = json["optionId"].intValue
+        orderId = json["orderId"].intValue
+    }
 }

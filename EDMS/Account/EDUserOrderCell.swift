@@ -16,6 +16,7 @@ class EDUserOrderCell: UITableViewCell {
 
     lazy var BillingView: EDBillingView = {
         let view = EDBillingView()
+        view.isOrderCell = true
         return view
     }()
 
@@ -65,6 +66,6 @@ class EDUserOrderCell: UITableViewCell {
     func setupEvent(order: Order) {
         orderLabel.text = "order #\(order.id)"
         BillingView.setup(with: order.bills)
-        paymentAndPriceLabel.text = "\(order.payment) ¥\(order.totalPrice)"
+        paymentAndPriceLabel.text = "\(order.payment) ¥\(EDDataConvert.getTotalPrice(order.bills))"
     }
 }

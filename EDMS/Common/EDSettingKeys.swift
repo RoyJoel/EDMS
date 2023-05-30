@@ -14,9 +14,9 @@ enum AppearanceSetting: String {
 
     var userDisplayName: String {
         switch self {
-        case .Light: return "Always Light"
-        case .Dark: return "Always Dark"
-        case .UnSpecified: return "System"
+        case .Light: return "始终浅色"
+        case .Dark: return "始终深色"
+        case .UnSpecified: return "跟随系统"
         }
     }
 
@@ -30,9 +30,9 @@ enum AppearanceSetting: String {
 
     init(userDisplayName: String) {
         switch userDisplayName {
-        case "Always Light": self = .Light
-        case "Always Dark": self = .Dark
-        case "System": self = .UnSpecified
+        case "始终浅色": self = .Light
+        case "始终深色": self = .Dark
+        case "跟随系统": self = .UnSpecified
         default:
             self = .UnSpecified
         }

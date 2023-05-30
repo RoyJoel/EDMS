@@ -47,14 +47,14 @@ class EventViewController: EDViewController {
 
         titleView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(24)
-            make.top.equalToSuperview().offset(48)
+            make.top.equalToSuperview().offset(60)
             make.width.equalTo(208)
             make.height.equalTo(44)
         }
 
         cartBtn.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-24)
-            make.top.equalToSuperview().offset(48)
+            make.top.equalToSuperview().offset(60)
             make.width.equalTo(44)
             make.height.equalTo(44)
         }
@@ -66,9 +66,9 @@ class EventViewController: EDViewController {
         cartBtn.addTarget(self, action: #selector(enterBillView), for: .touchDown)
         titleView.font = UIFont.systemFont(ofSize: 24)
 
-        filter.frame = CGRect(x: UIStandard.shared.screenWidth - 158, y: 48, width: 90, height: 44)
+        filter.frame = CGRect(x: UIStandard.shared.screenWidth - 170, y: 60, width: 90, height: 44)
 
-        filter.setup(filter.bounds, filter.layer.position, CGRect(x: 0, y: 0, width: 270, height: filter.bounds.height), CGPoint(x: filter.layer.position.x - 40, y: filter.layer.position.y), 0.3)
+        filter.setup(filter.bounds, filter.layer.position, CGRect(x: 0, y: 0, width: 270, height: filter.bounds.height), CGPoint(x: filter.layer.position.x - 28, y: filter.layer.position.y), 0.3)
 
         shoppingCollectionView.snp.makeConstraints { make in
             make.top.equalTo(titleView.snp.bottom).offset(12)
@@ -88,7 +88,8 @@ class EventViewController: EDViewController {
 
     @objc func enterBillView() {
         let vc = EDBillTableViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        let navVC = UINavigationController(rootViewController: vc)
+        navigationController?.present(navVC, animated: true)
         vc.openCartMode()
     }
 }

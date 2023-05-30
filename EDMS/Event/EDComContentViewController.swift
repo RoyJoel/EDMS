@@ -91,7 +91,7 @@ class EDComContentViewController: UIViewController {
             make.height.equalTo(50)
         }
 
-        let btnConfig = TMButtonConfig(title: "Want This?", action: #selector(selectConfig), actionTarget: self)
+        let btnConfig = TMButtonConfig(title: "立即购买", action: #selector(selectConfig), actionTarget: self)
         buyBtn.setUp(with: btnConfig)
         buyBtn.backgroundColor = UIColor(named: "TennisBlur")
         buyBtn.setTitleColor(.black, for: .normal)

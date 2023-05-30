@@ -8,7 +8,7 @@ import Foundation
 import JXSegmentedView
 import TMComponent
 
-class EDUserOrdersView: UIView {
+class EDUserOrdersViewController: UIViewController {
     let allOrdersDS = ordersDataSource()
     let ordersToPayDS = ordersDataSource()
     let ordersToDeliveryDS = ordersDataSource()
@@ -18,7 +18,6 @@ class EDUserOrdersView: UIView {
     let ordersOnReturningDS = ordersDataSource()
     let ordersReturnedDS = ordersDataSource()
 
-    var orders: [Order] = ordersa
     var segmentedDataSource: JXSegmentedBaseDataSource?
     let segmentTMView = JXSegmentedView()
     lazy var listContainerView: JXSegmentedListContainerView! = {
@@ -65,8 +64,10 @@ class EDUserOrdersView: UIView {
         return tableView
     }()
 
-    func setupUI() {
-        backgroundColor = UIColor(named: "BackgroundGray")
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = "订单中心"
+        view.backgroundColor = UIColor(named: "BackgroundGray")
         let titles = ["全部订单"] + OrderState.allCases.compactMap { $0.displayName }
 
         let dataSource = JXSegmentedTitleDataSource()
@@ -85,14 +86,14 @@ class EDUserOrdersView: UIView {
         segmentTMView.delegate = self
         segmentTMView.listContainer = listContainerView
 
-        addSubview(segmentTMView)
-        addSubview(listContainerView)
+        view.addSubview(segmentTMView)
+        view.addSubview(listContainerView)
 
         segmentTMView.snp.makeConstraints { make in
             make.width.equalToSuperview()
             make.height.equalTo(50)
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(103)
         }
         listContainerView.snp.makeConstraints { make in
             make.top.equalTo(segmentTMView.snp.bottom)
@@ -100,41 +101,44 @@ class EDUserOrdersView: UIView {
             make.width.equalToSuperview()
             make.centerX.equalToSuperview()
         }
-
         allOrderTableView.delegate = allOrdersDS
-        allOrdersDS.orders = orders
         allOrderTableView.dataSource = allOrdersDS
         allOrderTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "allOrders")
+        EDOrderRequest.getInfos(id: EDUser.user.id) { orders in
+            let filterOrders = orders.filter { $0.id != EDUser.user.cart }
+            self.allOrdersDS.orders = filterOrders
+            self.allOrderTableView.reloadData()
 
-        ordersToPayTableView.delegate = ordersToPayDS
-        ordersToPayDS.orders = orders.filter { $0.state == .ToPay }
-        ordersToPayTableView.dataSource = ordersToPayDS
-        ordersToPayTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersToPay")
+            self.ordersToPayTableView.delegate = self.ordersToPayDS
+            self.ordersToPayDS.orders = filterOrders.filter { $0.state == .ToPay }
+            self.ordersToPayTableView.dataSource = self.ordersToPayDS
+            self.ordersToPayTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersToPay")
 
-        ordersToDeliveryTableView.delegate = ordersToDeliveryDS
-        ordersToDeliveryDS.orders = orders.filter { $0.state == .ToSend }
-        ordersToDeliveryTableView.dataSource = ordersToDeliveryDS
-        ordersToDeliveryTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersToDelivery")
-        ordersToConfirmTableView.delegate = ordersToConfirmDS
-        ordersToConfirmDS.orders = orders.filter { $0.state == .ToDelivery }
-        ordersToConfirmTableView.dataSource = ordersToConfirmDS
-        ordersToConfirmTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersToConfirm")
-        ordersCompletedTableView.delegate = ordersCompletedDS
-        ordersCompletedDS.orders = orders.filter { $0.state == .Done }
-        ordersCompletedTableView.dataSource = ordersCompletedDS
-        ordersCompletedTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersCompleted")
-        ordersToRefundTableView.delegate = ordersToRefundDS
-        ordersToRefundDS.orders = orders.filter { $0.state == .ToRefund }
-        ordersToRefundTableView.dataSource = ordersToRefundDS
-        ordersToRefundTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersToRefund")
-        ordersOnReturningTableView.delegate = ordersOnReturningDS
-        ordersOnReturningDS.orders = orders.filter { $0.state == .ToReturn }
-        ordersOnReturningTableView.dataSource = ordersOnReturningDS
-        ordersOnReturningTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersOnReturning")
-        ordersReturnedTableView.delegate = ordersReturnedDS
-        ordersReturnedDS.orders = orders.filter { $0.state == .Refunded }
-        ordersReturnedTableView.dataSource = ordersReturnedDS
-        ordersReturnedTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersReturned")
+            self.ordersToDeliveryTableView.delegate = self.ordersToDeliveryDS
+            self.ordersToDeliveryDS.orders = filterOrders.filter { $0.state == .ToSend }
+            self.ordersToDeliveryTableView.dataSource = self.ordersToDeliveryDS
+            self.ordersToDeliveryTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersToDelivery")
+            self.ordersToConfirmTableView.delegate = self.ordersToConfirmDS
+            self.ordersToConfirmDS.orders = filterOrders.filter { $0.state == .ToDelivery }
+            self.ordersToConfirmTableView.dataSource = self.ordersToConfirmDS
+            self.ordersToConfirmTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersToConfirm")
+            self.ordersCompletedTableView.delegate = self.ordersCompletedDS
+            self.ordersCompletedDS.orders = filterOrders.filter { $0.state == .Done }
+            self.ordersCompletedTableView.dataSource = self.ordersCompletedDS
+            self.ordersCompletedTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersCompleted")
+            self.ordersToRefundTableView.delegate = self.ordersToRefundDS
+            self.ordersToRefundDS.orders = filterOrders.filter { $0.state == .ToRefund }
+            self.ordersToRefundTableView.dataSource = self.ordersToRefundDS
+            self.ordersToRefundTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersToRefund")
+            self.ordersOnReturningTableView.delegate = self.ordersOnReturningDS
+            self.ordersOnReturningDS.orders = filterOrders.filter { $0.state == .ToReturn }
+            self.ordersOnReturningTableView.dataSource = self.ordersOnReturningDS
+            self.ordersOnReturningTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersOnReturning")
+            self.ordersReturnedTableView.delegate = self.ordersReturnedDS
+            self.ordersReturnedDS.orders = filterOrders.filter { $0.state == .Refunded }
+            self.ordersReturnedTableView.dataSource = self.ordersReturnedDS
+            self.ordersReturnedTableView.register(EDUserOrderCell.self, forCellReuseIdentifier: "ordersReturned")
+        }
     }
 }
 
@@ -164,7 +168,7 @@ class ordersDataSource: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension EDUserOrdersView: JXSegmentedListContainerViewDataSource {
+extension EDUserOrdersViewController: JXSegmentedListContainerViewDataSource {
     func numberOfLists(in _: JXSegmentedListContainerView) -> Int {
         if let titleDataSource = segmentTMView.dataSource as? JXSegmentedBaseDataSource {
             return titleDataSource.dataSource.count
@@ -202,7 +206,7 @@ extension EDUserOrdersView: JXSegmentedListContainerViewDataSource {
     }
 }
 
-extension EDUserOrdersView: JXSegmentedViewDelegate {
+extension EDUserOrdersViewController: JXSegmentedViewDelegate {
     func segmentedView(_ segmentTMView: JXSegmentedView, didSelectedItemAt index: Int) {
         if let dotDataSource = segmentedDataSource as? JXSegmentedDotDataSource {
             // 先更新数据源的数据

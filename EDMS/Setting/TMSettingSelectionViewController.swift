@@ -123,6 +123,10 @@ class EDSettingSelectionViewController: UIViewController, UITableViewDelegate, U
                 cell.isSelected = true
                 selectedRow = indexPath.row
             }
+        } else if title == "payType" {
+            if selectedRow == indexPath.row {
+                cell.isSelected = true
+            }
         }
         cell.addObserver(cell, forKeyPath: "isBeenSelected", options: [.new, .old], context: nil)
         return cell

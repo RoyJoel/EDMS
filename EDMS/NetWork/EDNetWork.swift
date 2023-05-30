@@ -90,6 +90,17 @@ class EDNetWork {
             completionHandler(json?["data"])
         }
     }
+
+    static func postWithURLEncoded(_ URLParameters: String, dataParameters: Parameters?, completionHandler: @escaping (JSON?) -> Void) {
+        AF.request(URL(string: EDURL + URLParameters)!, method: .post, parameters: dataParameters, encoding: URLEncoding.default).response { response in
+            guard let jsonData = response.data else {
+                completionHandler(nil)
+                return
+            }
+            let json = try? JSON(data: jsonData)
+            completionHandler(json?["data"])
+        }
+    }
 }
 
 enum EDNetWorkError: Error {

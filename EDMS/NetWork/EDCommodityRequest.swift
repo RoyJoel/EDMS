@@ -13,6 +13,7 @@ class EDCommodityRequest {
             guard let json = json else {
                 return
             }
+            EDUser.commodities = json.arrayValue.compactMap { Commodity(json: $0) }
             completionHandler(json.arrayValue.compactMap { Commodity(json: $0) })
         }
     }

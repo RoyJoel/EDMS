@@ -19,6 +19,11 @@ class EDComBillingCell: UITableViewCell {
         return label
     }()
 
+    lazy var configLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+
     lazy var quantityLabel: UILabel = {
         let label = UILabel()
         return label
@@ -33,6 +38,7 @@ class EDComBillingCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(comIconView)
         contentView.addSubview(nameView)
+        contentView.addSubview(configLabel)
         contentView.addSubview(quantityLabel)
         contentView.addSubview(priceLabel)
 
@@ -47,38 +53,54 @@ class EDComBillingCell: UITableViewCell {
         super.layoutSubviews()
 
         comIconView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.height.equalToSuperview().offset(-48)
+            make.top.equalTo(nameView.snp.top)
+            make.bottom.equalTo(configLabel.snp.bottom)
             make.width.equalTo(comIconView.snp.height)
             make.left.equalToSuperview().offset(12)
         }
 
         nameView.snp.makeConstraints { make in
-            make.top.equalTo(comIconView.snp.top)
+            make.top.equalToSuperview().offset(8)
+            make.height.equalTo(50)
             make.left.equalTo(comIconView.snp.right).offset(6)
             make.right.equalToSuperview().offset(-12)
         }
 
+        configLabel.snp.makeConstraints { make in
+            make.height.equalTo(46)
+            make.top.equalTo(nameView.snp.bottom).offset(6)
+            make.left.equalTo(comIconView.snp.right).offset(6)
+            make.right.equalTo(priceLabel.snp.left).offset(-6)
+        }
+
         quantityLabel.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-12)
-            make.top.equalTo(priceLabel.snp.bottom).offset(6)
+            make.top.equalTo(nameView.snp.bottom).offset(6)
+            make.bottom.equalTo(configLabel.snp.bottom)
         }
 
         priceLabel.snp.makeConstraints { make in
-            make.right.equalToSuperview().offset(-12)
+            make.right.equalTo(quantityLabel.snp.left).offset(-6)
             make.top.equalTo(nameView.snp.bottom).offset(6)
+            make.bottom.equalTo(configLabel.snp.bottom)
         }
         comIconView.setCorner(radii: 10)
         quantityLabel.textAlignment = .right
         priceLabel.textAlignment = .right
         priceLabel.font = UIFont.systemFont(ofSize: 17)
         nameView.font = UIFont.systemFont(ofSize: 20)
-        quantityLabel.font = UIFont.systemFont(ofSize: 15)
+        nameView.numberOfLines = 2
+        configLabel.numberOfLines = 2
+        configLabel.font = UIFont.systemFont(ofSize: 16)
+        configLabel.textColor = UIColor(named: "SubTitleColor")
+        quantityLabel.font = UIFont.systemFont(ofSize: 17)
+        quantityLabel.textColor = UIColor(named: "SubTitleColor")
     }
 
     func setupEvent(bill: Bill) {
         comIconView.image = UIImage(named: bill.option.image)
         nameView.text = bill.com.name
+        configLabel.text = "已选\(bill.option.intro)"
         quantityLabel.text = "x\(bill.quantity)"
         priceLabel.text = "¥\(bill.com.price)"
     }

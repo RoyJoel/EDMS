@@ -87,9 +87,12 @@ class ExpressViewController: EDViewController {
             make.right.equalToSuperview().offset(-24)
         }
 
+        senderAddressView.setCorner(radii: 15)
+        recipientAddressView.setCorner(radii: 15)
+        payTypeView.setCorner(radii: 15)
         senderAddressView.setupEvent(address: address1, canEdit: true)
         recipientAddressView.setupEvent(address: address2, canEdit: true)
-        payTypeView.setupEvent(title: "支付方式", info: payType.cashOnDelivery.rawValue)
+        payTypeView.setupEvent(title: "支付方式", info: payType.cashOnDelivery.displayName)
         payTypeView.addTapGesture(self, #selector(enterPayTypeSelectionView))
         let textFieldConfig = EDTextFieldConfig(placeholderText: "输入你的物品类型")
         commodityTypeLabel.text = "物品类型"
@@ -102,7 +105,8 @@ class ExpressViewController: EDViewController {
     @objc func enterPayTypeSelectionView() {
         let vc = EDSettingSelectionViewController()
         vc.title = "payType"
-        vc.dataSource = payType.allCases.compactMap { $0.rawValue }
+        vc.selectedRow = payType(displayName: payTypeView.infoView.text ?? "").index
+        vc.dataSource = payType.allCases.compactMap { $0.displayName }
         vc.completionHandler = { selectedPayType in
             self.payTypeView.setupEvent(title: "支付方式", info: selectedPayType)
         }
@@ -110,8 +114,41 @@ class ExpressViewController: EDViewController {
     }
 }
 
-enum payType: String, CaseIterable {
+enum payType: String, CaseIterable, Codable {
     case cashOnDelivery
     case aliPayOnline
     case weChatOnline
+
+    var index: Int {
+        switch self {
+        case .cashOnDelivery:
+            return 0
+        case .aliPayOnline:
+            return 1
+        case .weChatOnline:
+            return 2
+        }
+    }
+
+    var displayName: String {
+        switch self {
+        case .cashOnDelivery:
+            return "货到付款"
+        case .weChatOnline:
+            return "微信支付"
+        case .aliPayOnline:
+            return "支付宝支付"
+        }
+    }
+
+    init(displayName: String) {
+        switch displayName {
+        case "支付宝支付":
+            self = .aliPayOnline
+        case "微信支付":
+            self = .weChatOnline
+        default:
+            self = .cashOnDelivery
+        }
+    }
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import TMComponent
 import UIKit
 
 class EDBillTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -36,9 +37,15 @@ class EDBillTableViewController: UIViewController, UITableViewDataSource, UITabl
         return tableView
     }()
 
+    lazy var alartView: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+
     override func viewDidLoad() {
         view.backgroundColor = UIColor(named: "BackgroundGray")
         view.addSubview(billTableView)
+        view.addSubview(alartView)
         billTableView.backgroundColor = UIColor(named: "BackgroundGray")
         view.insertSubview(orderBackgroundView, aboveSubview: billTableView)
         orderBackgroundView.addSubview(totalLabel)
@@ -74,33 +81,89 @@ class EDBillTableViewController: UIViewController, UITableViewDataSource, UITabl
             make.height.equalTo(50)
         }
 
+        alartView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
         billTableView.register(EDComBillingCell.self, forCellReuseIdentifier: "billing")
         billTableView.showsHorizontalScrollIndicator = false
         billTableView.showsVerticalScrollIndicator = false
         billTableView.dataSource = self
         billTableView.delegate = self
 
+        orderBackgroundView.backgroundColor = UIColor(named: "ComponentBackground")
         orderBackgroundView.isHidden = true
+        billTableView.isHidden = false
+        alartView.isHidden = true
+    }
+
+    func setupAlart() {
+        orderBackgroundView.isHidden = true
+        billTableView.isHidden = true
+        alartView.isHidden = false
+        alartView.text = NSLocalizedString("空空如也", comment: "")
+        alartView.font = UIFont.systemFont(ofSize: 22)
+        alartView.textAlignment = .center
     }
 
     func openCartMode() {
+        title = "购物车"
         EDUser.getCartInfo { cart in
-            self.bills = cart.bills
-            self.billTableView.reloadData()
-            self.totalLabel.text = "Total"
-            self.totalLabel.font = UIFont.systemFont(ofSize: 26)
+            if cart.bills.count == 0 {
+                self.setupAlart()
+            } else {
+                self.bills = cart.bills
+                self.billTableView.reloadData()
+                self.totalLabel.text = "Total"
+                self.totalLabel.font = UIFont.systemFont(ofSize: 26)
 
-            let totalNum = EDDataConvert.getTotalPrice(cart.bills)
-            self.totalNumLabel.text = "¥" + String(format: "%.2f", totalNum)
-            self.totalNumLabel.font = UIFont.systemFont(ofSize: 22)
+                let totalNum = EDDataConvert.getTotalPrice(cart.bills)
+                self.totalNumLabel.text = "¥" + String(format: "%.2f", totalNum)
+                self.totalNumLabel.font = UIFont.systemFont(ofSize: 22)
 
-            self.confirmBtn.setTitle("Pay", for: .normal)
-            self.confirmBtn.backgroundColor = UIColor(named: "TennisBlur")
-            self.confirmBtn.setTitleColor(.black, for: .normal)
-            self.confirmBtn.addTarget(self, action: #selector(self.enterBillingViewController), for: .touchDown)
-            self.confirmBtn.setCorner(radii: 15)
-            self.orderBackgroundView.isHidden = false
+                self.confirmBtn.setTitle("下单", for: .normal)
+                self.confirmBtn.backgroundColor = UIColor(named: "TennisBlur")
+                self.confirmBtn.setTitleColor(.black, for: .normal)
+                self.confirmBtn.addTarget(self, action: #selector(self.enterBillingViewController), for: .touchDown)
+                self.confirmBtn.setCorner(radii: 15)
+                self.orderBackgroundView.isHidden = false
+            }
         }
+    }
+
+    func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool {
+        if title == "购物车" {
+            return true
+        } else {
+            return false
+        }
+    }
+
+    func tableView(_ tableView: UITableView, editingStyleForRowAt _: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+
+    func tableView(_: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: NSLocalizedString("Delete", comment: "")) { _, _, _ in
+            let bill = self.bills.remove(at: indexPath.row)
+            let billRequest = BillRequest(id: bill.id, comId: bill.com.id, quantity: bill.quantity, optionId: bill.option.id, orderId: EDUser.user.cart)
+            EDUser.deleteBillInCart(bill: billRequest) { cart in
+                self.bills = cart.bills
+                self.billTableView.reloadData()
+                let toastView = UILabel()
+                toastView.text = NSLocalizedString("已删除", comment: "")
+                toastView.numberOfLines = 2
+                toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
+                toastView.backgroundColor = UIColor(named: "ComponentBackground")
+                toastView.textAlignment = .center
+                toastView.setCorner(radii: 15)
+                self.view.showToast(toastView, duration: 1, point: CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)) { _ in
+                }
+            }
+        }
+        deleteAction.backgroundColor = .red
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
     }
 
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
@@ -108,7 +171,7 @@ class EDBillTableViewController: UIViewController, UITableViewDataSource, UITabl
     }
 
     func tableView(_: UITableView, heightForRowAt _: IndexPath) -> CGFloat {
-        return 168
+        return 118
     }
 
     func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -119,8 +182,9 @@ class EDBillTableViewController: UIViewController, UITableViewDataSource, UITabl
 
     @objc func enterBillingViewController() {
         let vc = EDBillingViewController()
-        let newOrder = Order(id: 0, bills: bills, shippingAddress: address1, deliveryAddress: address2, payment: .WeChat, totalPrice: EDDataConvert.getTotalPrice(bills), createdTime: Date().timeIntervalSince1970, state: .ToPay)
+        let newOrder = Order(id: 0, bills: bills, shippingAddress: address1, deliveryAddress: address2, payment: .weChatOnline, createdTime: Date().timeIntervalSince1970, state: .ToPay)
         vc.order = newOrder
         navigationController?.pushViewController(vc, animated: true)
+        vc.isCart = true
     }
 }

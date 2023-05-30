@@ -37,6 +37,7 @@ class EDOrderDetailViewController: UIViewController {
 
     lazy var billingView: EDBillingView = {
         let view = EDBillingView()
+        view.isOrderCell = true
         return view
     }()
 
@@ -247,22 +248,40 @@ class EDOrderDetailViewController: UIViewController {
 
         orderStateLabel.text = order.state.displayName
         orderStateLabel.font = UIFont.systemFont(ofSize: 24)
-        addressView.setupEvent(address: order.deliveryAddress, canEdit: order.state == .ToPay || order.state == .ToSend)
+        addressView.setupEvent(address: order.deliveryAddress)
         billingView.setup(with: order.bills)
         paymentLabel.text = "支付方式"
         paymentNameLabel.text = order.payment.rawValue
-        priceNumLabel.text = "¥\(order.totalPrice)"
+        priceNumLabel.text = "¥\(EDDataConvert.getTotalPrice(order.bills))"
         priceLabel.text = "总计"
-        cancelBtn.setTitle("取消订单", for: .normal)
         cancelBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
         cancelBtn.backgroundColor = UIColor(named: "ComponentBackground")
         cancelBtn.setCorner(radii: 10)
-        if order.state == .ToSend {
-            sentBtn.setTitle("一键发货", for: .normal)
+        if order.state == .ToPay {
+            sentBtn.setTitle("修改地址", for: .normal)
+            sentBtn.addTarget(self, action: #selector(changeAddress), for: .touchDown)
+            cancelBtn.setTitle("取消订单", for: .normal)
+            cancelBtn.isHidden = false
+            cancelBtn.addTarget(self, action: #selector(cancelOrder), for: .touchDown)
+        } else if order.state == .ToSend {
+            sentBtn.setTitle("修改地址", for: .normal)
+            sentBtn.addTarget(self, action: #selector(changeAddress), for: .touchDown)
+            cancelBtn.isHidden = true
         } else if order.state == .ToDelivery {
-            sentBtn.setTitle("一键拦截", for: .normal)
-        } else if order.state == .ToRefund || order.state == .ToReturn {
-            sentBtn.setTitle("确认", for: .normal)
+            sentBtn.setTitle("确认收货", for: .normal)
+            sentBtn.addTarget(self, action: #selector(confirmDelivery), for: .touchDown)
+            cancelBtn.isHidden = true
+        } else if order.state == .ToRefund {
+            sentBtn.setTitle("我已发货", for: .normal)
+            sentBtn.addTarget(self, action: #selector(sentOrder), for: .touchDown)
+            cancelBtn.addTarget(self, action: #selector(cancelRefund), for: .touchDown)
+            cancelBtn.setTitle("取消退货", for: .normal)
+            cancelBtn.isHidden = false
+        } else if order.state == .ToReturn {
+            sentBtn.setTitle("取消退款", for: .normal)
+            sentBtn.addTarget(self, action: #selector(cancelReturn), for: .touchDown)
+            sentBtn.isHidden = false
+            cancelBtn.isHidden = true
         } else {
             sentBtn.isHidden = true
             cancelBtn.isHidden = true
@@ -270,8 +289,6 @@ class EDOrderDetailViewController: UIViewController {
         sentBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
         sentBtn.backgroundColor = UIColor(named: "TennisBlur")
         sentBtn.setCorner(radii: 10)
-        cancelBtn.addTarget(self, action: #selector(cancelOrder), for: .touchDown)
-        sentBtn.addTarget(self, action: #selector(sentOrder), for: .touchDown)
         orderLabel.text = "订单编号"
         orderNumLabel.text = "\(order.id)"
         orderCreateTimeLabel.text = "创建时间"
@@ -305,6 +322,20 @@ class EDOrderDetailViewController: UIViewController {
     }
 
     @objc func cancelOrder() {}
+
+    @objc func confirmDelivery() {}
+
+    @objc func changeAddress() {
+        let vc = EDAddressManagementViewController()
+        vc.selectedCompletionHandler = { address in
+            self.addressView.setupEvent(address: address)
+        }
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc func cancelRefund() {}
+
+    @objc func cancelReturn() {}
 
     @objc func sentOrder() {
         let vc = EDDeliveryViewController()

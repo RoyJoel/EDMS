@@ -13,7 +13,7 @@ class EDFilterView: TMView {
     let cagDS = cagFilterDataSource()
     let pointsDS = pointsFilterDataSource()
     var cagCurIndex: String = comCag.none.displayName
-    var pointsCurIndex = ""
+    var pointsCurIndex: String = comPoint.none.displayName
     var completionHandler: (([Commodity]) -> Void)?
 
     lazy var filterBtn: UIButton = {
@@ -43,7 +43,7 @@ class EDFilterView: TMView {
         filterBtn.setCorner(radii: 8)
         filterBtn.backgroundColor = UIColor(named: "ComponentBackground")
         filterBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
-        filterBtn.setTitle("Filter", for: .normal)
+        filterBtn.setTitle("筛选", for: .normal)
 
         cagFilter.delegate = cagFilter
         cagFilter.dataSource = cagDS
@@ -123,7 +123,7 @@ class EDFilterView: TMView {
                 }
                 scaleTo(toggle)
                 filterBtn.removeTarget(self, action: #selector(applyFilter), for: .touchDown)
-                filterBtn.setTitle("Filter", for: .normal)
+                filterBtn.setTitle("筛选", for: .normal)
                 filterBtn.addTarget(self, action: #selector(showFilter), for: .touchDown)
             }
         }
@@ -133,24 +133,37 @@ class EDFilterView: TMView {
     @objc func showFilter() {
         scaleTo(toggle)
         filterBtn.removeTarget(self, action: #selector(showFilter), for: .touchDown)
-        filterBtn.setTitle("Apply", for: .normal)
+        filterBtn.setTitle("应用", for: .normal)
         filterBtn.addTarget(self, action: #selector(applyFilter), for: .touchDown)
     }
 
     @objc func applyFilter() {
         let selectedCag = cagDS.filterItems[0]
         let selectedPoints = pointsDS.filterItems[0]
-        var filteredComs: [Commodity] = []
+        var cagFilteredComs: [Commodity] = []
+        var pointFilteredComs: [Commodity] = []
         if comCag(displayName: selectedCag).rawValue == 0 {
-            filteredComs = com
+            cagFilteredComs = EDUser.commodities
         } else {
-            filteredComs = com.filter { $0.cag.displayName == selectedCag }
+            cagFilteredComs = EDUser.commodities.filter { $0.cag.displayName == selectedCag }
         }
-        (completionHandler ?? { _ in })(filteredComs)
+
+        if comPoint(displayName: selectedPoints).rawValue == 0 {
+            pointFilteredComs = cagFilteredComs
+        } else if comPoint(displayName: selectedPoints).rawValue == 1 {
+            pointFilteredComs = cagFilteredComs.filter { $0.price < 100 }
+        } else if comPoint(displayName: selectedPoints).rawValue == 2 {
+            pointFilteredComs = cagFilteredComs.filter { $0.price >= 100 && $0.price < 500 }
+        } else if comPoint(displayName: selectedPoints).rawValue == 3 {
+            pointFilteredComs = cagFilteredComs.filter { $0.price > 500 && $0.price < 1000 }
+        } else if comPoint(displayName: selectedPoints).rawValue == 4 {
+            pointFilteredComs = cagFilteredComs.filter { $0.price > 1000 }
+        }
+        (completionHandler ?? { _ in })(pointFilteredComs)
 
         scaleTo(toggle)
         filterBtn.removeTarget(self, action: #selector(applyFilter), for: .touchDown)
-        filterBtn.setTitle("Filter", for: .normal)
+        filterBtn.setTitle("筛选", for: .normal)
         filterBtn.addTarget(self, action: #selector(showFilter), for: .touchDown)
         cagCurIndex = cagDS.filterItems[0]
         pointsCurIndex = pointsDS.filterItems[0]
@@ -158,7 +171,7 @@ class EDFilterView: TMView {
 }
 
 class pointsFilterDataSource: NSObject, UITableViewDataSource {
-    var filterItems = ["<100", "100-500", "500-1000", ">1000"]
+    var filterItems = comPoint.allCases.compactMap { $0.displayName }
 
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         filterItems.count
@@ -226,6 +239,44 @@ enum comCag: Int, Codable, CaseIterable {
             self = .Tableware
         case "相框摆台":
             self = .PictureFrame
+        default:
+            self = .none
+        }
+    }
+}
+
+enum comPoint: Int, Codable, CaseIterable {
+    case none = 0
+    case small = 1
+    case med = 2
+    case medWell = 3
+    case wellDone = 4
+
+    var displayName: String {
+        switch self {
+        case .none:
+            return "不限"
+        case .small:
+            return "<100"
+        case .med:
+            return "100-500"
+        case .medWell:
+            return "500-1000"
+        case .wellDone:
+            return ">1000"
+        }
+    }
+
+    init(displayName: String) {
+        switch displayName {
+        case ">1000":
+            self = .wellDone
+        case "500-1000":
+            self = .medWell
+        case "100-500":
+            self = .med
+        case "<100":
+            self = .small
         default:
             self = .none
         }

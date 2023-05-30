@@ -31,42 +31,8 @@ class EDSys {
                 print("Unable to create Reachability")
                 return
             }
-
-            reachability?.whenReachable = { _ in
-                let localGamesDatas = UserDefaults.standard.array(forKey: EDUDKeys.LocalGames.rawValue) as? [[String: Any]]
-                var localGames = localGamesDatas?.compactMap { Game(dictionary: $0) } ?? []
-                for game in localGames {
-                    EDGameRequest.updateGameAndStats(game: game) { updatedGame in
-                        if updatedGame == game {
-                            localGames.removeAll(where: { $0.id == updatedGame.id })
-                        }
-                    }
-                }
-                self.auth()
-            }
-            reachability?.whenUnreachable = { _ in
-                if let userInfo = UserDefaults.standard.data(forKey: EDUDKeys.UserInfo.rawValue) {
-                    do {
-                        EDUser.user = try PropertyListDecoder().decode(User.self, from: userInfo)
-                    } catch {
-                        if let window = UIApplication.shared.windows.first {
-                            window.rootViewController = EDSignInViewController()
-                        }
-                    }
-                } else {
-                    if let window = UIApplication.shared.windows.first {
-                        window.rootViewController = EDSignInViewController()
-                    }
-                }
-            }
         }
         try? reachability?.startNotifier()
-    }
-
-    func enterForeground() {
-        if reachability?.connection != .unavailable {
-            auth()
-        }
     }
 
     func initRootViewController() -> UIViewController {
@@ -77,16 +43,7 @@ class EDSys {
             }
             return EDSignInViewController()
         } else {
-            if let userInfo = UserDefaults.standard.data(forKey: EDUDKeys.UserInfo.rawValue) {
-                do {
-                    EDUser.user = try PropertyListDecoder().decode(User.self, from: userInfo)
-                    return TabViewController()
-                } catch {
-                    return EDSignInViewController()
-                }
-            } else {
-                return EDSignInViewController()
-            }
+            return EDSignInViewController()
         }
     }
 
@@ -103,108 +60,6 @@ class EDSys {
             return .light
         } else {
             return .unspecified
-        }
-    }
-
-    func saveUserInfo() {
-        if UserDefaults.standard.string(forKey: EDUDKeys.JSONWebToken.rawValue) != nil {
-            let userInfo = try? PropertyListEncoder().encode(EDUser.user)
-            UserDefaults.standard.set(userInfo, forKey: EDUDKeys.UserInfo.rawValue)
-            NotificationCenter.default.post(name: Notification.Name(ToastNotification.DataSavingToast.notificationName.rawValue), object: nil)
-            UserDefaults.standard.synchronize()
-            EDUser.updateInfo { _ in
-            }
-        }
-    }
-
-    func auth() {
-        if let token = UserDefaults.standard.string(forKey: EDUDKeys.JSONWebToken.rawValue) {
-            EDUser.auth(token: token) { userLoginName, userPassword, error in
-                guard error == nil else {
-                    if let window = UIApplication.shared.windows.first {
-                        let signInVC = EDSignInViewController()
-                        window.rootViewController = signInVC
-                        let toastView = UILabel()
-                        toastView.text = NSLocalizedString("The login information has expired\n please log in again", comment: "")
-                        toastView.numberOfLines = 2
-                        toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-                        toastView.backgroundColor = UIColor(named: "ComponentBackground")
-                        toastView.textAlignment = .center
-                        toastView.setCorner(radii: 15)
-                        (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
-                        }
-                        window.rootViewController = EDSignInViewController()
-                    }
-                    return
-                }
-                guard let userLoginName = userLoginName else {
-                    return
-                }
-                guard let userPassword = userPassword else {
-                    return
-                }
-                EDUser.user.loginName = userLoginName
-                EDUser.user.password = userPassword
-                EDUser.signIn { user, error in
-                    guard error == nil else {
-                        if let window = UIApplication.shared.windows.first {
-                            let toastView = UILabel()
-                            toastView.text = NSLocalizedString("No such loginname or password", comment: "")
-                            toastView.numberOfLines = 2
-                            toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-                            toastView.backgroundColor = UIColor(named: "ComponentBackground")
-                            toastView.textAlignment = .center
-                            toastView.setCorner(radii: 15)
-                            (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
-                            }
-                            window.rootViewController = EDSignInViewController()
-                        }
-                        return
-                    }
-                    guard let user = user else {
-                        if let window = UIApplication.shared.windows.first {
-                            let toastView = UILabel()
-                            toastView.text = NSLocalizedString("Login Failed", comment: "")
-                            toastView.numberOfLines = 2
-                            toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-                            toastView.backgroundColor = UIColor(named: "ComponentBackground")
-                            toastView.textAlignment = .center
-                            toastView.setCorner(radii: 15)
-                            (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
-                            }
-                            window.rootViewController = EDSignInViewController()
-                        }
-                        return
-                    }
-                    if let userInfo = UserDefaults.standard.data(forKey: EDUDKeys.UserInfo.rawValue) {
-                        do {
-                            let localUser = try PropertyListDecoder().decode(User.self, from: userInfo)
-                            if localUser == user {
-                                EDUser.user = user
-                            } else {
-                                if let window = UIApplication.shared.windows.first {
-                                    let vc = EDUserDataSelectViewController()
-                                    vc.localUserInfo = localUser
-                                    vc.netUserInfo = user
-                                    vc.isModalInPresentation = true
-                                    window.rootViewController?.present(vc, animated: true)
-                                }
-                            }
-                        } catch {
-                            EDUser.user = user
-                        }
-                    } else {
-                        EDUser.user = user
-                    }
-                    NotificationCenter.default.post(name: Notification.Name(ToastNotification.DataFreshToast.notificationName.rawValue), object: nil)
-                    UserDefaults.standard.set(user.token, forKey: EDUDKeys.JSONWebToken.rawValue)
-                }
-            }
-        } else {
-            if let window = UIApplication.shared.windows.first {
-                let signInVC = EDSignInViewController()
-                window.rootViewController = signInVC
-            }
         }
     }
 }

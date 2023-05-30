@@ -10,8 +10,8 @@ import TMComponent
 import UIKit
 
 class EDSettingInfoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    var titleSettingConfig = ["Name", "Icon", "Sex"]
-    var infoSettingConfig = [EDUser.user.name, "", EDUser.user.sex.rawValue]
+    var titleSettingConfig = ["姓名", "头像", "性别"]
+    var infoSettingConfig = [EDUser.user.name, "", EDUser.user.sex == .Man ? "男" : "女"]
     let infoVC = EDSignUpViewController()
 
     let tableView: UITableView = {
@@ -21,8 +21,8 @@ class EDSettingInfoViewController: UIViewController, UITableViewDelegate, UITabl
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.setLeftBarButton(UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancel)), animated: true)
-        navigationItem.setRightBarButton(UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(updateUserInfo)), animated: true)
+        navigationItem.setLeftBarButton(UIBarButtonItem(title: "取消", style: .plain, target: self, action: #selector(cancel)), animated: true)
+        navigationItem.setRightBarButton(UIBarButtonItem(title: "保存", style: .plain, target: self, action: #selector(updateUserInfo)), animated: true)
         view.backgroundColor = UIColor(named: "BackgroundGray")
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -35,8 +35,7 @@ class EDSettingInfoViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(EDsettingTableViewCell.self, forCellReuseIdentifier: "EDsettingTableViewCell")
-        let pngData = Data(base64Encoded: EDUser.user.icon)
-        infoVC.setUserInfo(name: EDUser.user.name, icon: pngData ?? Data(), sex: EDUser.user.sex)
+        infoVC.setUserInfo(name: EDUser.user.name, icon: EDUser.user.icon.toPng(), sex: EDUser.user.sex)
     }
 
     func tableView(_: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -76,14 +75,14 @@ class EDSettingInfoViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     @objc func cancel() {
-        let sheetCtrl = UIAlertController(title: "Cancel changes", message: nil, preferredStyle: .alert)
+        let sheetCtrl = UIAlertController(title: "取消更改？", message: nil, preferredStyle: .alert)
 
-        let action = UIAlertAction(title: "Ok", style: .default) { _ in
+        let action = UIAlertAction(title: "确定", style: .default) { _ in
             self.navigationController?.popViewController(animated: true)
         }
         sheetCtrl.addAction(action)
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { _ in
+        let cancelAction = UIAlertAction(title: "取消", style: .default) { _ in
             sheetCtrl.dismiss(animated: true)
         }
         sheetCtrl.addAction(cancelAction)
@@ -94,8 +93,8 @@ class EDSettingInfoViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     @objc func updateUserInfo() {
-        let sheetCtrl = UIAlertController(title: "Save changes", message: nil, preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .default) { _ in
+        let sheetCtrl = UIAlertController(title: "保存修改？", message: nil, preferredStyle: .alert)
+        let action = UIAlertAction(title: "确定", style: .default) { _ in
             self.infoVC.getUserInfo()
             let usericonData = EDUser.user.icon
             EDUser.updateInfo { user in
@@ -111,7 +110,7 @@ class EDSettingInfoViewController: UIViewController, UITableViewDelegate, UITabl
         }
         sheetCtrl.addAction(action)
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { _ in
+        let cancelAction = UIAlertAction(title: "取消", style: .default) { _ in
             sheetCtrl.dismiss(animated: true)
         }
         sheetCtrl.addAction(cancelAction)

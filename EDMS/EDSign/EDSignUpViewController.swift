@@ -10,7 +10,7 @@ import TMComponent
 import UIKit
 
 class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    let configItems = ["Please enter a name for yourself", "Please choose a profile picture.", "What is your gender?", "What is your age?", "How many years have you been playing?", "What is your height in centimeters?", "What is your width in kilograms?", "What is your grip type?", "What is your backhand type?", "Please enter a account for yourself.", "Please enter a password for yourself."]
+    let configItems = ["起个名字吧", "为你选一张头像", "你的性别是", "设置用户名", "设置密码"]
     var currentIndex = 0
 
     var completionHandler: (String) -> Void = { _ in }
@@ -35,6 +35,11 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
     lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
+    }()
+
+    lazy var sexTextField: EDSelectionView = {
+        let label = EDSelectionView()
+        return label
     }()
 
     lazy var imagePicker: UIImagePickerController = {
@@ -69,6 +74,7 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         view.addSubview(signInTitleView)
         view.addSubview(nameTextField)
         view.addSubview(iconImageView)
+        view.addSubview(sexTextField)
         view.addSubview(accountTextField)
         view.addSubview(passwordTextField)
         view.addSubview(nextConfigBtn)
@@ -77,6 +83,7 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         signInTitleView.isHidden = false
         nameTextField.isHidden = false
         iconImageView.isHidden = true
+        sexTextField.isHidden = true
         accountTextField.isHidden = true
         passwordTextField.isHidden = true
 
@@ -103,6 +110,12 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
             make.centerX.equalToSuperview()
             make.width.equalTo(288)
             make.height.equalTo(288)
+        }
+        sexTextField.snp.makeConstraints { make in
+            make.top.equalTo(signInTitleView.snp.bottom).offset(68)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(288)
+            make.height.equalTo(88)
         }
         accountTextField.snp.makeConstraints { make in
             make.top.equalTo(signInTitleView.snp.bottom).offset(68)
@@ -132,8 +145,9 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
 
         nameTextField.tag = 200
         iconImageView.tag = 201
-        accountTextField.tag = 202
-        passwordTextField.tag = 203
+        sexTextField.tag = 202
+        accountTextField.tag = 203
+        passwordTextField.tag = 204
 
         progressView.setCorner(radii: 8)
         progressView.progress = 0
@@ -147,14 +161,16 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         iconImageView.isUserInteractionEnabled = true
         imagePicker.delegate = self
         iconImageView.addTapGesture(self, #selector(changeIcon))
-        let accountConfig = EDTextFieldConfig(placeholderText: configItems[8])
+        let accountConfig = EDTextFieldConfig(placeholderText: configItems[3])
+        sexTextField.setupUI()
+        sexTextField.setupEvent(config: EDServeViewConfig(selectedImage: "circle.fill", unSelectedImage: "circle", selectedTitle: "男", unselectedTitle: "女"))
         accountTextField.setup(with: accountConfig)
-        let passwordConfig = EDTextFieldConfig(placeholderText: configItems[9])
+        let passwordConfig = EDTextFieldConfig(placeholderText: configItems[4])
         passwordTextField.setup(with: passwordConfig)
         nextConfigBtn.setupUI()
-        let nextBtnConfig = TMButtonConfig(title: "Next Step", action: #selector(stepForward), actionTarget: self)
+        let nextBtnConfig = TMButtonConfig(title: "下一步", action: #selector(stepForward), actionTarget: self)
         nextConfigBtn.setUp(with: nextBtnConfig)
-        let lastBtnConfig = TMButtonConfig(title: "Back", action: #selector(stepBackward), actionTarget: self)
+        let lastBtnConfig = TMButtonConfig(title: "返回", action: #selector(stepBackward), actionTarget: self)
         lastConfigBtn.setUp(with: lastBtnConfig)
     }
 
@@ -174,17 +190,19 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         }
     }
 
-    func setUserInfo(name: String, icon: Data, sex _: Sex) {
+    func setUserInfo(name: String, icon: Data, sex: Sex) {
         accountTextField.textField.text = EDUser.user.loginName
         passwordTextField.textField.text = EDUser.user.password
         nameTextField.textField.text = name
         iconImageView.image = UIImage(data: icon)
+        sexTextField.isLeft = sex == .Man ? true : false
     }
 
     func getUserInfo() {
         EDUser.user.loginName = accountTextField.textField.text ?? ""
         EDUser.user.password = passwordTextField.textField.text ?? ""
         EDUser.user.name = nameTextField.textField.text ?? ""
+        EDUser.user.sex = sexTextField.isLeft ? .Man : .Woman
         EDUser.user.icon = (iconImageView.image?.pngData() ?? Data()).base64EncodedString()
         EDUser.user.points = 0
     }
@@ -213,7 +231,7 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
                             if res {
                                 self.currentIndex -= 1
                                 let toastView = UILabel()
-                                toastView.text = NSLocalizedString("Account already exists", comment: "")
+                                toastView.text = NSLocalizedString("此账号已存在", comment: "")
                                 toastView.numberOfLines = 2
                                 toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
                                 toastView.backgroundColor = UIColor(named: "ComponentBackground")
@@ -245,7 +263,7 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
                 } else {
                     currentIndex -= 1
                     let toastView = UILabel()
-                    toastView.text = NSLocalizedString("No Content Input", comment: "")
+                    toastView.text = NSLocalizedString("没有输入内容", comment: "")
                     toastView.numberOfLines = 2
                     toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
                     toastView.backgroundColor = UIColor(named: "ComponentBackground")
@@ -269,7 +287,7 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
                 guard error == nil else {
                     if self.view.window != nil {
                         let toastView = UILabel()
-                        toastView.text = NSLocalizedString("login failed", comment: "")
+                        toastView.text = NSLocalizedString("登录失败", comment: "")
                         toastView.numberOfLines = 2
                         toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
                         toastView.backgroundColor = UIColor(named: "ComponentBackground")
