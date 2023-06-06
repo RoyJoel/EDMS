@@ -12,6 +12,8 @@
 		A810F78E29ADEDB70044C424 /* EDPlayerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A810F78D29ADEDB70044C424 /* EDPlayerRequest.swift */; };
 		A810F79129ADEEB20044C424 /* EDNetWork.swift in Sources */ = {isa = PBXBuildFile; fileRef = A810F79029ADEEB20044C424 /* EDNetWork.swift */; };
 		A810F79429ADFF740044C424 /* EDUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A810F79329ADFF740044C424 /* EDUser.swift */; };
+		A81381DE2A261CDA00A4AFAF /* ComCag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81381DD2A261CDA00A4AFAF /* ComCag.swift */; };
+		A81381E02A261CF600A4AFAF /* CommodityState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81381DF2A261CF600A4AFAF /* CommodityState.swift */; };
 		A81511F62A0B1F6400B23F87 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81511F52A0B1F6400B23F87 /* AccountViewController.swift */; };
 		A81511F82A0B1F6600B23F87 /* EDUserOrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81511F72A0B1F6600B23F87 /* EDUserOrderCell.swift */; };
 		A81511FA2A0B1F6800B23F87 /* EDUserOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81511F92A0B1F6800B23F87 /* EDUserOrdersViewController.swift */; };
@@ -19,14 +21,14 @@
 		A81511FE2A0B1F6C00B23F87 /* EDUserOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81511FD2A0B1F6C00B23F87 /* EDUserOrderView.swift */; };
 		A81512002A0B1F6E00B23F87 /* TMCircleStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81511FF2A0B1F6E00B23F87 /* TMCircleStatsView.swift */; };
 		A81512022A0B1F7000B23F87 /* TMGameStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81512012A0B1F7000B23F87 /* TMGameStatsView.swift */; };
-		A81512042A0B1F7200B23F87 /* TMHistoryGameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81512032A0B1F7200B23F87 /* TMHistoryGameCell.swift */; };
-		A81512062A0B1F7400B23F87 /* TMUserAllHistoryGamesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81512052A0B1F7400B23F87 /* TMUserAllHistoryGamesViewController.swift */; };
 		A81512082A0B1F7600B23F87 /* TMUserDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81512072A0B1F7600B23F87 /* TMUserDataView.swift */; };
 		A815120A2A0B1F7800B23F87 /* TMUserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81512092A0B1F7800B23F87 /* TMUserInfoView.swift */; };
 		A815120C2A0B1F7A00B23F87 /* TMUserStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A815120B2A0B1F7900B23F87 /* TMUserStatsView.swift */; };
 		A815120E2A0B1F7C00B23F87 /* TMUserActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A815120D2A0B1F7C00B23F87 /* TMUserActivityView.swift */; };
 		A81512112A0B1FAE00B23F87 /* ExpressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81512102A0B1FAE00B23F87 /* ExpressViewController.swift */; };
 		A81512132A0B25DB00B23F87 /* PayTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A81512122A0B25DB00B23F87 /* PayTypeView.swift */; };
+		A821CC222A2C4480002B4D77 /* EDExpressDestinationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A821CC212A2C4480002B4D77 /* EDExpressDestinationView.swift */; };
+		A821CC242A2C45A2002B4D77 /* EDExpressInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A821CC232A2C45A2002B4D77 /* EDExpressInfoView.swift */; };
 		A82DF22029F3AA96000C746C /* EDComIntroContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82DF21F29F3AA96000C746C /* EDComIntroContainerView.swift */; };
 		A82DF22229F3D8AD000C746C /* EDConfigSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82DF22129F3D8AD000C746C /* EDConfigSelectionViewController.swift */; };
 		A82DF22429F3E607000C746C /* EDSelectionCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A82DF22329F3E607000C746C /* EDSelectionCollectionView.swift */; };
@@ -68,6 +70,14 @@
 		A894E6152A230400001EC075 /* EDExpressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A894E6142A230400001EC075 /* EDExpressRequest.swift */; };
 		A894E6172A23068F001EC075 /* Trace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A894E6162A23068F001EC075 /* Trace.swift */; };
 		A894E6192A2306B9001EC075 /* Shipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A894E6182A2306B9001EC075 /* Shipment.swift */; };
+		A898B3D52A2B344700C5C6AE /* EDUserPointRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A898B3D42A2B344700C5C6AE /* EDUserPointRecordViewController.swift */; };
+		A898B3D72A2B35B700C5C6AE /* EDHistoryGameCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A898B3D62A2B35B700C5C6AE /* EDHistoryGameCell.swift */; };
+		A898B3DB2A2B536B00C5C6AE /* EDUserExpressesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A898B3DA2A2B536B00C5C6AE /* EDUserExpressesViewController.swift */; };
+		A898B3DD2A2B587B00C5C6AE /* EDUserExpressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A898B3DC2A2B587B00C5C6AE /* EDUserExpressCell.swift */; };
+		A898B3DF2A2B5A0200C5C6AE /* EDTraceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A898B3DE2A2B5A0200C5C6AE /* EDTraceView.swift */; };
+		A898B3E12A2B5CF600C5C6AE /* EDExpressDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A898B3E02A2B5CF600C5C6AE /* EDExpressDetailViewController.swift */; };
+		A89934EA2A28B36C00B1C5EB /* DataExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89934E92A28B36C00B1C5EB /* DataExtension.swift */; };
+		A89934ED2A28C89600B1C5EB /* Express.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89934EC2A28C89600B1C5EB /* Express.swift */; };
 		A89DCDC52A08B45400D99360 /* EDOrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89DCDC42A08B45400D99360 /* EDOrderDetailViewController.swift */; };
 		A89DCDC72A08B4B300D99360 /* EDDeliveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89DCDC62A08B4B300D99360 /* EDDeliveryViewController.swift */; };
 		A8A1242F2A13711F005A16D1 /* EDSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8A1242E2A13711F005A16D1 /* EDSelectionView.swift */; };
@@ -159,6 +169,8 @@
 		A810F78D29ADEDB70044C424 /* EDPlayerRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDPlayerRequest.swift; sourceTree = "<group>"; };
 		A810F79029ADEEB20044C424 /* EDNetWork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDNetWork.swift; sourceTree = "<group>"; };
 		A810F79329ADFF740044C424 /* EDUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDUser.swift; sourceTree = "<group>"; };
+		A81381DD2A261CDA00A4AFAF /* ComCag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComCag.swift; sourceTree = "<group>"; };
+		A81381DF2A261CF600A4AFAF /* CommodityState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommodityState.swift; sourceTree = "<group>"; };
 		A81511F52A0B1F6400B23F87 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		A81511F72A0B1F6600B23F87 /* EDUserOrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDUserOrderCell.swift; sourceTree = "<group>"; };
 		A81511F92A0B1F6800B23F87 /* EDUserOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDUserOrdersViewController.swift; sourceTree = "<group>"; };
@@ -166,14 +178,14 @@
 		A81511FD2A0B1F6C00B23F87 /* EDUserOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDUserOrderView.swift; sourceTree = "<group>"; };
 		A81511FF2A0B1F6E00B23F87 /* TMCircleStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMCircleStatsView.swift; sourceTree = "<group>"; };
 		A81512012A0B1F7000B23F87 /* TMGameStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMGameStatsView.swift; sourceTree = "<group>"; };
-		A81512032A0B1F7200B23F87 /* TMHistoryGameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMHistoryGameCell.swift; sourceTree = "<group>"; };
-		A81512052A0B1F7400B23F87 /* TMUserAllHistoryGamesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMUserAllHistoryGamesViewController.swift; sourceTree = "<group>"; };
 		A81512072A0B1F7600B23F87 /* TMUserDataView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMUserDataView.swift; sourceTree = "<group>"; };
 		A81512092A0B1F7800B23F87 /* TMUserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMUserInfoView.swift; sourceTree = "<group>"; };
 		A815120B2A0B1F7900B23F87 /* TMUserStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMUserStatsView.swift; sourceTree = "<group>"; };
 		A815120D2A0B1F7C00B23F87 /* TMUserActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMUserActivityView.swift; sourceTree = "<group>"; };
 		A81512102A0B1FAE00B23F87 /* ExpressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpressViewController.swift; sourceTree = "<group>"; };
 		A81512122A0B25DB00B23F87 /* PayTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayTypeView.swift; sourceTree = "<group>"; };
+		A821CC212A2C4480002B4D77 /* EDExpressDestinationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDExpressDestinationView.swift; sourceTree = "<group>"; };
+		A821CC232A2C45A2002B4D77 /* EDExpressInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDExpressInfoView.swift; sourceTree = "<group>"; };
 		A82DF21F29F3AA96000C746C /* EDComIntroContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDComIntroContainerView.swift; sourceTree = "<group>"; };
 		A82DF22129F3D8AD000C746C /* EDConfigSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDConfigSelectionViewController.swift; sourceTree = "<group>"; };
 		A82DF22329F3E607000C746C /* EDSelectionCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDSelectionCollectionView.swift; sourceTree = "<group>"; };
@@ -215,6 +227,14 @@
 		A894E6142A230400001EC075 /* EDExpressRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDExpressRequest.swift; sourceTree = "<group>"; };
 		A894E6162A23068F001EC075 /* Trace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trace.swift; sourceTree = "<group>"; };
 		A894E6182A2306B9001EC075 /* Shipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shipment.swift; sourceTree = "<group>"; };
+		A898B3D42A2B344700C5C6AE /* EDUserPointRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDUserPointRecordViewController.swift; sourceTree = "<group>"; };
+		A898B3D62A2B35B700C5C6AE /* EDHistoryGameCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDHistoryGameCell.swift; sourceTree = "<group>"; };
+		A898B3DA2A2B536B00C5C6AE /* EDUserExpressesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDUserExpressesViewController.swift; sourceTree = "<group>"; };
+		A898B3DC2A2B587B00C5C6AE /* EDUserExpressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDUserExpressCell.swift; sourceTree = "<group>"; };
+		A898B3DE2A2B5A0200C5C6AE /* EDTraceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDTraceView.swift; sourceTree = "<group>"; };
+		A898B3E02A2B5CF600C5C6AE /* EDExpressDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDExpressDetailViewController.swift; sourceTree = "<group>"; };
+		A89934E92A28B36C00B1C5EB /* DataExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtension.swift; sourceTree = "<group>"; };
+		A89934EC2A28C89600B1C5EB /* Express.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Express.swift; sourceTree = "<group>"; };
 		A89DCDC42A08B45400D99360 /* EDOrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDOrderDetailViewController.swift; sourceTree = "<group>"; };
 		A89DCDC62A08B4B300D99360 /* EDDeliveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDDeliveryViewController.swift; sourceTree = "<group>"; };
 		A8A1242E2A13711F005A16D1 /* EDSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EDSelectionView.swift; sourceTree = "<group>"; };
@@ -389,6 +409,14 @@
 			path = Location;
 			sourceTree = "<group>";
 		};
+		A89934EB2A28C88800B1C5EB /* laji */ = {
+			isa = PBXGroup;
+			children = (
+				A89934EC2A28C89600B1C5EB /* Express.swift */,
+			);
+			path = laji;
+			sourceTree = "<group>";
+		};
 		A8B1A09429C08E640084F9CE /* Event */ = {
 			isa = PBXGroup;
 			children = (
@@ -433,14 +461,20 @@
 			isa = PBXGroup;
 			children = (
 				A81511F52A0B1F6400B23F87 /* AccountViewController.swift */,
+				A898B3D42A2B344700C5C6AE /* EDUserPointRecordViewController.swift */,
+				A898B3D62A2B35B700C5C6AE /* EDHistoryGameCell.swift */,
 				A81511F72A0B1F6600B23F87 /* EDUserOrderCell.swift */,
 				A81511F92A0B1F6800B23F87 /* EDUserOrdersViewController.swift */,
+				A898B3DA2A2B536B00C5C6AE /* EDUserExpressesViewController.swift */,
+				A898B3E02A2B5CF600C5C6AE /* EDExpressDetailViewController.swift */,
+				A898B3DC2A2B587B00C5C6AE /* EDUserExpressCell.swift */,
+				A898B3DE2A2B5A0200C5C6AE /* EDTraceView.swift */,
+				A821CC212A2C4480002B4D77 /* EDExpressDestinationView.swift */,
+				A821CC232A2C45A2002B4D77 /* EDExpressInfoView.swift */,
 				A81511FB2A0B1F6900B23F87 /* EDUserOrderTableView.swift */,
 				A81511FD2A0B1F6C00B23F87 /* EDUserOrderView.swift */,
 				A81511FF2A0B1F6E00B23F87 /* TMCircleStatsView.swift */,
 				A81512012A0B1F7000B23F87 /* TMGameStatsView.swift */,
-				A81512032A0B1F7200B23F87 /* TMHistoryGameCell.swift */,
-				A81512052A0B1F7400B23F87 /* TMUserAllHistoryGamesViewController.swift */,
 				A81512072A0B1F7600B23F87 /* TMUserDataView.swift */,
 				A81512092A0B1F7800B23F87 /* TMUserInfoView.swift */,
 				A815120B2A0B1F7900B23F87 /* TMUserStatsView.swift */,
@@ -543,6 +577,7 @@
 				A8EC716C29E5024A009A5D51 /* DoubleExtension.swift */,
 				A8C359FE29C6B757009338A4 /* DateFormatter.swift */,
 				A8D373AB29DEA323003ED78D /* BundleExtension.swift */,
+				A89934E92A28B36C00B1C5EB /* DataExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -564,6 +599,7 @@
 				A82DF23129F65F0C000C746C /* Order.swift */,
 				A894E6162A23068F001EC075 /* Trace.swift */,
 				A894E6182A2306B9001EC075 /* Shipment.swift */,
+				A89934EB2A28C88800B1C5EB /* laji */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -588,6 +624,8 @@
 				A83AAA2129A8DE2D0020483A /* ToastNotification.swift */,
 				A8FE6DFB29D95CCA0007C7C2 /* EDUDKeys.swift */,
 				A8C19E11299E8CE50011F37A /* UIStandard.swift */,
+				A81381DD2A261CDA00A4AFAF /* ComCag.swift */,
+				A81381DF2A261CF600A4AFAF /* CommodityState.swift */,
 				A850A94529E6B045000AC80C /* EDUserDataSelectViewController.swift */,
 				A8D373A929DE9D99003ED78D /* EDSettingKeys.swift */,
 			);
@@ -869,31 +907,35 @@
 			files = (
 				A815120A2A0B1F7800B23F87 /* TMUserInfoView.swift in Sources */,
 				A82DF22429F3E607000C746C /* EDSelectionCollectionView.swift in Sources */,
+				A898B3D52A2B344700C5C6AE /* EDUserPointRecordViewController.swift in Sources */,
 				A81511FA2A0B1F6800B23F87 /* EDUserOrdersViewController.swift in Sources */,
 				A815120E2A0B1F7C00B23F87 /* TMUserActivityView.swift in Sources */,
 				A81512022A0B1F7000B23F87 /* TMGameStatsView.swift in Sources */,
 				A82DF22029F3AA96000C746C /* EDComIntroContainerView.swift in Sources */,
 				A81511F62A0B1F6400B23F87 /* AccountViewController.swift in Sources */,
 				A8C35A0329C6CA60009338A4 /* TMEventGameCell.swift in Sources */,
+				A898B3E12A2B5CF600C5C6AE /* EDExpressDetailViewController.swift in Sources */,
 				A81511F82A0B1F6600B23F87 /* EDUserOrderCell.swift in Sources */,
 				A8A124312A137147005A16D1 /* EDSeverView.swift in Sources */,
 				A8D1BB4829AA0E5C0096EE41 /* Player.swift in Sources */,
 				A8ABA11729B059AB002F1632 /* EDGameRequest.swift in Sources */,
 				A81511FC2A0B1F6A00B23F87 /* EDUserOrderTableView.swift in Sources */,
 				A8D373AC29DEA323003ED78D /* BundleExtension.swift in Sources */,
+				A898B3DF2A2B5A0200C5C6AE /* EDTraceView.swift in Sources */,
 				A82DF23229F65F0C000C746C /* Order.swift in Sources */,
 				A832279929F2842100F883A0 /* Commodity.swift in Sources */,
 				A81511FE2A0B1F6C00B23F87 /* EDUserOrderView.swift in Sources */,
 				A8FE6DFC29D95CCA0007C7C2 /* EDUDKeys.swift in Sources */,
 				A83AAA2229A8DE2D0020483A /* ToastNotification.swift in Sources */,
 				A810F78E29ADEDB70044C424 /* EDPlayerRequest.swift in Sources */,
+				A898B3DD2A2B587B00C5C6AE /* EDUserExpressCell.swift in Sources */,
 				A8C359FF29C6B757009338A4 /* DateFormatter.swift in Sources */,
 				A8EC716D29E5024A009A5D51 /* DoubleExtension.swift in Sources */,
 				A8A1242F2A13711F005A16D1 /* EDSelectionView.swift in Sources */,
 				A8C081912A10EC93009D7130 /* EDAddressRequest.swift in Sources */,
 				A8D373AA29DE9D99003ED78D /* EDSettingKeys.swift in Sources */,
+				A89934ED2A28C89600B1C5EB /* Express.swift in Sources */,
 				A82DF22E29F6125D000C746C /* EDComBillingCell.swift in Sources */,
-				A81512042A0B1F7200B23F87 /* TMHistoryGameCell.swift in Sources */,
 				A894E6172A23068F001EC075 /* Trace.swift in Sources */,
 				A8944EAC2A133DFB008601EA /* EDOrderRequest.swift in Sources */,
 				A8C35A0129C6BBAE009338A4 /* User.swift in Sources */,
@@ -907,7 +949,6 @@
 				A8C19E17299E8CE50011F37A /* TabViewController.swift in Sources */,
 				A82DF23C29F6A1BF000C746C /* EDViewController.swift in Sources */,
 				A810F79429ADFF740044C424 /* EDUser.swift in Sources */,
-				A81512062A0B1F7400B23F87 /* TMUserAllHistoryGamesViewController.swift in Sources */,
 				A8B1A09629C09F830084F9CE /* Club.swift in Sources */,
 				A810F79129ADEEB20044C424 /* EDNetWork.swift in Sources */,
 				A894E6192A2306B9001EC075 /* Shipment.swift in Sources */,
@@ -933,13 +974,16 @@
 				A82DF23829F68CB5000C746C /* EDBillTableViewController.swift in Sources */,
 				A8C6922D29E39F660000DB0B /* TMH2HContentLabelCell.swift in Sources */,
 				A8B9CD1529D539DD00D6EE0A /* TMsettingTableViewCell.swift in Sources */,
+				A898B3D72A2B35B700C5C6AE /* EDHistoryGameCell.swift in Sources */,
 				A81512132A0B25DB00B23F87 /* PayTypeView.swift in Sources */,
 				A834D5D329B59A1F007FA84C /* EDDataConvert.swift in Sources */,
 				A86DE5D329D046DC00E8282A /* TMGameStatsDetailViewController.swift in Sources */,
+				A821CC222A2C4480002B4D77 /* EDExpressDestinationView.swift in Sources */,
 				A8FE97BF29FA683B00A1A2EF /* EDView.swift in Sources */,
 				A83FAA6D29B341E900C17AE7 /* EDStatsRequest.swift in Sources */,
 				A8ABA11F29B0ACDA002F1632 /* testData.swift in Sources */,
 				A89DCDC52A08B45400D99360 /* EDOrderDetailViewController.swift in Sources */,
+				A81381E02A261CF600A4AFAF /* CommodityState.swift in Sources */,
 				A82DF23029F65D5F000C746C /* Bill.swift in Sources */,
 				A82DF22C29F60B61000C746C /* EDBillingViewController.swift in Sources */,
 				A82DF23A29F69460000C746C /* EDAddressView.swift in Sources */,
@@ -956,10 +1000,13 @@
 				A8C19E04299E854E0011F37A /* EDNavigationBar.swift in Sources */,
 				A8C19E13299E8CE50011F37A /* EventViewController.swift in Sources */,
 				A83227A129F3812100F883A0 /* EDComImagesView.swift in Sources */,
+				A898B3DB2A2B536B00C5C6AE /* EDUserExpressesViewController.swift in Sources */,
 				A8B1A09A29C0AA8F0084F9CE /* EDShoppingCollectionView.swift in Sources */,
 				A8D373AE29DFCE97003ED78D /* TMSettingInfoViewController.swift in Sources */,
 				A8FE97C129FA72A400A1A2EF /* EDBillVCView.swift in Sources */,
+				A89934EA2A28B36C00B1C5EB /* DataExtension.swift in Sources */,
 				A8C19DFD299E854E0011F37A /* EDNavigationItem.swift in Sources */,
+				A821CC242A2C45A2002B4D77 /* EDExpressInfoView.swift in Sources */,
 				A82DF22829F3E7DD000C746C /* EDCagCollectionViewLayout.swift in Sources */,
 				A8944EA82A124A82008601EA /* Option.swift in Sources */,
 				A8FF67C229F79B6C00F20BC1 /* EDAddressEditingViewController.swift in Sources */,
@@ -980,6 +1027,7 @@
 				A82DF23629F66E9E000C746C /* EDBillingView.swift in Sources */,
 				A87D6B4E29A5AC4D0001C59F /* EDScalableView.swift in Sources */,
 				A8D1BB4A29AA2C860096EE41 /* Game.swift in Sources */,
+				A81381DE2A261CDA00A4AFAF /* ComCag.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

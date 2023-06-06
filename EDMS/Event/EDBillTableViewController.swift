@@ -182,7 +182,7 @@ class EDBillTableViewController: UIViewController, UITableViewDataSource, UITabl
 
     @objc func enterBillingViewController() {
         let vc = EDBillingViewController()
-        let newOrder = Order(id: 0, bills: bills, shippingAddress: address1, deliveryAddress: address2, payment: .weChatOnline, createdTime: Date().timeIntervalSince1970, state: .ToPay)
+        let newOrder = Order(id: 0, bills: bills, shippingAddress: EDUser.user.defaultAddress, payment: .weChatOnline, createdTime: Date().timeIntervalSince1970, state: .ToPay)
         vc.order = newOrder
         navigationController?.pushViewController(vc, animated: true)
         vc.isCart = true

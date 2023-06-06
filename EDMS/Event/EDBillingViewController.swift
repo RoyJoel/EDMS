@@ -150,7 +150,7 @@ class EDBillingViewController: UIViewController {
         billView.backgroundColor = UIColor(named: "ComponentBackground")
         billView.setCorner(radii: 15)
         addressView.setupUI()
-        addressView.setupEvent(address: order.deliveryAddress)
+        addressView.setupEvent(address: EDUser.user.defaultAddress)
         wayOfPayView.setupUI()
         wayOfPayView.setCorner(radii: 15)
         wayOfPayView.backgroundColor = UIColor(named: "ComponentBackground")
@@ -165,21 +165,10 @@ class EDBillingViewController: UIViewController {
     }
 
     @objc func pay() {
-        let newOrder = OrderRequest(id: order.id, bills: order.bills, shippingAddress: order.shippingAddress, deliveryAddress: order.deliveryAddress, payment: order.payment, playerId: EDUser.user.id, createdTime: order.createdTime, payedTime: Date().timeIntervalSince1970, state: .ToDelivery)
-        EDOrderRequest.addOrder(order: newOrder) { _ in
-            let toastView = UILabel()
-            toastView.text = NSLocalizedString("支付成功", comment: "")
-            toastView.numberOfLines = 2
-            toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-            toastView.backgroundColor = UIColor(named: "ComponentBackground")
-            toastView.textAlignment = .center
-            toastView.setCorner(radii: 15)
-            self.view.showToast(toastView, duration: 1, point: CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)) { _ in
-                self.navigationController?.dismiss(animated: true)
-            }
-        }
+        var newOrder = OrderRequest(id: order.id, bills: order.bills, shippingAddress: order.shippingAddress, payment: order.payment, playerId: EDUser.user.id, createdTime: order.createdTime, payedTime: Date().timeIntervalSince1970, state: .ToSend)
         if isCart {
-            EDUser.assignCart { _ in
+            newOrder.id = EDUser.user.cart
+            EDUser.assignCart(order: newOrder) { _ in
                 let toastView = UILabel()
                 toastView.text = NSLocalizedString("支付成功", comment: "")
                 toastView.numberOfLines = 2
@@ -188,6 +177,22 @@ class EDBillingViewController: UIViewController {
                 toastView.textAlignment = .center
                 toastView.setCorner(radii: 15)
                 self.view.showToast(toastView, duration: 1, point: CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)) { _ in
+                    self.navigationController?.dismiss(animated: true)
+                }
+            }
+        } else {
+            EDOrderRequest.addOrder(order: newOrder) { _ in
+                let toastView = UILabel()
+                toastView.text = NSLocalizedString("支付成功", comment: "")
+                toastView.numberOfLines = 2
+                toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
+                toastView.backgroundColor = UIColor(named: "ComponentBackground")
+                toastView.textAlignment = .center
+                toastView.setCorner(radii: 15)
+                self.view.showToast(toastView, duration: 1, point: CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)) { _ in
+                    points -= Int(EDDataConvert.getTotalPrice(newOrder.bills))
+                    let record = pointRecord(date: Date().timeIntervalSince1970, type: .exchange, num: Int(EDDataConvert.getTotalPrice(newOrder.bills)))
+                    records.append(record)
                     self.navigationController?.dismiss(animated: true)
                 }
             }

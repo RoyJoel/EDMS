@@ -59,7 +59,7 @@ class EDSettingSelectionViewController: UIViewController, UITableViewDelegate, U
             sheetCtrl.popoverPresentationController?.sourceRect = CGRect(x: view.bounds.width / 2 - 144, y: view.bounds.height / 2 - 69, width: 288, height: 138)
             present(sheetCtrl, animated: true, completion: nil)
             completionHandler(selectedLanguage.userDisplayName)
-        } else if title == "Appearance" {
+        } else if title == "显示模式" {
             let selectedAppearance = AppearanceSetting(userDisplayName: dataSource[indexPath.row])
             UserDefaults.standard.set(selectedAppearance.userDisplayName, forKey: "AppleAppearance")
 
@@ -101,8 +101,8 @@ class EDSettingSelectionViewController: UIViewController, UITableViewDelegate, U
         let cell = EDSettingSelectionCell()
         cell.setupEvent(title: dataSource[indexPath.row])
         cell.selectionStyle = .none
-        if title == "Appearance" {
-            if dataSource[indexPath.row] == UserDefaults.standard.string(forKey: "AppleAppearance") {
+        if title == "显示模式" {
+            if dataSource[indexPath.row] == AppearanceSetting(userDisplayName: UserDefaults.standard.string(forKey: "AppleAppearance") ?? "跟随系统").userDisplayName {
                 cell.isSelected = true
                 selectedRow = indexPath.row
             }

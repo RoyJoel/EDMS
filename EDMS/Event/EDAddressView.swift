@@ -56,9 +56,8 @@ class EDAddressView: UIView {
         addSubview(detailedAddressLabel)
 
         addressLabel.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(24)
+            make.right.equalToSuperview().offset(-12)
             make.top.equalToSuperview().offset(24)
-            make.width.equalTo(158)
             make.height.equalTo(50)
         }
 
@@ -100,13 +99,14 @@ class EDAddressView: UIView {
             make.height.equalToSuperview().dividedBy(7).offset(-4)
         }
 
-        addressLabel.text = "Delivery Address"
+        addressLabel.text = "送货地址"
         nameAmdSexLabel.textAlignment = .right
         phoneNumberLabel.textAlignment = .right
         provinceLabel.textAlignment = .right
         cityLabel.textAlignment = .right
         areaLabel.textAlignment = .right
         detailedAddressLabel.textAlignment = .right
+        addressLabel.textAlignment = .right
         detailedAddressLabel.numberOfLines = 2
         addTapGesture(self, #selector(editAddress))
     }

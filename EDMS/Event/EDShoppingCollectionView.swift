@@ -17,10 +17,7 @@ class EDShoppingCollectionView: UICollectionView, UICollectionViewDelegate, UICo
         delegate = self
         dataSource = self
         register(EDCommodityCell.self, forCellWithReuseIdentifier: "commodityies")
-        EDCommodityRequest.getAll { commodities in
-            self.coms = commodities
-            self.reloadData()
-        }
+        reloadData()
     }
 
     required init?(coder _: NSCoder) {
@@ -29,6 +26,9 @@ class EDShoppingCollectionView: UICollectionView, UICollectionViewDelegate, UICo
 
     func applyFilter(coms: [Commodity]) {
         self.coms = coms
+        if coms.count != 0 {
+            collectionViewLayout = EDFlowLayout(commodities: coms)
+        }
         reloadData()
     }
 
@@ -39,7 +39,11 @@ class EDShoppingCollectionView: UICollectionView, UICollectionViewDelegate, UICo
     func collectionView(_: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = dequeueReusableCell(withReuseIdentifier: "commodityies", for: indexPath) as! EDCommodityCell
         cell.setupUI()
-        cell.setupEvent(icon: coms[indexPath.row].options[0].image, intro: coms[indexPath.row].name, price: coms[indexPath.row].price, turnOver: coms[indexPath.row].orders)
+        if EDDataConvert.getPriceRange(with: coms[indexPath.row].options).0 == EDDataConvert.getPriceRange(with: coms[indexPath.row].options).1 {
+            cell.setupEvent(icon: coms[indexPath.row].options[0].image, intro: coms[indexPath.row].name, price: "\(EDDataConvert.getPriceRange(with: coms[indexPath.row].options).0)", turnOver: coms[indexPath.row].orders)
+        } else {
+            cell.setupEvent(icon: coms[indexPath.row].options[0].image, intro: coms[indexPath.row].name, price: "\(EDDataConvert.getPriceRange(with: coms[indexPath.row].options).0) - \(EDDataConvert.getPriceRange(with: coms[indexPath.row].options).1)", turnOver: coms[indexPath.row].orders)
+        }
         return cell
     }
 

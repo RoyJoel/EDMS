@@ -51,7 +51,7 @@ extension EDComImagesView: JXSegmentedListContainerViewDataSource {
     }
 
     func listContainerView(_: JXSegmentedListContainerView, initListAt: Int) -> JXSegmentedListContainerViewListDelegate {
-        let containerView = EDComIntroContainerView(image: UIImage(named: intros[initListAt]))
+        let containerView = EDComIntroContainerView(image: UIImage(data: intros[initListAt].toPng()))
         return containerView
     }
 }

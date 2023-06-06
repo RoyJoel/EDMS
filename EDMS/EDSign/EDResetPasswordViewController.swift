@@ -9,7 +9,7 @@ import LocalAuthentication
 import TMComponent
 import UIKit
 
-class EDResetPasswordViewController: UIViewController {
+class EDResetPasswordViewController: UIViewController, UITextFieldDelegate {
     lazy var accountLabel: UILabel = {
         let label = UILabel()
         return label
@@ -134,6 +134,10 @@ class EDResetPasswordViewController: UIViewController {
         reauthBtn.isHidden = true
 
         authUser()
+
+        accountTextField.textField.delegate = self
+        resetTextField.textField.delegate = self
+        confirmTextField.textField.delegate = self
     }
 
     @objc func submitPassword() {
@@ -249,5 +253,9 @@ class EDResetPasswordViewController: UIViewController {
                 present(ac, animated: true)
             }
         }
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }

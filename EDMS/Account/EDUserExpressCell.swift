@@ -1,22 +1,21 @@
 //
-//  EDUserOrderCell.swift
+//  EDUserExpressCell.swift
 //  EDMS
 //
-//  Created by Jason Zhang on 2023/4/29.
+//  Created by Jason Zhang on 2023/6/3.
 //
 
 import Foundation
 import UIKit
 
-class EDUserOrderCell: UITableViewCell {
+class EDUserExpressCell: UITableViewCell {
     lazy var orderLabel: UILabel = {
         let label = UILabel()
         return label
     }()
 
-    lazy var BillingView: EDBillingView = {
-        let view = EDBillingView()
-        view.isOrderCell = true
+    lazy var BillingView: EDExpressDestinationView = {
+        let view = EDExpressDestinationView()
         return view
     }()
 
@@ -42,15 +41,15 @@ class EDUserOrderCell: UITableViewCell {
         orderLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(24)
             make.right.equalToSuperview().offset(-24)
-            make.height.equalTo(50)
-            make.top.equalToSuperview().offset(12)
+            make.height.equalTo(32)
+            make.top.equalToSuperview().offset(6)
         }
 
         BillingView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(24)
             make.right.equalToSuperview().offset(-24)
             make.top.equalTo(orderLabel.snp.bottom).offset(8)
-            make.height.equalTo(68)
+            make.height.equalTo(88)
         }
         paymentAndPriceLabel.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-24)
@@ -61,11 +60,12 @@ class EDUserOrderCell: UITableViewCell {
         paymentAndPriceLabel.font = UIFont.systemFont(ofSize: 16)
         paymentAndPriceLabel.textAlignment = .right
         paymentAndPriceLabel.textColor = UIColor(named: "blurGray")
+        BillingView.setupUI()
     }
 
-    func setupEvent(order: Order) {
-        orderLabel.text = "订单号 \(order.id)"
-        BillingView.setup(with: order.bills)
-        paymentAndPriceLabel.text = "共消耗\(EDDataConvert.getTotalPrice(order.bills))积分"
+    func setupEvent(express: Express) {
+        orderLabel.text = "快递单号 SF\(express.id)"
+        BillingView.setupEvent(sender: express.de, recipient: express.sh)
+        paymentAndPriceLabel.text = "\(express.payment.displayName) ¥\(express.price)"
     }
 }

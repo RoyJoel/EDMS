@@ -9,7 +9,9 @@ import Foundation
 import TMComponent
 import UIKit
 
-class EDAddressEditingViewController: UIViewController {
+class EDAddressEditingViewController: UIViewController, UITextFieldDelegate {
+    var isDefault: Bool = false
+
     var address = Address()
     let provinceDs = provinceDataSource()
     let cityDs = cityDataSource()
@@ -53,6 +55,11 @@ class EDAddressEditingViewController: UIViewController {
         return TextField
     }()
 
+    lazy var defaultSelectionView: EDServerView = {
+        let serveView = EDServerView()
+        return serveView
+    }()
+
     lazy var doneBtn: UIButton = {
         let btn = UIButton()
         return btn
@@ -70,6 +77,7 @@ class EDAddressEditingViewController: UIViewController {
         view.addSubview(districtSelectionView)
         view.addSubview(detailedAddressTextField)
         view.addSubview(doneBtn)
+        view.addSubview(defaultSelectionView)
 
         nameTextField.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(24)
@@ -96,9 +104,16 @@ class EDAddressEditingViewController: UIViewController {
             make.height.equalTo(44)
         }
 
+        defaultSelectionView.snp.makeConstraints { make in
+            make.right.equalToSuperview().offset(-24)
+            make.top.equalTo(detailedAddressTextField.snp.bottom).offset(12)
+            make.width.equalTo(108)
+            make.height.equalTo(108)
+        }
+
         doneBtn.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(detailedAddressTextField.snp.bottom).offset(68)
+            make.top.equalTo(defaultSelectionView.snp.bottom).offset(68)
             make.width.equalTo(88)
             make.height.equalTo(44)
         }
@@ -179,6 +194,14 @@ class EDAddressEditingViewController: UIViewController {
             }
             self.setupEvent(address: self.address)
         }
+
+        let defaultSelectionConfig = EDServeViewConfig(selectedImage: "circle.fill", unSelectedImage: "circle", selectedTitle: "默认地址", unselectedTitle: "默认地址")
+        defaultSelectionView.setup(isServing: false, config: defaultSelectionConfig)
+        defaultSelectionView.addTapGesture(self, #selector(changeDefault))
+        defaultSelectionView.isUserInteractionEnabled = true
+        nameTextField.textField.delegate = self
+        phoneNumberTextField.textField.delegate = self
+        detailedAddressTextField.textField.delegate = self
     }
 
     func setupEvent(address: Address) {
@@ -217,6 +240,8 @@ class EDAddressEditingViewController: UIViewController {
         nameTextField.updateText(address.name)
         phoneNumberTextField.updateText(address.phoneNumber)
         detailedAddressTextField.updateText(address.detailedAddress)
+        isDefault = address.isDefault
+        defaultSelectionView.changeStats(to: isDefault)
     }
 
     func openAddingMode() {
@@ -225,8 +250,13 @@ class EDAddressEditingViewController: UIViewController {
     }
 
     func getAddressInfo() -> Address {
-        address = Address(id: address.id, name: nameTextField.textField.text ?? "", sex: sexDs.sexConfig[0], phoneNumber: phoneNumberTextField.textField.text ?? "", province: provinceDs.provinces[0].name, city: cityDs.cities[0].name, area: districtDs.districts[0].name, detailedAddress: detailedAddressTextField.textField.text ?? "")
+        address = Address(id: address.id, name: nameTextField.textField.text ?? "", sex: sexDs.sexConfig[0], phoneNumber: phoneNumberTextField.textField.text ?? "", province: provinceDs.provinces[0].name, city: cityDs.cities[0].name, area: districtDs.districts[0].name, detailedAddress: detailedAddressTextField.textField.text ?? "", isDefault: isDefault)
         return address
+    }
+
+    @objc func changeDefault() {
+        isDefault.toggle()
+        defaultSelectionView.changeStats(to: isDefault)
     }
 
     @objc func addAddress() {
@@ -245,6 +275,10 @@ class EDAddressEditingViewController: UIViewController {
             (self.saveCompletionHandler ?? { _ in })(address)
         }
         navigationController?.popViewController(animated: true)
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }
 

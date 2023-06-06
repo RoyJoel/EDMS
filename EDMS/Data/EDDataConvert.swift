@@ -216,8 +216,32 @@ class EDDataConvert {
     static func getTotalPrice(_ bills: [Bill]) -> Double {
         var price: Double = 0
         for bill in bills {
-            price += bill.com.price * Double(bill.quantity)
+            price += bill.option.price * Double(bill.quantity)
         }
         return price
+    }
+
+    static func getPriceRange(with options: [Option]) -> (Double, Double) {
+        var max = Double(Int.min)
+        var min = Double(Int.max)
+
+        for option in options {
+            if option.price > max {
+                max = option.price
+            }
+            if option.price < min {
+                min = option.price
+            }
+        }
+
+        return (min, max)
+    }
+
+    static func getTotalInventory(with options: [Option]) -> Int {
+        var inventory = 0
+        for option in options {
+            inventory += option.inventory
+        }
+        return inventory
     }
 }

@@ -98,10 +98,10 @@ class EDComBillingCell: UITableViewCell {
     }
 
     func setupEvent(bill: Bill) {
-        comIconView.image = UIImage(named: bill.option.image)
+        comIconView.image = UIImage(data: bill.option.image.toPng())
         nameView.text = bill.com.name
         configLabel.text = "已选\(bill.option.intro)"
         quantityLabel.text = "x\(bill.quantity)"
-        priceLabel.text = "¥\(bill.com.price)"
+        priceLabel.text = "\(bill.option.price)积分"
     }
 }

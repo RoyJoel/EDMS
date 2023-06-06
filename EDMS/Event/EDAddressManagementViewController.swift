@@ -22,10 +22,19 @@ class EDAddressManagementViewController: UITableViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         super.tableView(tableView, cellForRowAt: indexPath)
         let cell = EDAddressCell()
         cell.setupEvent(address: addresss[indexPath.row], canEdit: true)
+        cell.completionHandler = { address in
+            self.addresss[indexPath.row] = address
+            self.tableView.reloadData()
+        }
         return cell
     }
 
@@ -39,12 +48,35 @@ class EDAddressManagementViewController: UITableViewController {
         return 143
     }
 
+    override func tableView(_: UITableView, canEditRowAt _: IndexPath) -> Bool {
+        return true
+    }
+
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt: IndexPath) -> UITableViewCell.EditingStyle {
+        super.tableView(tableView, editingStyleForRowAt: editingStyleForRowAt)
+        return .delete
+    }
+
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        super.tableView(tableView, trailingSwipeActionsConfigurationForRowAt: indexPath)
+        let deleteAction = UIContextualAction(style: .destructive, title: NSLocalizedString("删除", comment: "")) { _, _, _ in
+            let address = self.addresss[indexPath.row]
+            EDAddressRequest.deleteAddress(id: address.id) { _ in
+                self.addresss.remove(at: indexPath.row)
+                self.tableView.reloadData()
+            }
+        }
+        deleteAction.backgroundColor = .red
+        let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return configuration
+    }
+
     override func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
         let sheetCtrl = UIAlertController(title: "是否将地址更改为", message: "\(addresss[indexPath.row].name)\(addresss[indexPath.row].sex == .Man ? "先生" : "女士")\n\(addresss[indexPath.row].phoneNumber)\n\(addresss[indexPath.row].province) \(addresss[indexPath.row].city) \(addresss[indexPath.row].area)\n\(addresss[indexPath.row].detailedAddress)", preferredStyle: .alert)
 
-        let action = UIAlertAction(title: "Ok", style: .default) { _ in
+        let action = UIAlertAction(title: "是", style: .default) { _ in
             if let address = (self.tableView.cellForRow(at: indexPath) as? EDAddressCell)?.address {
                 self.addresss[indexPath.row] = address
                 (self.selectedCompletionHandler ?? { _ in })(address)
@@ -53,7 +85,7 @@ class EDAddressManagementViewController: UITableViewController {
         }
         sheetCtrl.addAction(action)
 
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default) { _ in
+        let cancelAction = UIAlertAction(title: "否", style: .default) { _ in
             sheetCtrl.dismiss(animated: true)
         }
         sheetCtrl.addAction(cancelAction)

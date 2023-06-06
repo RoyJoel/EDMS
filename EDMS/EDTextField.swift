@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-open class EDTextField: UIView {
+open class EDTextField: UIView, UITextFieldDelegate {
     public lazy var textField: UITextField = {
         let textField = UITextField()
         textField.font = UIFont.systemFont(ofSize: 22)

@@ -32,10 +32,10 @@ class EDSettingViewController: UIViewController, UITableViewDelegate, UITableVie
             make.bottom.equalTo(signOutBtn.snp.top).offset(-5)
         }
         signOutBtn.snp.makeConstraints { make in
-            make.width.equalTo(68)
+            make.width.equalTo(108)
             make.height.equalTo(50)
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-5)
+            make.bottom.equalToSuperview().offset(-24)
         }
         tableView.backgroundColor = UIColor(named: "BackgroundGray")
         tableView.showsVerticalScrollIndicator = false
@@ -44,7 +44,7 @@ class EDSettingViewController: UIViewController, UITableViewDelegate, UITableVie
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(EDsettingTableViewCell.self, forCellReuseIdentifier: "EDsettingTableViewCell")
-        let signOutBtnConfig = TMButtonConfig(title: "Sign Out", action: #selector(signOut), actionTarget: self)
+        let signOutBtnConfig = TMButtonConfig(title: "登出", action: #selector(signOut), actionTarget: self)
         signOutBtn.setupUI()
         signOutBtn.setupEvent(config: signOutBtnConfig)
     }
@@ -57,12 +57,12 @@ class EDSettingViewController: UIViewController, UITableViewDelegate, UITableVie
             return cell
         } else if indexPath.row == 1 {
             let cell = EDsettingTableViewCell()
-            cell.setupEvent(title: "Appearance", info: UserDefaults.standard.string(forKey: "AppleAppearance") ?? "UnSpecified")
+            cell.setupEvent(title: "显示模式", info: UserDefaults.standard.string(forKey: "AppleAppearance") ?? "跟随系统")
             cell.selectionStyle = .none
             return cell
         } else {
             let cell = EDsettingTableViewCell()
-            cell.setupEvent(title: "Info", info: "")
+            cell.setupEvent(title: "个人信息", info: "")
             cell.selectionStyle = .none
             return cell
         }
@@ -73,7 +73,7 @@ class EDSettingViewController: UIViewController, UITableViewDelegate, UITableVie
         if indexPath.row < 2 {
             let vc = EDSettingSelectionViewController()
             vc.title = cell.titleView.text
-            let configs = ["显示模式"]
+            let configs = ["Appearance"]
             vc.dataSource = settingConfig[configs[indexPath.row - 1]] ?? []
             vc.completionHandler = { result in
                 if indexPath.row == 1 {

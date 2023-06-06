@@ -10,6 +10,7 @@ import UIKit
 
 class EDAddressCell: UITableViewCell {
     var address = Address()
+    var completionHandler: ((Address) -> Void)?
     lazy var nameAmdSexLabel: UILabel = {
         let label = UILabel()
         return label
@@ -123,7 +124,6 @@ class EDAddressCell: UITableViewCell {
         }
 
         iconView.image = UIImage(systemName: "location.circle")
-        iconView.tintColor = UIColor(named: "ContentBackground")
 
         editView.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
         editView.tintColor = UIColor(named: "ContentBackground")
@@ -139,6 +139,11 @@ class EDAddressCell: UITableViewCell {
         } else {
             editView.isHidden = true
         }
+        if address.id == EDUser.user.defaultAddress.id {
+            iconView.tintColor = UIColor(named: "Tennis")
+        } else {
+            iconView.tintColor = UIColor(named: "ContentBackground")
+        }
         nameAmdSexLabel.text = "\(address.name) \(address.sex == .Man ? "先生" : "女士")"
         phoneNumberLabel.text = "\(address.phoneNumber)"
         provinceLabel.text = "\(address.province)"
@@ -152,6 +157,7 @@ class EDAddressCell: UITableViewCell {
             let vc = EDAddressEditingViewController()
             vc.saveCompletionHandler = { address in
                 self.setupEvent(address: address, canEdit: true)
+                (self.completionHandler ?? { _ in })(address)
             }
             parentVC.navigationController?.pushViewController(vc, animated: true)
             vc.setupEvent(address: address)

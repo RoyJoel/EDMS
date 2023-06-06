@@ -205,8 +205,8 @@ class EDUser {
         }
     }
 
-    static func assignCart(completionHandler: @escaping (Int) -> Void) {
-        EDNetWork.post("/cart/assign", dataParameters: ["id": EDUser.user.id]) { json in
+    static func assignCart(order: OrderRequest, completionHandler: @escaping (Int) -> Void) {
+        EDNetWork.post("/cart/assign", dataParameters: order) { json in
             guard let json = json else {
                 return
             }

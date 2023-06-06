@@ -12,7 +12,7 @@ import UIKit
 class EDFilterView: TMView {
     let cagDS = cagFilterDataSource()
     let pointsDS = pointsFilterDataSource()
-    var cagCurIndex: String = comCag.none.displayName
+    var cagCurIndex: String = cagFilterDataSource().filterItems[0]
     var pointsCurIndex: String = comPoint.none.displayName
     var completionHandler: (([Commodity]) -> Void)?
 
@@ -142,7 +142,7 @@ class EDFilterView: TMView {
         let selectedPoints = pointsDS.filterItems[0]
         var cagFilteredComs: [Commodity] = []
         var pointFilteredComs: [Commodity] = []
-        if comCag(displayName: selectedCag).rawValue == 0 {
+        if ComCag(displayName: selectedCag).rawValue == 0 {
             cagFilteredComs = EDUser.commodities
         } else {
             cagFilteredComs = EDUser.commodities.filter { $0.cag.displayName == selectedCag }
@@ -151,13 +151,13 @@ class EDFilterView: TMView {
         if comPoint(displayName: selectedPoints).rawValue == 0 {
             pointFilteredComs = cagFilteredComs
         } else if comPoint(displayName: selectedPoints).rawValue == 1 {
-            pointFilteredComs = cagFilteredComs.filter { $0.price < 100 }
+            pointFilteredComs = cagFilteredComs.filter { $0.options[0].price < 100 }
         } else if comPoint(displayName: selectedPoints).rawValue == 2 {
-            pointFilteredComs = cagFilteredComs.filter { $0.price >= 100 && $0.price < 500 }
+            pointFilteredComs = cagFilteredComs.filter { $0.options[0].price >= 100 && $0.options[0].price < 500 }
         } else if comPoint(displayName: selectedPoints).rawValue == 3 {
-            pointFilteredComs = cagFilteredComs.filter { $0.price > 500 && $0.price < 1000 }
+            pointFilteredComs = cagFilteredComs.filter { $0.options[0].price > 500 && $0.options[0].price < 1000 }
         } else if comPoint(displayName: selectedPoints).rawValue == 4 {
-            pointFilteredComs = cagFilteredComs.filter { $0.price > 1000 }
+            pointFilteredComs = cagFilteredComs.filter { $0.options[0].price > 1000 }
         }
         (completionHandler ?? { _ in })(pointFilteredComs)
 
@@ -187,7 +187,7 @@ class pointsFilterDataSource: NSObject, UITableViewDataSource {
 }
 
 class cagFilterDataSource: NSObject, UITableViewDataSource {
-    var filterItems = comCag.allCases.compactMap { $0.displayName }
+    var filterItems = ComCag.allCases.compactMap { $0.displayName }
 
     func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         filterItems.count
@@ -199,49 +199,6 @@ class cagFilterDataSource: NSObject, UITableViewDataSource {
         cell.setupEvent(title: filterItems[indexPath.row])
         cell.backgroundColor = UIColor(named: "ComponentBackground")
         return cell
-    }
-}
-
-enum comCag: Int, Codable, CaseIterable {
-    case none = 0
-    case Decoration = 1
-    case ClothingMatching = 2
-    case Accessories = 3
-    case Tableware = 4
-    case PictureFrame = 5
-
-    var displayName: String {
-        switch self {
-        case .none:
-            return "不限"
-        case .Decoration:
-            return "家居装饰"
-        case .ClothingMatching:
-            return "服饰搭配"
-        case .Accessories:
-            return "手机配件"
-        case .Tableware:
-            return "水杯餐具"
-        case .PictureFrame:
-            return "相框摆台"
-        }
-    }
-
-    init(displayName: String) {
-        switch displayName {
-        case "家居装饰":
-            self = .Decoration
-        case "服饰搭配":
-            self = .ClothingMatching
-        case "手机配件":
-            self = .Accessories
-        case "水杯餐具":
-            self = .Tableware
-        case "相框摆台":
-            self = .PictureFrame
-        default:
-            self = .none
-        }
     }
 }
 

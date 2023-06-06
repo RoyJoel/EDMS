@@ -57,6 +57,7 @@ class EDSettingUserIconCell: UITableViewCell {
             make.width.equalTo(74)
         }
         navigationBar.image = UIImage(systemName: "chevron.forward")
+        navigationBar.tintColor = UIColor(named: "ContentBackground")
         titleView.font = UIFont.systemFont(ofSize: 20)
         iconView.contentMode = .scaleAspectFill
         iconView.setCorner(radii: 15)

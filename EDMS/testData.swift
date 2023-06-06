@@ -9,26 +9,43 @@ import Foundation
 import SwiftyJSON
 import UIKit
 
-let option1 = Option(id: 1, image: "Aus", intro: "澳网")
-let option2 = Option(id: 2, image: "wim", intro: "温网")
-let com1 = Commodity(id: 0, options: [option1, option2], name: "DUNLOP邓禄普澳网AO官方比赛网球", intro: "澳大利亚网球公开赛官方指定用球 \n Wilson 公司全力打造的比赛用球！为大满贯比赛严格要求而设计的独特的网球,有OPTI-VIS增强视觉效果处理,更加清晰可见,更添专业品质。\n 具有Nano Play纳米科技，耐打性佳、弹性好，外表增添了加亮材料，大大增加了比赛或训练中捕球的机会性、可视性。", price: 123, inventory: 9, orders: 2, cag: .Accessories)
+var trace1 = Trace(acceptTime: "2023 05-24 18:29 星期三", acceptStation: "", location: "", action: "【西安市】已签收,签收人是本人,感谢使用安能,期待再次为您服务")
 
-let com2 = Commodity(id: 0, options: [option1, option2], name: "Slazenger史莱辛格网球 温网比赛官方用球", intro: "澳大利亚网球公开赛官方指定用球；Wilson 公司全力打造的比赛用球！为大满贯比赛严格要求而设计的独特的网球,有OPTI-VIS增强视觉效果处理,更加清晰可见,更添专业品质。具有Nano Play纳米科技，耐打性佳、弹性好，外表增添了加亮材料，大大增加了比赛或训练中捕球的机会性、可视性。", price: 123, inventory: 1, orders: 2, cag: .ClothingMatching)
+var trace2 = Trace(acceptTime: "2023 05-24 18:27", acceptStation: "", location: "", action: "【西安市】雁塔派件员:何渭中13516829024正在为您派件")
 
-let com: [Commodity] = [com1, com2]
+var trace3 = Trace(acceptTime: "2023 05-23 21:45", acceptStation: "", location: "", action: " 【西安市】西安分拨中心快件已到达")
 
-let bill1 = Bill(id: 1, com: com1, quantity: 2, option: option1)
-let bill2 = Bill(id: 2, com: com2, quantity: 3, option: option2)
-let address1 = Address(id: 1, name: "张嘉诚", sex: .Man, phoneNumber: "18840250882", province: "陕西省", city: "西安市", area: "灞桥区", detailedAddress: "西安邮电大学雁塔校区")
-let address2 = Address(id: 1, name: "李思齐", sex: .Man, phoneNumber: "18700350775", province: "北京市", city: "北京市", area: "顺义区", detailedAddress: "港鑫家园")
-let address3 = Address(id: 1, name: "张嘉诚", sex: .Man, phoneNumber: "18840250882", province: "陕西省", city: "西安市", area: "新城区", detailedAddress: "西安邮电大学雁塔校区")
-var addresss = [address1, address2, address3]
+var trace4 = Trace(acceptTime: "2023 05-23 01:28 星期二", acceptStation: "", location: "", action: "【郑州市】郑州分拨中心快件已发出")
+var express1 = Express(id: 20_230_607, de: address1, sh: address2, payment: .aliPayOnline, price: 12, state: .ToSend, commoType: "包裹", createdTime: Date().timeIntervalSince1970, trace: [trace4, trace3, trace2, trace1])
+var expresses: [Express] = [Express(id: 20_190_901, de: address2, sh: address1, payment: .aliPayOnline, price: 12, state: .ToDelivery, commoType: "行李", createdTime: Date().timeIntervalSince1970, trace: [trace4, trace3, trace2]), express1, Express(id: 20_230_719, de: address2, sh: address3, payment: .aliPayOnline, price: 12, state: .ToSend, commoType: "家具", createdTime: Date().timeIntervalSince1970, trace: [trace4, trace3, trace2, trace1])]
+let pointRecord1 = pointRecord(date: Date().timeIntervalSince1970, type: .clockIn, num: 6)
+let pointRecord2 = pointRecord(date: Date().timeIntervalSince1970, type: .express, num: 40)
+let pointRecord3 = pointRecord(date: Date().timeIntervalSince1970, type: .exchange, num: 6)
+var records: [pointRecord] = [pointRecord1, pointRecord2, pointRecord3]
 
-let order: Order = Order(id: 1, bills: [bill1, bill2, bill2], shippingAddress: address1, deliveryAddress: address1, payment: .weChatOnline, createdTime: 1_682_329_527, payedTime: 1_682_415_927, completedTime: 1_682_588_727, state: .Done)
+let address1 = Address(id: 1, name: "张嘉诚", sex: .Man, phoneNumber: "18840250882", province: "陕西省", city: "西安市", area: "雁塔区", detailedAddress: "西安邮电大学雁塔校区", isDefault: true)
+let address2 = Address(id: 2, name: "张嘉诚", sex: .Man, phoneNumber: "18840250882", province: "北京市", city: "北京市", area: "顺义区", detailedAddress: "港鑫家园", isDefault: false)
+let address3 = Address(id: 3, name: "张嘉诚", sex: .Man, phoneNumber: "18840250882", province: "广东省", city: "广州市", area: "天河区", detailedAddress: "羊城创意产业园3-02荔枝", isDefault: false)
 
-let order1: Order = Order(id: 1, bills: [bill1, bill2, bill2], shippingAddress: address1, deliveryAddress: address1, payment: .weChatOnline, createdTime: 1_682_329_527, payedTime: nil, completedTime: nil, state: .ToPay)
-
-let ordersa: [Order] = [order, order, order1]
+var points = 607
+var lastClockTime: TimeInterval = 1_685_701_396
+// var addresss = [address1, address2, address3]
+// let option1 = Option(id: 1, image: "Aus", intro: "澳网")
+// let option2 = Option(id: 2, image: "wim", intro: "温网")
+// let com1 = Commodity(id: 0, options: [option1, option2], name: "DUNLOP邓禄普澳网AO官方比赛网球", intro: "澳大利亚网球公开赛官方指定用球 \n Wilson 公司全力打造的比赛用球！为大满贯比赛严格要求而设计的独特的网球,有OPTI-VIS增强视觉效果处理,更加清晰可见,更添专业品质。\n 具有Nano Play纳米科技，耐打性佳、弹性好，外表增添了加亮材料，大大增加了比赛或训练中捕球的机会性、可视性。", price: 123, inventory: 9, orders: 2, cag: .Accessories)
+//
+// let com2 = Commodity(id: 0, options: [option1, option2], name: "Slazenger史莱辛格网球 温网比赛官方用球", intro: "澳大利亚网球公开赛官方指定用球；Wilson 公司全力打造的比赛用球！为大满贯比赛严格要求而设计的独特的网球,有OPTI-VIS增强视觉效果处理,更加清晰可见,更添专业品质。具有Nano Play纳米科技，耐打性佳、弹性好，外表增添了加亮材料，大大增加了比赛或训练中捕球的机会性、可视性。", price: 123, inventory: 1, orders: 2, cag: .ClothingMatching)
+//
+// let com: [Commodity] = [com1, com2]
+//
+// let bill1 = Bill(id: 1, com: com1, quantity: 2, option: option1)
+// let bill2 = Bill(id: 2, com: com2, quantity: 3, option: option2)
+//
+// let order: Order = Order(id: 1, bills: [bill1, bill2, bill2], shippingAddress: address1, deliveryAddress: address1, payment: .weChatOnline, createdTime: 1_682_329_527, payedTime: 1_682_415_927, completedTime: 1_682_588_727, state: .Done)
+//
+// let order1: Order = Order(id: 1, bills: [bill1, bill2, bill2], shippingAddress: address1, deliveryAddress: address1, payment: .weChatOnline, createdTime: 1_682_329_527, payedTime: nil, completedTime: nil, state: .ToPay)
+//
+// let ordersa: [Order] = [order, order, order1]
 
 // let club: Club = Club(id: 1, icon: "JasonZhang", name: "TennisMoment", intro: "Tennis Moment is world NO.2 Tennis Association", owner: Player(json: JSON()), address: "Germany", events: [event, event, event])
 // let event: Event = Event(id: 0, icon: "JasonZhang", name: "ED250", startDate: Date().timeIntervalSince1970, endDate: Date().timeIntervalSince1970 + 100_000_000, level: .ED250, draw: [Player(id: 0, loginName: "jasony", name: "Nick Kyrgios", icon: "NickKyrgios", sex: .Man, age: 21, yearsPlayed: 1, height: 10_000_000, width: 1, grip: .Western, backhand: .TwoHandedBackhand, points: 1000, isAdult: true, careerStats: Stats(json: JSON())), Player(id: 0, loginName: "jasony", name: "Nick Kyrgios", icon: "NickKyrgios", sex: .Man, age: 21, yearsPlayed: 1, height: 10_000_000, width: 1, grip: .Western, backhand: .TwoHandedBackhand, points: 1000, isAdult: true, careerStats: Stats(json: JSON()))], schedule: [[game, game, game]])

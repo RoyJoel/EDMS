@@ -15,6 +15,9 @@ class EDAddressRequest {
             }
             let address = Address(json: json)
             EDUser.user.addresss.append(address.id)
+            if address.isDefault {
+                EDUser.user.defaultAddress = address
+            }
             completionHandler(address)
         }
     }
@@ -24,16 +27,19 @@ class EDAddressRequest {
             guard let json = json else {
                 return
             }
+            if address.isDefault {
+                EDUser.user.defaultAddress = Address(json: json)
+            }
             completionHandler(Address(json: json))
         }
     }
 
-    static func deleteAddress(id: Int, completionHandler: @escaping (Address) -> Void) {
+    static func deleteAddress(id: Int, completionHandler: @escaping (Bool) -> Void) {
         EDNetWork.post("/address/delete", dataParameters: ["id": id]) { json in
             guard let json = json else {
                 return
             }
-            completionHandler(Address(json: json))
+            completionHandler(json.boolValue)
         }
     }
 

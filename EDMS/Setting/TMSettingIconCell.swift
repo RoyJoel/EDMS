@@ -48,8 +48,8 @@ class EDSettingIconCell: UITableViewCell {
         titleView.text = "Tennis Moment"
         titleView.textAlignment = .center
         titleView.textColor = UIColor(named: "ContentBackground")
-        iconView.image = UIImage(named: "TennisBall")
-        iconView.contentMode = .scaleToFill
+        iconView.image = UIImage(named: "logo")
+        iconView.contentMode = .scaleAspectFill
         iconView.setCorner(radii: 15)
     }
 }

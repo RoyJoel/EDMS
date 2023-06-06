@@ -10,7 +10,7 @@ import Foundation
 import TMComponent
 import UIKit
 
-class EDSignInViewController: UIViewController {
+class EDSignInViewController: UIViewController, UITextFieldDelegate {
     lazy var loginNameTextField: EDTextField = {
         let textField = EDTextField()
         return textField
@@ -82,74 +82,67 @@ class EDSignInViewController: UIViewController {
             guard let self = self else {
                 return
             }
-            // 在这里处理登录接口返回数据之前的逻辑
-            if let loginName = self.loginNameTextField.textField.text, let password = self.passwordTextField.textField.text {
-                if !loginName.isEmpty, !password.isEmpty {
-                    EDUser.user.loginName = loginName
-                    EDUser.user.password = password
-                    EDUser.signIn { user, error in
-                        guard error == nil else {
-                            if let window = self.signInBtn.window {
-                                let toastView = UILabel()
-                                toastView.text = NSLocalizedString("登录失败", comment: "")
-                                toastView.numberOfLines = 2
-                                toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-                                toastView.backgroundColor = UIColor(named: "ComponentBackground")
-                                toastView.textAlignment = .center
-                                toastView.setCorner(radii: 15)
-                                (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
-                                }
-                            }
-                            self.signInBtn.stopBouncing()
-                            return
-                        }
-                        guard let user = user else {
-                            if let window = self.signInBtn.window {
-                                let toastView = UILabel()
-                                toastView.text = NSLocalizedString("登录失败", comment: "")
-                                toastView.numberOfLines = 2
-                                toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-                                toastView.backgroundColor = UIColor(named: "ComponentBackground")
-                                toastView.textAlignment = .center
-                                toastView.setCorner(radii: 15)
-                                (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
-                                }
-                            }
-                            self.signInBtn.stopBouncing()
-                            return
-                        }
-                        EDUser.user = user
-                        var loggedinUser = (UserDefaults.standard.array(forKey: EDUDKeys.loggedinUser.rawValue) as? [String]) ?? []
-                        loggedinUser.append(EDUser.user.loginName)
-                        let userInfo = try? PropertyListEncoder().encode(EDUser.user)
-                        UserDefaults.standard.set(loggedinUser, forKey: EDUDKeys.loggedinUser.rawValue)
-                        UserDefaults.standard.set(userInfo, forKey: EDUDKeys.UserInfo.rawValue)
-                        UserDefaults.standard.set(user.token, forKey: EDUDKeys.JSONWebToken.rawValue)
-                        // 登录成功后，跳转到下一个界面
+            self.signIn()
+        }
+        loginNameTextField.textField.delegate = self
+        passwordTextField.textField.delegate = self
+    }
+
+    func signIn() {
+        // 在这里处理登录接口返回数据之前的逻辑
+        if let loginName = self.loginNameTextField.textField.text, let password = self.passwordTextField.textField.text {
+            if !loginName.isEmpty, !password.isEmpty {
+                EDUser.user.loginName = loginName
+                EDUser.user.password = password
+                EDUser.signIn { user, error in
+                    guard error == nil else {
                         if let window = self.signInBtn.window {
-                            let homeVC = TabViewController()
-                            window.rootViewController = homeVC
+                            let toastView = UILabel()
+                            toastView.text = NSLocalizedString("登录失败", comment: "")
+                            toastView.numberOfLines = 2
+                            toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
+                            toastView.backgroundColor = UIColor(named: "ComponentBackground")
+                            toastView.textAlignment = .center
+                            toastView.setCorner(radii: 15)
+                            (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
+                            }
                         }
                         self.signInBtn.stopBouncing()
+                        return
                     }
-                } else {
-                    if let window = self.signInBtn.window {
-                        let toastView = UILabel()
-                        toastView.text = NSLocalizedString("用户名为空", comment: "")
-                        toastView.numberOfLines = 2
-                        toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-                        toastView.backgroundColor = UIColor(named: "ComponentBackground")
-                        toastView.textAlignment = .center
-                        toastView.setCorner(radii: 15)
-                        (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
+                    guard let user = user else {
+                        if let window = self.signInBtn.window {
+                            let toastView = UILabel()
+                            toastView.text = NSLocalizedString("登录失败", comment: "")
+                            toastView.numberOfLines = 2
+                            toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
+                            toastView.backgroundColor = UIColor(named: "ComponentBackground")
+                            toastView.textAlignment = .center
+                            toastView.setCorner(radii: 15)
+                            (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
+                            }
                         }
+                        self.signInBtn.stopBouncing()
+                        return
+                    }
+                    EDUser.user = user
+                    var loggedinUser = (UserDefaults.standard.array(forKey: EDUDKeys.loggedinUser.rawValue) as? [String]) ?? []
+                    loggedinUser.append(EDUser.user.loginName)
+                    let userInfo = try? PropertyListEncoder().encode(EDUser.user)
+                    UserDefaults.standard.set(loggedinUser, forKey: EDUDKeys.loggedinUser.rawValue)
+                    UserDefaults.standard.set(userInfo, forKey: EDUDKeys.UserInfo.rawValue)
+                    UserDefaults.standard.set(user.token, forKey: EDUDKeys.JSONWebToken.rawValue)
+                    // 登录成功后，跳转到下一个界面
+                    if let window = self.signInBtn.window {
+                        let homeVC = TabViewController()
+                        window.rootViewController = homeVC
                     }
                     self.signInBtn.stopBouncing()
                 }
             } else {
                 if let window = self.signInBtn.window {
                     let toastView = UILabel()
-                    toastView.text = NSLocalizedString("账户名为空", comment: "")
+                    toastView.text = NSLocalizedString("用户名为空", comment: "")
                     toastView.numberOfLines = 2
                     toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
                     toastView.backgroundColor = UIColor(named: "ComponentBackground")
@@ -158,8 +151,21 @@ class EDSignInViewController: UIViewController {
                     (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
                     }
                 }
-                self.signInBtn.stopBouncing()
+                signInBtn.stopBouncing()
             }
+        } else {
+            if let window = self.signInBtn.window {
+                let toastView = UILabel()
+                toastView.text = NSLocalizedString("账户名为空", comment: "")
+                toastView.numberOfLines = 2
+                toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
+                toastView.backgroundColor = UIColor(named: "ComponentBackground")
+                toastView.textAlignment = .center
+                toastView.setCorner(radii: 15)
+                (window.rootViewController as? EDSignInViewController)?.view?.showToast(toastView, duration: 1, point: CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)) { _ in
+                }
+            }
+            signInBtn.stopBouncing()
         }
     }
 
@@ -171,5 +177,16 @@ class EDSignInViewController: UIViewController {
     @objc func resetPasswordVCUp() {
         let vc = EDResetPasswordViewController()
         present(vc, animated: true)
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField === loginNameTextField.textField {
+            return passwordTextField.textField.becomeFirstResponder()
+        } else if textField === passwordTextField.textField {
+            signInBtn.handleTapGesture()
+            return textField.resignFirstResponder()
+        } else {
+            return textField.resignFirstResponder()
+        }
     }
 }

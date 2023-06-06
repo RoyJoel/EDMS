@@ -27,6 +27,11 @@ class AccountViewController: EDViewController {
         return iconView
     }()
 
+    lazy var pointLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+
     lazy var userOrderView: TMButton = {
         let view = TMButton()
         return view
@@ -37,14 +42,21 @@ class AccountViewController: EDViewController {
         return view
     }()
 
+    lazy var pointRecordView: TMButton = {
+        let btn = TMButton()
+        return btn
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.addSubview(settingView)
         view.addSubview(clockInBtn)
         view.addSubview(iconView)
+        view.addSubview(pointLabel)
         view.addSubview(userOrderView)
         view.addSubview(userExpressOrderView)
+        view.addSubview(pointRecordView)
 
         iconView.setupUI()
         let iconConfig = TMIconViewConfig(icon: EDUser.user.icon.toPng(), name: EDUser.user.name)
@@ -62,14 +74,26 @@ class AccountViewController: EDViewController {
             make.width.equalTo(108)
             make.height.equalTo(40)
         }
-        userOrderView.snp.makeConstraints { make in
+
+        pointLabel.snp.makeConstraints { make in
             make.top.equalTo(iconView.snp.bottom).offset(24)
+            make.centerX.equalToSuperview()
+        }
+
+        userOrderView.snp.makeConstraints { make in
+            make.top.equalTo(pointLabel.snp.bottom).offset(24)
             make.height.equalTo(68)
             make.centerX.equalToSuperview()
             make.width.equalTo(138)
         }
         userExpressOrderView.snp.makeConstraints { make in
             make.top.equalTo(userOrderView.snp.bottom).offset(24)
+            make.height.equalTo(68)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(138)
+        }
+        pointRecordView.snp.makeConstraints { make in
+            make.top.equalTo(userExpressOrderView.snp.bottom).offset(24)
             make.height.equalTo(68)
             make.centerX.equalToSuperview()
             make.width.equalTo(138)
@@ -83,18 +107,57 @@ class AccountViewController: EDViewController {
         settingView.isUserInteractionEnabled = true
         settingView.addTapGesture(self, #selector(settingViewUp))
         NotificationCenter.default.addObserver(self, selector: #selector(refreshData), name: Notification.Name(ToastNotification.DataFreshToast.rawValue), object: nil)
-        let userOrderConfig = TMButtonConfig(title: "View All Orders", action: #selector(viewAllOrders), actionTarget: self)
+        let userOrderConfig = TMButtonConfig(title: "快递订单", action: #selector(viewAllExpresses), actionTarget: self)
         userOrderView.setUp(with: userOrderConfig)
 
-        let userEOrderConfig = TMButtonConfig(title: "View All Expresses", action: #selector(viewAllExpresses), actionTarget: self)
+        let userEOrderConfig = TMButtonConfig(title: "积分商城订单", action: #selector(viewAllOrders), actionTarget: self)
         userExpressOrderView.setUp(with: userEOrderConfig)
 
+        let pointRecordConfig = TMButtonConfig(title: "积分历史", action: #selector(viewAllPointRecord), actionTarget: self)
+        pointRecordView.setUp(with: pointRecordConfig)
+
+        pointLabel.text = "当前积分：\(points)"
         clockInBtn.setTitle("打卡", for: .normal)
         clockInBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
         clockInBtn.setImage(UIImage(systemName: "calendar.badge.clock"), for: .normal)
         clockInBtn.tintColor = UIColor(named: "ContentBackground")
         clockInBtn.setCorner(radii: 10)
         clockInBtn.backgroundColor = UIColor(named: "ComponentBackground")
+        clockInBtn.addTarget(self, action: #selector(clockIn), for: .touchDown)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        pointLabel.text = "当前积分：\(points)"
+    }
+
+    @objc func clockIn() {
+        if lastClockTime.convertToString(formatterString: "yyyy MM-dd") != Date().timeIntervalSince1970.convertToString(formatterString: "yyyy MM-dd") {
+            let toastView = UILabel()
+            toastView.text = NSLocalizedString("今日打卡完成", comment: "")
+            toastView.numberOfLines = 2
+            toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
+            toastView.backgroundColor = UIColor(named: "ComponentBackground")
+            toastView.textAlignment = .center
+            toastView.setCorner(radii: 15)
+            view.showToast(toastView, duration: 1, point: CGPoint(x: view.bounds.width / 2, y: view.bounds.height / 2)) { _ in
+                let record = pointRecord(date: Date().timeIntervalSince1970, type: .clockIn, num: 6)
+                points += 6
+                lastClockTime = Date().timeIntervalSince1970
+                self.pointLabel.text = "当前积分：\(points)"
+                records.append(record)
+            }
+        } else {
+            let toastView = UILabel()
+            toastView.text = NSLocalizedString("今日已打卡", comment: "")
+            toastView.numberOfLines = 2
+            toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
+            toastView.backgroundColor = UIColor(named: "ComponentBackground")
+            toastView.textAlignment = .center
+            toastView.setCorner(radii: 15)
+            view.showToast(toastView, duration: 1, point: CGPoint(x: view.bounds.width / 2, y: view.bounds.height / 2)) { _ in
+            }
+        }
     }
 
     @objc func settingViewUp() {
@@ -108,18 +171,18 @@ class AccountViewController: EDViewController {
         iconView.setupEvent(config: iconConfig)
     }
 
-    @objc func viewAllGames() {
-        let vc = EDUserAllHistoryGamesViewController()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-
     @objc func viewAllExpresses() {
-        let vc = EDUserOrdersViewController()
+        let vc = EDUserExpressesViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
 
     @objc func viewAllOrders() {
         let vc = EDUserOrdersViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc func viewAllPointRecord() {
+        let vc = EDUserPointRecordViewController()
         navigationController?.pushViewController(vc, animated: true)
     }
 }

@@ -9,7 +9,7 @@ import Foundation
 import TMComponent
 import UIKit
 
-class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     let configItems = ["起个名字吧", "为你选一张头像", "你的性别是", "设置用户名", "设置密码"]
     var currentIndex = 0
 
@@ -172,6 +172,9 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         nextConfigBtn.setUp(with: nextBtnConfig)
         let lastBtnConfig = TMButtonConfig(title: "返回", action: #selector(stepBackward), actionTarget: self)
         lastConfigBtn.setUp(with: lastBtnConfig)
+        nameTextField.textField.delegate = self
+        accountTextField.textField.delegate = self
+        passwordTextField.textField.delegate = self
     }
 
     func showSubView(tag: Int) {
@@ -330,6 +333,8 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
         let tag = currentIndex + 200
         if let selectedString = (view.viewWithTag(tag) as? EDTextField)?.textField.text {
             completionHandler(selectedString)
+        } else if let selectedString = (view.viewWithTag(tag) as? EDSelectionView)?.isLeft {
+            completionHandler(selectedString == true ? "男" : "女")
         } else if let selectedIcon = (view.viewWithTag(tag) as? UIImageView)?.image?.pngData() {
             iconCompletionHandler(selectedIcon)
         }
@@ -339,5 +344,9 @@ class EDSignUpViewController: UIViewController, UIImagePickerControllerDelegate,
     @objc func changeIcon() {
         imagePicker.sourceType = .photoLibrary
         present(imagePicker, animated: true)
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }

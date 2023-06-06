@@ -1,24 +1,24 @@
 //
-//  EDOrderDetailViewController.swift
+//  EDExpressDetailViewController.swift
 //  EDMS
 //
-//  Created by Jason Zhang on 2023/5/8.
+//  Created by Jason Zhang on 2023/6/3.
 //
 
 import Foundation
 import UIKit
 
-class EDOrderDetailViewController: UIViewController {
-    var order = Order()
-    var completionHandler: ((Order) -> Void)?
+class EDExpressDetailViewController: UIViewController {
+    var express = Express()
     var deleteCompletionHandler: (() -> Void)?
-    lazy var addressView: EDAddressCell = {
+    var completionHandler: ((Express) -> Void)?
+    lazy var senderAddressView: EDAddressCell = {
         let view = EDAddressCell()
         return view
     }()
 
-    lazy var addressViewBackground: UIView = {
-        let view = UIView()
+    lazy var recipientAddressView: EDAddressCell = {
+        let view = EDAddressCell()
         return view
     }()
 
@@ -37,9 +37,8 @@ class EDOrderDetailViewController: UIViewController {
         return label
     }()
 
-    lazy var billingView: EDBillingView = {
-        let view = EDBillingView()
-        view.isOrderCell = true
+    lazy var billingView: EDTraceView = {
+        let view = EDTraceView()
         return view
     }()
 
@@ -54,6 +53,16 @@ class EDOrderDetailViewController: UIViewController {
     }()
 
     lazy var paymentNameLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+
+    lazy var commoTypeLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+
+    lazy var commoTypeNameLabel: UILabel = {
         let label = UILabel()
         return label
     }()
@@ -73,12 +82,12 @@ class EDOrderDetailViewController: UIViewController {
         return btn
     }()
 
-    lazy var cancelBtn: UIButton = {
+    lazy var saveBtn: UIButton = {
         let btn = UIButton()
         return btn
     }()
 
-    lazy var saveBtn: UIButton = {
+    lazy var cancelBtn: UIButton = {
         let btn = UIButton()
         return btn
     }()
@@ -117,12 +126,14 @@ class EDOrderDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "BackgroundGray")
         view.addSubview(orderStateLabel)
-        view.addSubview(addressViewBackground)
+        view.addSubview(senderAddressView)
+        view.addSubview(recipientAddressView)
         view.addSubview(billingViewBackground)
-        addressViewBackground.addSubview(addressView)
         billingViewBackground.addSubview(billingView)
         view.addSubview(paymentLabel)
         view.addSubview(paymentNameLabel)
+        view.addSubview(commoTypeLabel)
+        view.addSubview(commoTypeNameLabel)
         view.addSubview(priceLabel)
         view.addSubview(priceNumLabel)
         view.addSubview(orderLabel)
@@ -144,24 +155,25 @@ class EDOrderDetailViewController: UIViewController {
             make.height.equalTo(40)
         }
 
-        addressViewBackground.snp.makeConstraints { make in
+        billingViewBackground.snp.makeConstraints { make in
+            make.left.equalToSuperview().offset(12)
+            make.right.equalToSuperview().offset(-12)
+            make.top.equalTo(recipientAddressView.snp.bottom).offset(12)
+            make.height.equalTo(88)
+        }
+
+        senderAddressView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
             make.right.equalToSuperview().offset(-12)
             make.top.equalTo(orderStateLabel.snp.bottom).offset(12)
             make.height.equalTo(143)
         }
 
-        billingViewBackground.snp.makeConstraints { make in
+        recipientAddressView.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(12)
             make.right.equalToSuperview().offset(-12)
-            make.top.equalTo(addressView.snp.bottom).offset(12)
-            make.height.equalTo(88)
-        }
-
-        addressView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
-            make.left.equalToSuperview().offset(12)
-            make.right.equalToSuperview().offset(-12)
+            make.top.equalTo(senderAddressView.snp.bottom).offset(12)
+            make.height.equalTo(143)
         }
 
         billingView.snp.makeConstraints { make in
@@ -177,13 +189,24 @@ class EDOrderDetailViewController: UIViewController {
         }
         priceLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(24)
-            make.top.equalTo(paymentLabel.snp.bottom).offset(12)
+            make.top.equalTo(commoTypeLabel.snp.bottom).offset(12)
             make.height.equalTo(30)
         }
 
         paymentNameLabel.snp.makeConstraints { make in
             make.right.equalToSuperview().offset(-24)
             make.top.equalTo(paymentLabel.snp.top)
+            make.height.equalTo(30)
+        }
+
+        commoTypeLabel.snp.makeConstraints { make in
+            make.top.equalTo(paymentLabel.snp.bottom).offset(12)
+            make.left.equalToSuperview().offset(24)
+            make.height.equalTo(30)
+        }
+        commoTypeNameLabel.snp.makeConstraints { make in
+            make.top.equalTo(commoTypeLabel.snp.top)
+            make.right.equalToSuperview().offset(-24)
             make.height.equalTo(30)
         }
 
@@ -261,46 +284,48 @@ class EDOrderDetailViewController: UIViewController {
             make.bottom.equalToSuperview().offset(-138)
         }
 
-        orderStateLabel.text = order.state.displayName
+        orderStateLabel.text = express.state.displayName
         orderStateLabel.font = UIFont.systemFont(ofSize: 24)
-        addressView.setupEvent(address: EDUser.user.defaultAddress)
-        billingView.setup(with: order.bills)
-//        paymentLabel.text = "支付方式"
-//        paymentNameLabel.text = order.payment.displayName
-        priceNumLabel.text = "\(EDDataConvert.getTotalPrice(order.bills))积分"
+        senderAddressView.setupEvent(address: express.de)
+        recipientAddressView.setupEvent(address: express.sh)
+        billingView.setupUI()
+        billingView.setupEvent(trace: express.trace[express.trace.count - 1])
+        paymentLabel.text = "支付方式"
+        paymentNameLabel.text = express.payment.displayName
+        commoTypeLabel.text = "物品类型"
+        commoTypeNameLabel.text = express.commoType
+        priceNumLabel.text = "¥\(express.price)"
         priceLabel.text = "总计"
         cancelBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
         cancelBtn.backgroundColor = UIColor(named: "ComponentBackground")
         cancelBtn.setCorner(radii: 10)
-        saveBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
-        saveBtn.backgroundColor = UIColor(named: "TennisBlur")
-        saveBtn.setCorner(radii: 10)
-        if order.state == .ToPay {
+        if express.state == .ToPay {
             sentBtn.setTitle("修改地址", for: .normal)
-            sentBtn.addTarget(self, action: #selector(changeAddress), for: .touchDown)
+            sentBtn.addTarget(self, action: #selector(changerecipAddress), for: .touchDown)
             saveBtn.setTitle("现在支付", for: .normal)
             saveBtn.addTarget(self, action: #selector(buy), for: .touchDown)
             cancelBtn.setTitle("取消订单", for: .normal)
             cancelBtn.isHidden = false
             cancelBtn.addTarget(self, action: #selector(cancelOrder), for: .touchDown)
-        } else if order.state == .ToSend {
+            billingViewBackground.isHidden = true
+            paymentLabel.snp.remakeConstraints { make in
+                make.left.equalToSuperview().offset(24)
+                make.top.equalTo(recipientAddressView.snp.bottom).offset(12)
+                make.height.equalTo(30)
+            }
+        } else if express.state == .ToSend {
             sentBtn.setTitle("修改地址", for: .normal)
-            sentBtn.addTarget(self, action: #selector(changeAddress), for: .touchDown)
+            sentBtn.addTarget(self, action: #selector(changerecipAddress), for: .touchDown)
             cancelBtn.isHidden = true
-        } else if order.state == .ToDelivery {
+            billingViewBackground.isHidden = true
+            paymentLabel.snp.remakeConstraints { make in
+                make.left.equalToSuperview().offset(24)
+                make.top.equalTo(recipientAddressView.snp.bottom).offset(12)
+                make.height.equalTo(30)
+            }
+        } else if express.state == .ToDelivery {
             sentBtn.setTitle("确认收货", for: .normal)
             sentBtn.addTarget(self, action: #selector(confirmDelivery), for: .touchDown)
-            cancelBtn.isHidden = true
-        } else if order.state == .ToRefund {
-            sentBtn.setTitle("我已发货", for: .normal)
-            sentBtn.addTarget(self, action: #selector(sentOrder), for: .touchDown)
-            cancelBtn.addTarget(self, action: #selector(cancelRefund), for: .touchDown)
-            cancelBtn.setTitle("取消退货", for: .normal)
-            cancelBtn.isHidden = false
-        } else if order.state == .ToReturn {
-            sentBtn.setTitle("取消退款", for: .normal)
-            sentBtn.addTarget(self, action: #selector(cancelReturn), for: .touchDown)
-            sentBtn.isHidden = false
             cancelBtn.isHidden = true
         } else {
             sentBtn.isHidden = true
@@ -309,138 +334,73 @@ class EDOrderDetailViewController: UIViewController {
         sentBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
         sentBtn.backgroundColor = UIColor(named: "TennisBlur")
         sentBtn.setCorner(radii: 10)
-        orderLabel.text = "订单编号"
-        orderNumLabel.text = "\(order.id)"
+        saveBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
+        saveBtn.backgroundColor = UIColor(named: "TennisBlur")
+        saveBtn.setCorner(radii: 10)
+        orderLabel.text = "快递单号"
+        orderNumLabel.text = "SF\(express.id)"
         orderCreateTimeLabel.text = "创建时间"
-        createTimeLabel.text = order.createdTime.convertToString()
+        createTimeLabel.text = express.createdTime.convertToString()
 
-        if order.state != .ToPay {
+        if let payedTime = express.payedTime {
             orderPayedTimeLabel.isHidden = false
             payedTimeLabel.isHidden = false
             orderPayedTimeLabel.text = "支付时间"
-            payedTimeLabel.text = order.payedTime?.convertToString()
+            payedTimeLabel.text = payedTime.convertToString()
         } else {
             orderPayedTimeLabel.isHidden = true
             payedTimeLabel.isHidden = true
         }
 
-        if order.state == .Done {
+        if let doneTime = express.completedTime {
             orderDoneTimeLabel.isHidden = false
             doneTimeLabel.isHidden = false
             orderDoneTimeLabel.text = "完成时间"
-            doneTimeLabel.text = order.completedTime?.convertToString()
+            doneTimeLabel.text = doneTime.convertToString()
         } else {
             orderDoneTimeLabel.isHidden = true
             doneTimeLabel.isHidden = true
         }
 
-        addressView.backgroundColor = UIColor(named: "ComponentBackground")
-        addressViewBackground.setCorner(radii: 10)
-        addressViewBackground.backgroundColor = UIColor(named: "ComponentBackground")
+        senderAddressView.backgroundColor = UIColor(named: "ComponentBackground")
+        recipientAddressView.backgroundColor = UIColor(named: "ComponentBackground")
+        senderAddressView.setCorner(radii: 10)
+        recipientAddressView.setCorner(radii: 10)
         billingViewBackground.setCorner(radii: 10)
         billingViewBackground.backgroundColor = UIColor(named: "ComponentBackground")
     }
 
     @objc func cancelOrder() {
-        EDOrderRequest.deleteOrder(id: order.id) { _ in
-            let toastView = UILabel()
-            toastView.text = NSLocalizedString("成功取消", comment: "")
-            toastView.numberOfLines = 2
-            toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-            toastView.backgroundColor = UIColor(named: "ComponentBackground")
-            toastView.textAlignment = .center
-            toastView.setCorner(radii: 15)
-            self.view.showToast(toastView, duration: 1, point: CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)) { _ in
-                (self.deleteCompletionHandler ?? {})()
-                NotificationCenter.default.post(name: Notification.Name(ToastNotification.refreshOrderData.rawValue), object: nil)
-                self.navigationController?.dismiss(animated: true)
-            }
-        }
+        (deleteCompletionHandler ?? {})()
+        NotificationCenter.default.post(name: Notification.Name(ToastNotification.refreshExpressData.rawValue), object: nil)
     }
 
     @objc func buy() {
-        let vc = EDBillingViewController()
-        vc.order = order
+        let vc = ExpressViewController()
+        vc.express = express
         navigationController?.pushViewController(vc, animated: true)
     }
 
     @objc func confirmDelivery() {
-        let orderRequest = OrderRequest(id: order.id, bills: order.bills, shippingAddress: order.shippingAddress, payment: order.payment, playerId: EDUser.user.id, createdTime: order.createdTime, payedTime: order.payedTime, state: .Done)
-        EDOrderRequest.updateOrder(order: orderRequest) { _ in
-            let toastView = UILabel()
-            toastView.text = NSLocalizedString("确认收货成功", comment: "")
-            toastView.numberOfLines = 2
-            toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-            toastView.backgroundColor = UIColor(named: "ComponentBackground")
-            toastView.textAlignment = .center
-            toastView.setCorner(radii: 15)
-            self.view.showToast(toastView, duration: 1, point: CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)) { _ in
-                (self.completionHandler ?? { _ in })(self.order)
-                NotificationCenter.default.post(name: Notification.Name(ToastNotification.refreshOrderData.rawValue), object: nil)
-                self.navigationController?.dismiss(animated: true)
-            }
-        }
+        express.state = .Done
+        (completionHandler ?? { _ in })(express)
+        NotificationCenter.default.post(name: Notification.Name(ToastNotification.refreshExpressData.rawValue), object: nil)
     }
 
-    @objc func changeAddress() {
+    @objc func changerecipAddress() {
         let vc = EDAddressManagementViewController()
         vc.selectedCompletionHandler = { address in
-            self.order.shippingAddress = address
-            let orderRequest = OrderRequest(id: self.order.id, bills: self.order.bills, shippingAddress: self.order.shippingAddress, payment: self.order.payment, playerId: EDUser.user.id, createdTime: self.order.createdTime, payedTime: self.order.payedTime, state: .Done)
-            EDOrderRequest.updateOrder(order: orderRequest) { _ in
-                let toastView = UILabel()
-                toastView.text = NSLocalizedString("修改地址成功", comment: "")
-                toastView.numberOfLines = 2
-                toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-                toastView.backgroundColor = UIColor(named: "ComponentBackground")
-                toastView.textAlignment = .center
-                toastView.setCorner(radii: 15)
-                self.view.showToast(toastView, duration: 1, point: CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)) { _ in
-                    self.addressView.setupEvent(address: address)
-                    (self.completionHandler ?? { _ in })(self.order)
-                    NotificationCenter.default.post(name: Notification.Name(ToastNotification.refreshOrderData.rawValue), object: nil)
-                    self.navigationController?.dismiss(animated: true)
-                }
-            }
+            self.recipientAddressView.setupEvent(address: address)
+            self.express.sh = address
+            (self.completionHandler ?? { _ in })(self.express)
+            NotificationCenter.default.post(name: Notification.Name(ToastNotification.refreshExpressData.rawValue), object: nil)
         }
         navigationController?.pushViewController(vc, animated: true)
     }
 
-    @objc func cancelRefund() {
-        let orderRequest = OrderRequest(id: order.id, bills: order.bills, shippingAddress: order.shippingAddress, payment: order.payment, playerId: EDUser.user.id, createdTime: order.createdTime, payedTime: order.payedTime, state: .Done)
-        EDOrderRequest.updateOrder(order: orderRequest) { _ in
-            let toastView = UILabel()
-            toastView.text = NSLocalizedString("成功取消", comment: "")
-            toastView.numberOfLines = 2
-            toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-            toastView.backgroundColor = UIColor(named: "ComponentBackground")
-            toastView.textAlignment = .center
-            toastView.setCorner(radii: 15)
-            self.view.showToast(toastView, duration: 1, point: CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)) { _ in
-                (self.completionHandler ?? { _ in })(self.order)
-                NotificationCenter.default.post(name: Notification.Name(ToastNotification.refreshOrderData.rawValue), object: nil)
-                self.navigationController?.dismiss(animated: true)
-            }
-        }
-    }
+    @objc func cancelRefund() {}
 
-    @objc func cancelReturn() {
-        let orderRequest = OrderRequest(id: order.id, bills: order.bills, shippingAddress: order.shippingAddress, payment: order.payment, playerId: EDUser.user.id, createdTime: order.createdTime, payedTime: order.payedTime, state: .Done)
-        EDOrderRequest.updateOrder(order: orderRequest) { _ in
-            let toastView = UILabel()
-            toastView.text = NSLocalizedString("成功取消", comment: "")
-            toastView.numberOfLines = 2
-            toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
-            toastView.backgroundColor = UIColor(named: "ComponentBackground")
-            toastView.textAlignment = .center
-            toastView.setCorner(radii: 15)
-            self.view.showToast(toastView, duration: 1, point: CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)) { _ in
-                (self.completionHandler ?? { _ in })(self.order)
-                NotificationCenter.default.post(name: Notification.Name(ToastNotification.refreshOrderData.rawValue), object: nil)
-                self.navigationController?.dismiss(animated: true)
-            }
-        }
-    }
+    @objc func cancelReturn() {}
 
     @objc func sentOrder() {
         let vc = EDDeliveryViewController()

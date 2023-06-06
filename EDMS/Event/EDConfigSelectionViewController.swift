@@ -102,7 +102,7 @@ class EDConfigSelectionViewController: UIViewController {
         }
 
         quantityLabel.text = "数量"
-        quantityView.setupUI(maximumQuantity: com.inventory)
+        quantityView.setupUI(maximumQuantity: EDDataConvert.getTotalInventory(with: com.options))
 
         let buyBtnConfig = TMButtonConfig(title: "立即购买", action: #selector(addOrder), actionTarget: self)
         buyBtn.setUp(with: buyBtnConfig)
@@ -118,7 +118,7 @@ class EDConfigSelectionViewController: UIViewController {
     @objc func addOrder() {
         let vc = EDBillingViewController()
         let bill = Bill(id: 0, com: com, quantity: quantityView.currentQuantity, option: com.options[shoppingCollectionView.selectedRow])
-        let order = Order(id: 0, bills: [bill], shippingAddress: address2, deliveryAddress: address1, payment: .weChatOnline, createdTime: Date().timeIntervalSince1970, state: .ToPay)
+        let order = Order(id: 0, bills: [bill], shippingAddress: EDUser.user.defaultAddress, payment: .weChatOnline, createdTime: Date().timeIntervalSince1970, state: .ToPay)
         vc.order = order
         navigationController?.pushViewController(vc, animated: true)
     }

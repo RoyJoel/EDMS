@@ -5,10 +5,13 @@
 //  Created by Jason Zhang on 2023/5/10.
 //
 
+import Alamofire
 import Foundation
+import SwiftyJSON
 import UIKit
 
-class ExpressViewController: EDViewController {
+class ExpressViewController: EDViewController, UITextFieldDelegate {
+    var express = express1
     lazy var senderAddressView: EDAddressCell = {
         let view = EDAddressCell()
         return view
@@ -39,6 +42,11 @@ class ExpressViewController: EDViewController {
         return view
     }()
 
+    lazy var btn: UIButton = {
+        let btn = UIButton()
+        return btn
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,6 +54,7 @@ class ExpressViewController: EDViewController {
         view.addSubview(recipientAddressView)
         view.addSubview(payTypeView)
         view.addSubview(commodityBackgroundView)
+        view.addSubview(btn)
         commodityBackgroundView.addSubview(commodityTypeView)
         commodityBackgroundView.addSubview(commodityTypeLabel)
 
@@ -86,20 +95,34 @@ class ExpressViewController: EDViewController {
             make.height.equalTo(48)
             make.right.equalToSuperview().offset(-24)
         }
+        btn.snp.makeConstraints { make in
+            make.top.equalTo(commodityBackgroundView.snp.bottom).offset(24)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(88)
+            make.height.equalTo(44)
+        }
 
         senderAddressView.setCorner(radii: 15)
         recipientAddressView.setCorner(radii: 15)
         payTypeView.setCorner(radii: 15)
-        senderAddressView.setupEvent(address: address1, canEdit: true)
-        recipientAddressView.setupEvent(address: address2, canEdit: true)
-        payTypeView.setupEvent(title: "支付方式", info: payType.cashOnDelivery.displayName)
+        senderAddressView.setupEvent(address: express1.de, canEdit: true)
+        recipientAddressView.setupEvent(address: express1.sh, canEdit: true)
+        payTypeView.setupEvent(title: "支付方式", info: express.payment.displayName)
         payTypeView.addTapGesture(self, #selector(enterPayTypeSelectionView))
         let textFieldConfig = EDTextFieldConfig(placeholderText: "输入你的物品类型")
         commodityTypeLabel.text = "物品类型"
         commodityTypeView.setup(with: textFieldConfig)
+        commodityTypeView.textField.text = express.commoType
         commodityBackgroundView.setCorner(radii: 15)
         commodityTypeView.backgroundColor = UIColor(named: "ComponentBackground")
         commodityBackgroundView.backgroundColor = UIColor(named: "ComponentBackground")
+        senderAddressView.addTapGesture(self, #selector(enterAddressManagementViewController))
+        commodityTypeView.textField.delegate = self
+        btn.setTitle("下单", for: .normal)
+        btn.setTitleColor(.black, for: .normal)
+        btn.setCorner(radii: 15)
+        btn.backgroundColor = UIColor(named: "TennisBlur")
+        btn.addTarget(self, action: #selector(add), for: .touchDown)
     }
 
     @objc func enterPayTypeSelectionView() {
@@ -111,6 +134,32 @@ class ExpressViewController: EDViewController {
             self.payTypeView.setupEvent(title: "支付方式", info: selectedPayType)
         }
         navigationController?.pushViewController(vc, animated: true)
+    }
+
+    @objc func enterAddressManagementViewController() {
+        let vc = EDAddressManagementViewController()
+        navigationController?.present(UINavigationController(rootViewController: vc), animated: true)
+    }
+
+    @objc func add() {
+        let express = Express(id: 0, de: senderAddressView.address, sh: recipientAddressView.address, payment: payType(rawValue: payTypeView.infoView.text ?? "") ?? .aliPayOnline, price: 12, state: .ToSend, commoType: commodityTypeView.textField.text ?? "", createdTime: Date().timeIntervalSince1970, trace: [])
+        let toastView = UILabel()
+        toastView.text = NSLocalizedString("下单成功，获得20积分", comment: "")
+        toastView.numberOfLines = 2
+        toastView.bounds = CGRect(x: 0, y: 0, width: 350, height: 150)
+        toastView.backgroundColor = UIColor(named: "ComponentBackground")
+        toastView.textAlignment = .center
+        toastView.setCorner(radii: 15)
+        view.showToast(toastView, duration: 1, point: CGPoint(x: view.bounds.width / 2, y: view.bounds.height / 2)) { _ in
+        }
+        expresses.append(express)
+        let record = pointRecord(date: Date().timeIntervalSince1970, type: .express, num: 20)
+        records.append(record)
+        points += 20
+    }
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
 }
 
@@ -137,13 +186,13 @@ enum payType: String, CaseIterable, Codable {
         case .weChatOnline:
             return "微信支付"
         case .aliPayOnline:
-            return "支付宝支付"
+            return "支付宝"
         }
     }
 
     init(displayName: String) {
         switch displayName {
-        case "支付宝支付":
+        case "支付宝":
             self = .aliPayOnline
         case "微信支付":
             self = .weChatOnline

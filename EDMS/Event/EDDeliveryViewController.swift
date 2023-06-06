@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class EDDeliveryViewController: UIViewController {
+class EDDeliveryViewController: UIViewController, UITextFieldDelegate {
     lazy var deliLabel: UILabel = {
         let label = UILabel()
         return label
@@ -58,7 +58,12 @@ class EDDeliveryViewController: UIViewController {
         confirmBtn.addTarget(self, action: #selector(confirmToSend), for: .touchDown)
         confirmBtn.setCorner(radii: 10)
         confirmBtn.backgroundColor = UIColor(named: "ComponentBackground")
+        deliTextField.textField.delegate = self
     }
 
     @objc func confirmToSend() {}
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
 }

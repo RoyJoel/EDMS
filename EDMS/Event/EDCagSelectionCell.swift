@@ -44,7 +44,7 @@ class EDCagSelectionCell: UICollectionViewCell {
     }
 
     func setupEvent(icon: String) {
-        let icon = UIImage(named: icon)
+        let icon = UIImage(data: icon.toPng())
         comIconView.image = icon
     }
 }

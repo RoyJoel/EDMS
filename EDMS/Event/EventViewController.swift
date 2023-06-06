@@ -13,7 +13,7 @@ import TMComponent
 import UIKit
 
 class EventViewController: EDViewController {
-    let layout = EDFlowLayout(itemCount: com.count)
+    var layout = EDFlowLayout(commodities: [])
 
     lazy var titleView: UILabel = {
         let label = UILabel()
@@ -57,6 +57,13 @@ class EventViewController: EDViewController {
             make.top.equalToSuperview().offset(60)
             make.width.equalTo(44)
             make.height.equalTo(44)
+        }
+
+        EDCommodityRequest.getAll { commodities in
+            self.layout = EDFlowLayout(commodities: commodities)
+            self.shoppingCollectionView.collectionViewLayout = self.layout
+            self.shoppingCollectionView.coms = commodities
+            self.layout.collectionView?.reloadData()
         }
 
         cartBtn.setImage(UIImage(systemName: "cart"), for: .normal)

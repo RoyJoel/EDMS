@@ -72,11 +72,15 @@ class EDComContentViewController: UIViewController {
         }
 
         priceView.font = UIFont.systemFont(ofSize: 28)
-        priceView.text = "¥" + String(format: "%.2f", com.price)
+        if EDDataConvert.getPriceRange(with: com.options).0 == EDDataConvert.getPriceRange(with: com.options).1 {
+            priceView.text = "\(EDDataConvert.getPriceRange(with: com.options).0)积分"
+        } else {
+            priceView.text = "\(EDDataConvert.getPriceRange(with: com.options).0) - \(EDDataConvert.getPriceRange(with: com.options).1)积分"
+        }
 
         introView.snp.makeConstraints { make in
             make.top.equalTo(priceView.snp.bottom).offset(12)
-            make.right.equalTo(nameView.snp.right).offset(-24)
+            make.right.equalTo(nameView.snp.right)
             make.left.equalTo(nameView.snp.left)
         }
 
@@ -85,13 +89,13 @@ class EDComContentViewController: UIViewController {
         introView.text = com.intro
 
         buyBtn.snp.makeConstraints { make in
-            make.top.equalTo(introView.snp.bottom)
+            make.bottom.equalToSuperview().offset(-132)
             make.right.equalToSuperview().offset(-24)
             make.width.equalTo(144)
             make.height.equalTo(50)
         }
 
-        let btnConfig = TMButtonConfig(title: "立即购买", action: #selector(selectConfig), actionTarget: self)
+        let btnConfig = TMButtonConfig(title: "选择款式", action: #selector(selectConfig), actionTarget: self)
         buyBtn.setUp(with: btnConfig)
         buyBtn.backgroundColor = UIColor(named: "TennisBlur")
         buyBtn.setTitleColor(.black, for: .normal)

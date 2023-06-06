@@ -40,6 +40,8 @@ class EDServerView: TMView {
         }
 
         textLabel.textAlignment = .center
+        selectionView.isUserInteractionEnabled = true
+        textLabel.isUserInteractionEnabled = true
         if isServing {
             selectionView.image = UIImage(systemName: config.selectedImage)?.withTintColor(UIColor(named: "Tennis") ?? .black, renderingMode: .alwaysOriginal)
             textLabel.text = NSLocalizedString(config.selectedTitle, comment: "")
