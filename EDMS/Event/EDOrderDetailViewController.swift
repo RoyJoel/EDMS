@@ -275,7 +275,9 @@ class EDOrderDetailViewController: UIViewController {
         saveBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
         saveBtn.backgroundColor = UIColor(named: "TennisBlur")
         saveBtn.setCorner(radii: 10)
+        saveBtn.isHidden = true
         if order.state == .ToPay {
+            saveBtn.isHidden = false
             sentBtn.setTitle("修改地址", for: .normal)
             sentBtn.addTarget(self, action: #selector(changeAddress), for: .touchDown)
             saveBtn.setTitle("现在支付", for: .normal)
@@ -361,7 +363,7 @@ class EDOrderDetailViewController: UIViewController {
     @objc func buy() {
         let vc = EDBillingViewController()
         vc.order = order
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.present(vc, animated: true)
     }
 
     @objc func confirmDelivery() {

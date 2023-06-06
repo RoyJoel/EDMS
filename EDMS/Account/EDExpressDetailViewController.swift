@@ -299,9 +299,11 @@ class EDExpressDetailViewController: UIViewController {
         cancelBtn.setTitleColor(UIColor(named: "ContentBackground"), for: .normal)
         cancelBtn.backgroundColor = UIColor(named: "ComponentBackground")
         cancelBtn.setCorner(radii: 10)
+        saveBtn.isHidden = true
         if express.state == .ToPay {
             sentBtn.setTitle("修改地址", for: .normal)
             sentBtn.addTarget(self, action: #selector(changerecipAddress), for: .touchDown)
+            saveBtn.isHidden = false
             saveBtn.setTitle("现在支付", for: .normal)
             saveBtn.addTarget(self, action: #selector(buy), for: .touchDown)
             cancelBtn.setTitle("取消订单", for: .normal)
